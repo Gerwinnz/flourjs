@@ -20,6 +20,7 @@
 
     <!-- Include our app scripts -->
     <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="views/form.js"></script>
     <script type="text/javascript" src="app.js"></script>
 
     <!-- Include skeleton css -->
@@ -37,9 +38,16 @@
 
 
     <!-- App templates -->
-    <script id="main-template" type="text/x-handlebars-template">
+    <script class="template" data-name="main" type="text/x-handlebars-template">
       <div>
         Hello {{ name }}.
+      </div>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="form" type="text/x-handlebars-template">
+      <div>
+        <input type="text" />
       </div>
     </script>
   </head>

@@ -7,6 +7,10 @@ flour.addView('main', function(){
 
   view.init = function(params){
     view.set('name', params.name);
+
+    view.subscribe('name:change', function(name){
+      view.set('name', name);
+    });
   };
 
 });
