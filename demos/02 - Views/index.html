@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flour.js - View</title>
+
+    <!-- Include jQuery and Handlebars -->
+    <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery-2.1.1.min.js"></script>
+    
+    <!-- Include flour.js -->
+    <script type="text/javascript" src="../../flourjs/flour.app.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.helper.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.http.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.publish_subscribe.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.router.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.store.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+
+    <!-- Include our app scripts -->
+    <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+
+    <!-- Include app css -->
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <!-- Link to Raleway -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Mobile meta tag -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
+    <!-- App templates -->
+    <script id="main-template" type="text/x-handlebars-template">
+      <div>
+        Hello {{ name }}.
+      </div>
+    </script>
+  </head>
+
+  <body>
+    <div id="app" class="container">
+
+    </div>
+  </body>
+</html>
