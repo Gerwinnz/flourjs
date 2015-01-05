@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flour.js - View</title>
+
+    <!-- Include jQuery and Handlebars -->
+    <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery-2.1.1.min.js"></script>
+    
+    <!-- Include flour.js -->
+    <script type="text/javascript" src="../../flourjs/flour.app.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.helper.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.http.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.publish_subscribe.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.router.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.store.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+
+    <!-- Include our app scripts -->
+    <script type="text/javascript" src="views/nav.js"></script>
+    <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="views/form.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+
+    <!-- Include app css -->
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <!-- Link to Raleway -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Mobile meta tag -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
+    <!-- App templates -->
+    <script class="template" data-name="main" type="text/x-handlebars-template">
+      <div class="user-profile-card">
+        <div class="user-avatar">
+          <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=100x100" />
+        </div>
+
+        <div class="user-details">
+          <div class="full-name">
+            <span class="first-name">
+              {{ first_name }}
+            </span>
+            <span class="last-name">
+              {{ last_name }}
+            </span>
+          </div>
+          <div class="email">
+            {{ email }}
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="form" type="text/x-handlebars-template">
+      <form method="" action="">
+        <div class="row">
+          <div class="twelve columns">
+            <label>First name</label>
+            <input type="text" name="first_name" value="{{ first_name }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="twelve columns">
+            <label>Last name</label>
+            <input type="text" name="last_name" value="{{ last_name }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="twelve columns">
+            <label>Email</label>
+            <input type="text" name="email" value="{{ email }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button type="submit" class="button button-primary">Save my details</button>
+        </div>
+      </form>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="nav" type="text/x-handlebars-template">
+      <div class="nav">
+        <div class="app-name">Flour.js</div>
+        <div class="user-dropdown">
+          <div class="user-details">
+            <div class="avatar">
+              <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
+            </div>
+            {{ first_name}}
+          </div>
+        </div>
+      </div>
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row intro">
+        <div class="twelve columns">
+          <h2>03 - Views + Store</h2>
+          <p>In this example, there are three seperate views. We use the <a href="http://flourjs.com/docs/store" target="_blank">Store</a> to store our user information across the app. When we update the user data, our views will subscribe to a <code>user:change</code> event, fired everytime our <code>user</code> details change.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="nav-view"></div>
+      </div>
+      <div class="row">
+        <div id="main-view" class="six columns"></div>
+        <div id="form-view" class="six columns"></div>
+      </div>
+    </div>
+  </body>
+</html>
