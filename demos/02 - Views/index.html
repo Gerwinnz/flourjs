@@ -39,22 +39,32 @@
 
     <!-- App templates -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
-      <div>
-        Hello {{ name }}.
-      </div>
+      <h1>{{ count }}</h1>
     </script>
 
     <!-- App templates -->
     <script class="template" data-name="form" type="text/x-handlebars-template">
-      <div>
-        <input type="text" />
-      </div>
+      <button class="button button-primary">Click me!</button>
     </script>
   </head>
 
   <body>
-    <div id="app" class="container">
+    <div class="container">
+      <div class="row intro">
+        <div class="twelve columns">
+          <h2>02 - views, publish &amp; subscribe</h2>
+          <p>In this example, there are two seperate views. We use <a href="http://flourjs.com/docs/pub_sub" target="_blank">Publish and Subcribe</a> to communicate between them. Click the button to see this in action.</p>
+        </div>
+      </div>
 
+      <div class="row">
+        <div id="main-view" class="six columns">
+
+        </div>
+        <div id="form-view" class="six columns">
+
+        </div>
+      </div>
     </div>
   </body>
 </html>

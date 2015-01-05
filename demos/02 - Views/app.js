@@ -22,7 +22,7 @@ $(function(){
   var formView = flour.getView('form', {});
 
   // Add to our page
-  $('#app').append(mainView.el);
-  $('#app').append(formView.el);
+  $('#main-view').append(mainView.el);
+  $('#form-view').append(formView.el);
 
 });

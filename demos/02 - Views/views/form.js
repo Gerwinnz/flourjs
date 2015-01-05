@@ -6,7 +6,7 @@ flour.addView('form', function(){
   view.template = 'form';
 
   view.events = {
-    'change keyup input': 'update'
+    'click button': 'clicked'
   };
 
   view.init = function(params){
@@ -14,9 +14,8 @@ flour.addView('form', function(){
   };
 
   // triggered by change event
-  view.update = function(event, el){
-    console.log('a');
-    flour.publish('name:change', el.val());
+  view.clicked = function(event, el){
+    flour.publish('button-clicked');
   };
 
 });

@@ -2,14 +2,17 @@
 flour.addView('main', function(){
 
   var view = this;
+  var count = 0;
 
   view.template = 'main';
 
   view.init = function(params){
-    view.set('name', params.name);
+    view.set('count', count);
 
-    view.subscribe('name:change', function(name){
-      view.set('name', name);
+    // subscribe to the global event here
+    view.subscribe('button-clicked', function(){
+      count ++;
+      view.set('count', count);
     });
   };
 
