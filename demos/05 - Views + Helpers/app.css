@@ -1,0 +1,80 @@
+
+.intro{
+  padding: 40px 0px;
+}
+
+.flour-view{
+  position: relative;
+  padding: 20px;
+  border: solid 2px #eee;
+}
+
+.flour-view::before{
+  content: 'flour-view';
+  position: absolute;
+  top: -20px;
+  left: -2px;
+
+  background-color: #eee;
+  height: 20px;
+  padding: 0px 4px;
+
+  line-height: 20px;
+  color: #bbb;
+  font-size: 11px;
+}
+
+
+
+
+/* Styles for our list */
+.dwarves{
+  list-style: none;
+}
+
+.dwarves li{
+  line-height: 40px;
+  border-bottom: solid 1px #eee;
+}
+
+.dwarves li:last-of-type{
+  border-bottom: 0;
+}
+
+.dwarves li button{
+  float: right;
+}
+
+
+
+/* Styles for our confirm */
+.confirm-outer{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+
+  background-color: rgba(0,0,0,.2);
+}
+
+.confirm{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.confirm-inner{
+  position: absolute;
+  width: 340px;
+  padding: 20px;
+
+  background-color: #fff;
+  text-align: center;
+
+  transform: translate(-50%, -50%);
+}
+
+.confirm-inner .message{
+  padding: 0 0 10px 0;
+}
