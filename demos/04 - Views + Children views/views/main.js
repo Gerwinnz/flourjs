@@ -28,7 +28,13 @@ flour.addView('main', function(){
     var index = el.data('index');
     var dwarf = dwarves[index];
 
-    var confirmView = view.getView('confirm', 'Are you sure you want to delete ' + dwarf.name + ' from your party?');
+    var confirmView = view.getView('confirm', 'Are you sure you want to delete ' + dwarf.name + '?');
+    view.el.append(confirmView.el);
+
+    confirmView.on('yes', function(){
+      dwarves.splice(index, 1);
+      view.set('dwarves', dwarves);
+    });
   };
 
 });

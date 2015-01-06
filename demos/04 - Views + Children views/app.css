@@ -44,3 +44,37 @@
 .dwarves li button{
   float: right;
 }
+
+
+
+/* Styles for our confirm */
+.confirm-outer{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+
+  background-color: rgba(0,0,0,.2);
+}
+
+.confirm{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.confirm-inner{
+  position: absolute;
+  width: 340px;
+  padding: 20px;
+
+  background-color: #fff;
+  text-align: center;
+
+  transform: translate(-50%, -50%);
+}
+
+.confirm-inner .message{
+  padding: 0 0 10px 0;
+}

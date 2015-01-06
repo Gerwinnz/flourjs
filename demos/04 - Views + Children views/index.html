@@ -26,6 +26,7 @@
     <!-- Include skeleton css -->
     <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
     <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/animate.css">
 
     <!-- Include app css -->
     <link rel="stylesheet" type="text/css" href="app.css">
@@ -47,13 +48,22 @@
               <button class="button delete-dwarf" data-index="{{ @index }}">Delete!</button>
             </div>
           </li>
+        {{else}}
+          <li>No more dwarves left :(</li>
         {{/dwarves}}
       </ul>
     </script>
 
     <!-- App templates -->
     <script class="template" data-name="confirm" type="text/x-handlebars-template">
-      
+      <div class="confirm-outer"></div>
+      <div class="confirm animated fast bounceIn">
+        <div class="confirm-inner">
+          <div class="message">{{ message }}</div>
+          <button class="button confirm-no">No</button>
+          <button class="button-primary confirm-yes">Yes</button>
+        </div>
+      </div>
     </script>
   </head>
 
@@ -62,7 +72,7 @@
       <div class="row intro">
         <div class="twelve columns">
           <h2>04 - Views + Children views and Events</h2>
-          <p>In this example, there are two <a href="http://flourjs.com/docs/view" target="_blank">views</a>. Our main <a href="http://flourjs.com/docs/view" target="_blank">view</a> creates a child <a href="http://flourjs.com/docs/view" target="_blank">view</a> and then listens to events on that view.</p>
+          <p>In this example, we use two <a href="http://flourjs.com/docs/view" target="_blank">views</a>. When the delete button is clicked, the <code>main</code> view creates an instance of the <code>confirm</code> view and attaches an event listener using the <code>view.on()</code> method. When the <code>yes</code> event is fired, we can remove the item from our list. This demonstrates flour.js's ease in creating simple, reusable components.</p>
         </div>
       </div>
 
