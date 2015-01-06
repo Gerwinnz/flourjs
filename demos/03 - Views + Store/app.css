@@ -13,7 +13,7 @@
   content: 'flour-view';
   position: absolute;
   top: -20px;
-  left: 0px;
+  left: -2px;
 
   background-color: #eee;
   height: 20px;
@@ -62,7 +62,6 @@
 
 /* Styles for our top nav view */
 .nav{
-  padding: 0px 10px;
   height: 60px;
   line-height: 60px;
 
@@ -72,6 +71,7 @@
 
 .nav .app-name{
   float: left;
+  margin-left: 20px;
 }
 
 .nav .user-dropdown{
@@ -93,4 +93,8 @@
   border-radius: 20px;
   background-color: rgba(0,0,0,.1);
   overflow: hidden;
+}
+
+.user-dropdown .name{
+  float: right;
 }

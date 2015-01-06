@@ -23,3 +23,24 @@
   color: #bbb;
   font-size: 11px;
 }
+
+
+
+
+/* Styles for our list */
+.dwarves{
+  list-style: none;
+}
+
+.dwarves li{
+  line-height: 40px;
+  border-bottom: solid 1px #eee;
+}
+
+.dwarves li:last-of-type{
+  border-bottom: 0;
+}
+
+.dwarves li button{
+  float: right;
+}

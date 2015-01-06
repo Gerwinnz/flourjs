@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flour.js - View</title>
+
+    <!-- Include jQuery and Handlebars -->
+    <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery-2.1.1.min.js"></script>
+    
+    <!-- Include flour.js -->
+    <script type="text/javascript" src="../../flourjs/flour.app.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.helper.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.http.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.publish_subscribe.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.router.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.store.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+
+    <!-- Include our app scripts -->
+    <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="views/confirm.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+
+    <!-- Include app css -->
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <!-- Link to Raleway -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Mobile meta tag -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
+    <!-- App templates -->
+    <script class="template" data-name="main" type="text/x-handlebars-template">
+      <ul class="dwarves">
+        {{#dwarves}}
+          <li>
+            <div class="u-cf u-full-width">
+              {{ name }}
+              <button class="button delete-dwarf" data-index="{{ @index }}">Delete!</button>
+            </div>
+          </li>
+        {{/dwarves}}
+      </ul>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="confirm" type="text/x-handlebars-template">
+      
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row intro">
+        <div class="twelve columns">
+          <h2>04 - Views + Children views and Events</h2>
+          <p>In this example, there are two <a href="http://flourjs.com/docs/view" target="_blank">views</a>. Our main <a href="http://flourjs.com/docs/view" target="_blank">view</a> creates a child <a href="http://flourjs.com/docs/view" target="_blank">view</a> and then listens to events on that view.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="main-view" class="twelve columns"></div>
+      </div>
+    </div>
+  </body>
+</html>
