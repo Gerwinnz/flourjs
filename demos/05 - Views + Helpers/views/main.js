@@ -5,6 +5,10 @@ flour.addView('main', function(){
 
   view.template = 'main';
 
+  view.helpers = [
+    'pulldown_menu'
+  ];
+
   view.events = {
     'click .delete-dwarf': 'deleteDwarf'
   };

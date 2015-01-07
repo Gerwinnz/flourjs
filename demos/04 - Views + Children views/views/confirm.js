@@ -31,7 +31,7 @@ flour.addView('confirm', function(){
   // close and trigger our event
   view.close = function(trigger){
     var $confirm = view.find('.confirm');
-    $confirm.removeClass('bounceIn');
+    $confirm.removeClass('fadeInUp');
     $confirm.addClass('bounceOut');
 
     $confirm.one("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){ 

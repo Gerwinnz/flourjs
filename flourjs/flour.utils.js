@@ -220,6 +220,34 @@ flour.config = function(param, value)
 
 /*
 #
+#	Generates a lookup hash table
+#
+*/
+flour.generateLookup = function(data, key)
+{
+	if(flour.isArray(data))
+	{
+		var lookup = {};
+		for(var i = 0, n = data.length; i < n; i ++)
+		{
+			var item = data[i];
+			if(item[key])
+			{
+				lookup[item[key]] = i;
+			}
+		}
+
+		return lookup;
+	}
+
+	return false;
+}
+
+
+
+
+/*
+#
 #	Extracts and analysis a form submission, returns a formatted object with errors
 #
 */

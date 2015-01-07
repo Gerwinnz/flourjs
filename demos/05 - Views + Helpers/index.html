@@ -19,6 +19,9 @@
     <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
 
     <!-- Include our app scripts -->
+    <script type="text/javascript" src="helpers/pulldown_menu.js"></script>
+
+    <script type="text/javascript" src="views/nav.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
     <script type="text/javascript" src="views/confirm.js"></script>
     <script type="text/javascript" src="app.js"></script>
@@ -44,8 +47,16 @@
         {{#dwarves}}
           <li>
             <div class="u-cf u-full-width">
+              <div class="pulldown">
+                <div class="pulldown-toggle pulldown-toggle-round"><div class="lines"></div></div>
+                <div class="pulldown-menu">
+                  <ul>
+                    <li><a class="edit-dwarf" data-index="{{ @index }}">Edit</a></li>
+                    <li><a class="delete-dwarf" data-index="{{ @index }}">Delete</a></li>
+                  </ul>
+                </div>
+              </div>
               {{ name }}
-              <button class="button delete-dwarf" data-index="{{ @index }}">Delete!</button>
             </div>
           </li>
         {{else}}
@@ -57,11 +68,32 @@
     <!-- App templates -->
     <script class="template" data-name="confirm" type="text/x-handlebars-template">
       <div class="confirm-outer"></div>
-      <div class="confirm animated fast bounceIn">
+      <div class="confirm animated fast fadeInUp">
         <div class="confirm-inner">
           <div class="message">{{ message }}</div>
           <button class="button confirm-no">No</button>
           <button class="button-primary confirm-yes">Yes</button>
+        </div>
+      </div>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="nav" type="text/x-handlebars-template">
+      <div class="nav">
+        <div class="app-name">Flour.js</div>
+        <div class="user-dropdown pulldown">
+          <div class="user-details pulldown-toggle">
+            <div class="avatar">
+              <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
+            </div>
+            <div class="name">{{ first_name}}</div>
+          </div>
+          <div class="pulldown-menu">
+            <ul>
+              <li><a href="">Account settings</a></li>
+              <li><a href="">Log out</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </script>
@@ -72,11 +104,12 @@
       <div class="row intro">
         <div class="twelve columns">
           <h2>05 - Views + Helpers</h2>
-          <p>In this example, we use two <a href="http://flourjs.com/docs/view" target="_blank">views</a>. When the delete button is clicked, the <code>main</code> view creates an instance of the <code>confirm</code> view and attaches an event listener using the <code>view.on()</code> method. When the <code>yes</code> event is fired, we can remove the item from our list. This demonstrates flour.js's ease in creating simple, reusable components.</p>
+          <p><a href="http://flourjs.com/docs/helper" target="_blank">Helpers</a> are versatile and can be used in any number of ways to enhance an application. Here we use a <a href="http://flourjs.com/docs/helper" target="_blank">helper</a> to open and close pull-down menus across multiple <a href="http://flourjs.com/docs/view" target="_blank">views</a>. Click on the user section in the nav view and then on one of the pull down menu toggles in the list view.</p>
         </div>
       </div>
 
       <div class="row">
+        <div id="nav-view"></div>
         <div id="main-view" class="twelve columns"></div>
       </div>
     </div>
