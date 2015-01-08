@@ -81,6 +81,7 @@
   text-align: center;
 
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
 }
 
 .confirm-inner .message{
@@ -281,16 +282,19 @@
 .pulldown-toggle-round.open .lines{
   background: transparent;
   transform: scale3d(0.8, 0.8, 0.8);
+  -webkit-transform: scale3d(0.8, 0.8, 0.8);
 }
 
 .pulldown-toggle-round.open .lines::before{
   top: 0px;
   transform: rotate3d(0, 0, 1, 45deg);
+  -webkit-transform: rotate3d(0, 0, 1, 45deg);
 }
 
 .pulldown-toggle-round.open .lines::after{
   top: 0px;
   transform: rotate3d(0, 0, 1, -45deg);
+  -webkit-transform: rotate3d(0, 0, 1, -45deg);
 }
 
 
