@@ -24,8 +24,6 @@ flour.addHelper('form', function(){
       $.each($inputs, function(index, input){
         var $input = $(input);
         var val = view.get($input.data('model'));
-        console.log($input.data('model'));
-        console.log(val);
         $input.val(val);
       });
     });

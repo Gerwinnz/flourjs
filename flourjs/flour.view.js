@@ -234,7 +234,6 @@ flour.baseView = function()
     }
 
     return flour.getObjectKeyValue(self.model, property);
-    return self.model[property];
   };
 
   self.set = function(property, value, update)
