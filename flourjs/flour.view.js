@@ -233,6 +233,7 @@ flour.baseView = function()
       return self.model;
     }
 
+    return flour.getObjectKeyValue(self.model, property);
     return self.model[property];
   };
 
@@ -264,8 +265,6 @@ flour.baseView = function()
     {
       self.render();
     }
-
-    console.log(self.model);
   };
 
 

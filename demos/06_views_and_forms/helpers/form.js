@@ -13,6 +13,22 @@ flour.addHelper('form', function(){
     view.events['keyup input'] = function(event, el){
       updateViewModel(view, event, el);
     };
+
+    view.events['keyup textarea'] = function(event, el){
+      updateViewModel(view, event, el);
+    };
+
+    view.on('render', function(){
+      $inputs = view.find('input, select, textarea');
+      
+      $.each($inputs, function(index, input){
+        var $input = $(input);
+        var val = view.get($input.data('model'));
+        console.log($input.data('model'));
+        console.log(val);
+        $input.val(val);
+      });
+    });
   };
 
 

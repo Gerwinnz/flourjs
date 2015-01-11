@@ -186,19 +186,22 @@ flour.defer = function(callback)
 */
 flour.setObjectKeyValue = function(object, key, value)
 {
-	if(key.indexOf('.') !== -1)
+	// var re = /\[(['"\w]+)\]/g;
+
+	if(key.indexOf('.') !== -1 || key.indexOf['['] !== -1)
 	{
-		var pieces = key.split('.');
+		key = key.replace(/\]|'|"/g, '');
+		var pieces = key.split(/\.|\[/g);
 		var objectPoint = object;
 
 		var length = pieces.length;
-		var destinationIndex = length - 1;
-
+		var lastIndex = length - 1;
+		
 		for(var i = 0; i < length; i ++)
 		{
 			var nextPoint = pieces[i];
 
-			if(i === destinationIndex)
+			if(i === lastIndex)
 			{
 				objectPoint[nextPoint] = value;
 			}
@@ -217,7 +220,43 @@ flour.setObjectKeyValue = function(object, key, value)
 	{
 		object[key] = value;
 	}
-}
+};
+
+flour.getObjectKeyValue = function(object, key)
+{
+	if(key.indexOf('.') !== -1 || key.indexOf['['] !== -1)
+	{
+		key = key.replace(/\]|'|"/g, '');
+		var pieces = key.split(/\.|\[/g);
+		var objectPoint = object;
+
+		var length = pieces.length;
+		var lastIndex = length - 1;
+
+		for(var i = 0; i < length; i ++)
+		{
+			var nextPoint = pieces[i];
+
+			if(i === lastIndex)
+			{
+				return objectPoint[nextPoint];
+			}
+			else
+			{
+				if(objectPoint[nextPoint] === undefined)
+				{
+					return undefined;
+				}
+
+				objectPoint = objectPoint[nextPoint];
+			}
+		}
+	}
+	else
+	{
+		return object[key];
+	}
+};
 
 
 

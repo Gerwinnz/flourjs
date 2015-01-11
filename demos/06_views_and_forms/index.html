@@ -44,20 +44,35 @@
     <!-- App templates -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
       <div class="row">
-        <label>First name</label>
-        <input type="text" data-model="user.first_name" />
-      </div>
-      <div class="row">
-        <label>Last name</label>
-        <input type="text" data-model="user.last_name" />
-      </div>
-      <div class="row">
-        <label>Gender</label>
-        <select data-model="user.gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+        <div class="six columns">
+          <div class="row">
+            <label>First name</label>
+            <input type="text" data-model="user.first_name" class="u-full-width"/>
+          </div>
+          <div class="row">
+            <label>Last name</label>
+            <input type="text" data-model="user.last_name" class="u-full-width"/>
+          </div>
+          <div class="row">
+            <label>Gender</label>
+            <select data-model="user['gender']" class="u-full-width">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>Description</label>
+            <textarea data-model="user['description']" class="u-full-width" rows="6"></textarea>
+          </div>
+          <div class="row">
+            <button class="button button-primary show-data">Show data!</button>
+          </div>
+        </div>
+
+        <div class="six columns">
+          <pre><code id="user-json">{}</code></pre>
+        </div>
       </div>
     </script>
   </head>
