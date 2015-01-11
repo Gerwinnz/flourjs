@@ -191,11 +191,14 @@ flour.setObjectKeyValue = function(object, key, value)
 		var pieces = key.split('.');
 		var objectPoint = object;
 
-		for(var i = 0, n = pieces.length; i < n; i ++)
+		var length = pieces.length;
+		var destinationIndex = length - 1;
+
+		for(var i = 0; i < length; i ++)
 		{
 			var nextPoint = pieces[i];
 
-			if(i === (n - 1))
+			if(i === destinationIndex)
 			{
 				objectPoint[nextPoint] = value;
 			}
