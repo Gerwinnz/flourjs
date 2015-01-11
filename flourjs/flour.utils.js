@@ -181,6 +181,46 @@ flour.defer = function(callback)
 
 /*
 #
+#	Map a string value to an object
+#
+*/
+flour.setObjectKeyValue = function(object, key, value)
+{
+	if(key.indexOf('.') !== -1)
+	{
+		var pieces = key.split('.');
+		var objectPoint = object;
+
+		for(var i = 0, n = pieces.length; i < n; i ++)
+		{
+			var nextPoint = pieces[i];
+
+			if(i === (n - 1))
+			{
+				objectPoint[nextPoint] = value;
+			}
+			else
+			{
+				if(objectPoint[nextPoint] === undefined)
+				{
+					objectPoint[nextPoint] = {};
+				}
+
+				objectPoint = objectPoint[nextPoint];
+			}
+		}
+	}
+	else
+	{
+		object[key] = value;
+	}
+}
+
+
+
+
+/*
+#
 # Set flour app config vars : TODO
 #
 */

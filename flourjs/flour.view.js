@@ -252,7 +252,7 @@ flour.baseView = function()
       var temp = self.model[property];
       if(value !== temp || flour.isArray(value) || flour.isObject(value))
       {
-        self.model[property] = value;
+        flour.setObjectKeyValue(self.model, property, value);
       }
       else
       {
@@ -264,6 +264,8 @@ flour.baseView = function()
     {
       self.render();
     }
+
+    console.log(self.model);
   };
 
 

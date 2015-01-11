@@ -19,7 +19,7 @@
     <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
 
     <!-- Include our app scripts -->
-    <script type="text/javascript" src="helpers/pulldown_menu.js"></script>
+    <script type="text/javascript" src="helpers/form.js"></script>
 
     <script type="text/javascript" src="views/nav.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
@@ -43,58 +43,21 @@
 
     <!-- App templates -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
-      <ul class="dwarves">
-        {{#dwarves}}
-          <li>
-            <div class="u-cf u-full-width">
-              <div class="pulldown">
-                <div class="pulldown-toggle pulldown-toggle-round"><div class="lines"></div></div>
-                <div class="pulldown-menu">
-                  <ul>
-                    <li><a class="edit-dwarf" data-index="{{ @index }}">Edit</a></li>
-                    <li><a class="delete-dwarf" data-index="{{ @index }}">Delete</a></li>
-                  </ul>
-                </div>
-              </div>
-              {{ name }}
-            </div>
-          </li>
-        {{else}}
-          <li>No more dwarves left :(</li>
-        {{/dwarves}}
-      </ul>
-    </script>
-
-    <!-- App templates -->
-    <script class="template" data-name="confirm" type="text/x-handlebars-template">
-      <div class="confirm-outer"></div>
-      <div class="confirm animated fast fadeInUp">
-        <div class="confirm-inner">
-          <div class="message">{{ message }}</div>
-          <button class="button confirm-no">No</button>
-          <button class="button-primary confirm-yes">Yes</button>
-        </div>
+      <div class="row">
+        <label>First name</label>
+        <input type="text" data-model="user.first_name" />
       </div>
-    </script>
-
-    <!-- App templates -->
-    <script class="template" data-name="nav" type="text/x-handlebars-template">
-      <div class="nav">
-        <div class="app-name">Flour.js</div>
-        <div class="user-dropdown pulldown">
-          <div class="user-details pulldown-toggle">
-            <div class="avatar">
-              <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
-            </div>
-            <div class="name">{{ first_name}}</div>
-          </div>
-          <div class="pulldown-menu">
-            <ul>
-              <li><a href="">Account settings</a></li>
-              <li><a href="">Log out</a></li>
-            </ul>
-          </div>
-        </div>
+      <div class="row">
+        <label>Last name</label>
+        <input type="text" data-model="user.last_name" />
+      </div>
+      <div class="row">
+        <label>Gender</label>
+        <select data-model="user.gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
       </div>
     </script>
   </head>

@@ -23,11 +23,9 @@ $(function(){
 
 
   // Create instance of our views
-  var navView = flour.getView('nav', {});
   var mainView = flour.getView('main', {});
 
   // Add to our page
-  $('#nav-view').append(navView.el);
   $('#main-view').append(mainView.el);
 
 });
