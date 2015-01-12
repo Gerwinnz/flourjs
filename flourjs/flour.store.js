@@ -14,11 +14,14 @@ flour.store = {
   set: function(name, value, silent)
   {
     var self = this;
-    self.values[name] = value;
+    var objectChain = flour.setObjectKeyValue(self.values, name, value);
 
     if(silent !== false)
     {
-      flour.publish(name + ':change', value);  
+      var rootKey = objectChain[0];
+      var rootValue = self.values[rootKey];
+
+      flour.publish(rootKey + ':change', rootValue);
     }
   },
 
@@ -31,7 +34,7 @@ flour.store = {
       return self.values;
     }
 
-    return self.values[name];
+    return flour.getObjectKeyValue(self.values, name);
   }
 
 };

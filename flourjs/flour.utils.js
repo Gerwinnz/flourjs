@@ -187,8 +187,7 @@ flour.defer = function(callback)
 flour.setObjectKeyValue = function(object, key, value)
 {
 	// var re = /\[(['"\w]+)\]/g;
-
-	if(key.indexOf('.') !== -1 || key.indexOf['['] !== -1)
+	if(key.indexOf('.') !== -1 && key.indexOf['['] !== -1)
 	{
 		key = key.replace(/\]|'|"/g, '');
 		var pieces = key.split(/\.|\[/g);
@@ -215,10 +214,13 @@ flour.setObjectKeyValue = function(object, key, value)
 				objectPoint = objectPoint[nextPoint];
 			}
 		}
+
+		return pieces;
 	}
 	else
 	{
 		object[key] = value;
+		return[key];
 	}
 };
 
