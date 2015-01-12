@@ -1,16 +1,10 @@
-var templates = {};
-
-
 $(function(){
 
-  // Load templates into templates object
+  // Add our templates
   var $templates = $('.template');
   $.each($templates, function(index, template){
     var $template = $(template);
-    var name = $template.data('name');
-    var html = $template.html();
-
-    templates[name] = Handlebars.compile(html);
+    flour.addTemplate($template.data('name'), $template.html());
   });
 
 

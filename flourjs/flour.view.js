@@ -211,9 +211,9 @@ flour.baseView = function()
     }
 
 
-
     // self.el.empty();
-    self.el.html(templates[self.template](self.model));
+    var template = flour.getTemplate(self.template);
+    self.el.html(template(self.model));
   };
 
 
@@ -250,7 +250,7 @@ flour.baseView = function()
     }
     else
     {
-      var temp = self.model[property];
+      var temp = flour.getObjectKeyValue(self.model, property);
       if(value !== temp || flour.isArray(value) || flour.isObject(value))
       {
         objectChain = flour.setObjectKeyValue(self.model, property, value);
