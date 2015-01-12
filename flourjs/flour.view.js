@@ -236,9 +236,10 @@ flour.baseView = function()
     return flour.getObjectKeyValue(self.model, property);
   };
 
-  self.set = function(property, value, update)
+  self.set = function(property, value, update, updateBinding)
   {
     var self = this;
+    var objectChain;
 
     if(flour.isObject(property))
     {
@@ -252,7 +253,7 @@ flour.baseView = function()
       var temp = self.model[property];
       if(value !== temp || flour.isArray(value) || flour.isObject(value))
       {
-        flour.setObjectKeyValue(self.model, property, value);
+        objectChain = flour.setObjectKeyValue(self.model, property, value);
       }
       else
       {
@@ -260,9 +261,24 @@ flour.baseView = function()
       }
     }
     
+    // major update (re-render)
     if(update !== false)
     {
       self.render();
+    }
+
+    // binding
+    if(self.bindings !== undefined)
+    {
+      var rootKey = objectChain[0];
+      var binding = self.bindings[rootKey];
+      if(binding !== undefined)
+      {
+        if(binding.callback)
+        {
+          self[binding.callback]();
+        }
+      }
     }
   };
 

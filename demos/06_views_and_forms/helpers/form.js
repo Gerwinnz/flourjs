@@ -10,11 +10,11 @@ flour.addHelper('form', function(){
       updateViewModel(view, event, el);
     };
 
-    view.events['keyup input'] = function(event, el){
+    view.events['keypress keyup input'] = function(event, el){
       updateViewModel(view, event, el);
     };
 
-    view.events['keyup textarea'] = function(event, el){
+    view.events['keypress keyup  textarea'] = function(event, el){
       updateViewModel(view, event, el);
     };
 
@@ -32,9 +32,6 @@ flour.addHelper('form', function(){
 
 
   var updateViewModel = function(view, event, el){
-    event.preventDefault();
-    event.stopPropagation();
-
     var model = el.data('model');
     view.set(model, el.val(), false);
   };

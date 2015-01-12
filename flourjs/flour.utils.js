@@ -183,11 +183,18 @@ flour.defer = function(callback)
 #
 #	Map a string value to an object
 #
+# var re = /\[(['"\w]+)\]/g;
+#
 */
 flour.setObjectKeyValue = function(object, key, value)
 {
-	// var re = /\[(['"\w]+)\]/g;
-	if(key.indexOf('.') !== -1 && key.indexOf['['] !== -1)
+	// Create booleans
+	var hasFullstop = key.indexOf('.') === -1 ? false : true;
+	var hasSquareBrace = key.indexOf('[') === -1 ? false : true;
+	
+
+	// Split if we have either of these
+	if(hasSquareBrace || hasFullstop)
 	{
 		key = key.replace(/\]|'|"/g, '');
 		var pieces = key.split(/\.|\[/g);
@@ -224,9 +231,21 @@ flour.setObjectKeyValue = function(object, key, value)
 	}
 };
 
+
+/*
+#
+#	Return an object value from a string key
+#
+*/
 flour.getObjectKeyValue = function(object, key)
 {
-	if(key.indexOf('.') !== -1 || key.indexOf['['] !== -1)
+	// Create booleans
+	var hasFullstop = key.indexOf('.') === -1 ? false : true;
+	var hasSquareBrace = key.indexOf('[') === -1 ? false : true;
+	
+
+	// Split if we have either of these
+	if(hasSquareBrace || hasFullstop)
 	{
 		key = key.replace(/\]|'|"/g, '');
 		var pieces = key.split(/\.|\[/g);
