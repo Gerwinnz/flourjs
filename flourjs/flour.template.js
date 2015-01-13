@@ -36,5 +36,11 @@ flour.getTemplate = function(name)
     }
   }
 
-  return false;
+
+  if(flour.templates['flour:missing_template'] === undefined)
+  {
+    flour.addTemplate('flour:missing_template', '<div>Missing template.</div>');
+  }
+
+  return flour.templates['flour:missing_template'];
 }
