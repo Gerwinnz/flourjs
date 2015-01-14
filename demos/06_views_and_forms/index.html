@@ -22,6 +22,7 @@
 
     <!-- Include our app scripts -->
     <script type="text/javascript" src="helpers/form.js"></script>
+    <script type="text/javascript" src="helpers/bind.js"></script>
 
     <script type="text/javascript" src="views/nav.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
@@ -49,7 +50,7 @@
         <div class="six columns">
           <div class="row">
             <label>First name</label>
-            <input type="text" data-model="user.first_name" class="u-full-width"/>
+            <input type="text" data-model="user.first_name" class="u-full-width bind" flour-val="user.first_name"/>
           </div>
           <div class="row">
             <label>Last name</label>
@@ -68,12 +69,16 @@
             <textarea data-model="user['description']" class="u-full-width" rows="6"></textarea>
           </div>
           <div class="row">
-            <button class="button button-primary show-data">Show data!</button>
+            <button class="button button-primary reset-first-name">Reset first name!</button>
           </div>
         </div>
 
         <div class="six columns">
-          <pre><code id="user-json">{}</code></pre>
+          <pre><code class="bind" flour-html="user | formatJSON">{}</code></pre>
+
+          <div>
+            <input type="text" data-model="user.first_name" class="bind" flour-val="user.first_name"/>
+          </div>
         </div>
       </div>
     </script>

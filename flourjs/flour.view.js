@@ -236,7 +236,7 @@ flour.baseView = function()
     return flour.getObjectKeyValue(self.model, property);
   };
 
-  self.set = function(property, value, update, updateBinding)
+  self.set = function(property, value, doRender)
   {
     var self = this;
     var objectChain;
@@ -257,29 +257,42 @@ flour.baseView = function()
       }
       else
       {
-        update = false;
+        doRender = false;
       }
     }
     
-    // major update (re-render)
-    if(update !== false)
+    // major doRender (re-render)
+    if(doRender !== false)
     {
       self.render();
     }
 
     // binding
-    if(self.bindings !== undefined)
-    {
-      var rootKey = objectChain[0];
-      var binding = self.bindings[rootKey];
-      if(binding !== undefined)
+    // if(self.bindings !== undefined)
+    // {
+      if(objectChain)
       {
-        if(binding.callback)
+        var len = objectChain.length;
+        for(var i = 0; i < len; i ++)
         {
-          self[binding.callback]();
+          var bindingKey = objectChain.join('.');
+          self.trigger('model.' + bindingKey + ':change', self.get(bindingKey));
+          
+          // var binding = self.bindings[bindingKey];
+          
+          // if(binding)
+          // {
+          //   if(binding.callback)
+          //   {
+          //     self[binding.callback]();
+          //   }
+          // }
+
+          objectChain.pop();
         }
       }
-    }
+    //  
+    //}
   };
 
 

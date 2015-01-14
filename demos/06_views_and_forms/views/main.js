@@ -6,18 +6,19 @@ flour.addView('main', function(){
   view.template = 'main';
 
   view.helpers = [
-    'form'
+    'form',
+    'bind'
   ];
 
   view.events = {
-    'click button.show-data': 'showData'
+    'click button.reset-first-name': 'resetFirstName'
   };
 
-  view.bindings = {
-    'user': {
-      'callback': 'showData'
-    }
-  };
+  // view.bindings = {
+  //   'user': {
+  //     'callback': 'showData'
+  //   }
+  // };
 
 
   // init
@@ -30,12 +31,14 @@ flour.addView('main', function(){
     });
   };
 
+  view.resetFirstName = function(){
+    view.set('user.first_name', 'Gandalf', false);
+  }
 
-
-  view.showData = function(params){
-    var user = view.get('user');
-    var json = JSON.stringify(user, undefined, 2);
-    view.find('#user-json').html(json);
+  view.formatJSON = function(user){
+    //var user = view.get('user');
+    return JSON.stringify(user, undefined, 2);
+    //view.find('.bind').html(json);
   };
 
 });

@@ -1,0 +1,121 @@
+
+flour.addHelper('bind', function(){
+
+  var helper = this;
+
+  var bindingPrefix = 'flour';
+
+
+  /*
+  |
+  |
+  | Find elements with a bind class, attach listeners to the data change and then 
+  | modify the elements contents with binder methods
+  |
+  |
+  */
+  helper.init = function(view){
+
+    var $boundElements = [];
+
+    view.on('render', function(){
+      $boundElements = view.find('.bind');
+
+      $boundElements.each(function(index, el){
+        var $el = $(el);
+        
+        // var bindOn = $el.data('bind') || $el.data('model');
+        // var bindTo = $el.data('bind-to');
+        // var bindFilter = $el.data('bind-filter');
+
+
+
+        // if(bindOn && bindTo){
+        //   view.on('model.' + bindOn + ':change', function(data){
+
+        //     if(bindFilter){
+        //       data = view[bindFilter](data);
+        //     }
+
+        //     binders[bindTo]($el, data);
+        //   });
+        // }
+
+        for(var i = 0, n = bindersList.length; i < n; i ++){
+
+          (function(){
+            var bindingName = bindersList[i];
+            var attributeName = bindingPrefix + '-' + bindingName;
+
+            var binding = $el.attr(attributeName);
+            var filter = false;
+
+            if(binding){
+              binding = binding.replace(/\s/g, "");
+              var hasFilter = binding.indexOf('|') === -1 ? false : true;
+
+              if(hasFilter){
+                var pieces = binding.split('|');
+                binding = pieces[0];
+                filter = pieces[1];
+              }
+
+              view.on('model.' + binding + ':change', function(data){
+
+                if(filter){
+                  data = view[filter](data);
+                }
+
+                binders[bindingName]($el, data);
+              });
+            }
+
+          }());
+
+        }
+
+      });
+    });
+  };
+
+
+
+
+  /*
+  |
+  |
+  | A list of binder methods that will take data and an element and modify the contents
+  | of the element appropriately
+  |
+  |
+  */
+  var bindersList = [
+    'html',
+    'val'
+  ];
+
+  var binders = {
+
+    //
+    //  
+    //
+    'html': function($el, data){
+      $el.html(data);
+    },
+
+
+    //
+    //  
+    //
+    'val': function($el, data){
+      if($el.val() !== data){
+        $el.val(data);
+      }
+    }
+
+
+  };
+
+
+  
+});

@@ -23,8 +23,12 @@ flour.addHelper('form', function(){
       
       $.each($inputs, function(index, input){
         var $input = $(input);
-        var val = view.get($input.data('model'));
-        $input.val(val);
+        var dataModel = $input.data('model');
+
+        if(dataModel){
+          var val = view.get(dataModel);
+          $input.val(val);
+        }
       });
     });
   };
