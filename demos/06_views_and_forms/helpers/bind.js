@@ -23,27 +23,10 @@ flour.addHelper('bind', function(){
 
       $boundElements.each(function(index, el){
         var $el = $(el);
-        
-        // var bindOn = $el.data('bind') || $el.data('model');
-        // var bindTo = $el.data('bind-to');
-        // var bindFilter = $el.data('bind-filter');
-
-
-
-        // if(bindOn && bindTo){
-        //   view.on('model.' + bindOn + ':change', function(data){
-
-        //     if(bindFilter){
-        //       data = view[bindFilter](data);
-        //     }
-
-        //     binders[bindTo]($el, data);
-        //   });
-        // }
 
         for(var i = 0, n = bindersList.length; i < n; i ++){
-
           (function(){
+
             var bindingName = bindersList[i];
             var attributeName = bindingPrefix + '-' + bindingName;
 
@@ -70,13 +53,13 @@ flour.addHelper('bind', function(){
               });
             }
 
-          }());
-
+          }()); // end of closure
         }
-
       });
     });
+
   };
+
 
 
 
