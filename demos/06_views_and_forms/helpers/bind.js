@@ -91,7 +91,8 @@ flour.addHelper('bind', function(){
   */
   var bindersList = [
     'html',
-    'val'
+    'val',
+    'show'
   ];
 
   var binders = {
@@ -111,8 +112,19 @@ flour.addHelper('bind', function(){
       if($el.val() !== data){
         $el.val(data);
       }
-    }
+    },
 
+
+    //
+    //
+    //
+    'show': function($el, data){
+      if(data){
+        $el.css('display', 'block');
+      }else{
+        $el.css('display', 'none');
+      }
+    }
 
   };
 
