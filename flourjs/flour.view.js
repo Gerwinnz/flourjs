@@ -267,32 +267,18 @@ flour.baseView = function()
       self.render();
     }
 
-    // binding
-    // if(self.bindings !== undefined)
-    // {
-      if(objectChain)
+    // change events
+    if(objectChain)
+    {
+      var len = objectChain.length;
+      for(var i = 0; i < len; i ++)
       {
-        var len = objectChain.length;
-        for(var i = 0; i < len; i ++)
-        {
-          var bindingKey = objectChain.join('.');
-          self.trigger('model.' + bindingKey + ':change', self.get(bindingKey));
-          
-          // var binding = self.bindings[bindingKey];
-          
-          // if(binding)
-          // {
-          //   if(binding.callback)
-          //   {
-          //     self[binding.callback]();
-          //   }
-          // }
+        var bindingKey = objectChain.join('.');
+        self.trigger('model.' + bindingKey + ':change', self.get(bindingKey));
 
-          objectChain.pop();
-        }
+        objectChain.pop();
       }
-    //  
-    //}
+    }
   };
 
 

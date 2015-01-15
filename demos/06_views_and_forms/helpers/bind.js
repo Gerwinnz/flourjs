@@ -9,8 +9,11 @@ flour.addHelper('bind', function(){
   /*
   |
   |
-  | Find elements with a bind class, attach listeners to the data change and then 
+  | Find elements with a bind class, search for a binding type
+  | attach listeners to the data change and then 
   | modify the elements contents with binder methods
+  |
+  | Attach change events to form elements
   |
   |
   */
@@ -23,7 +26,25 @@ flour.addHelper('bind', function(){
 
       $boundElements.each(function(index, el){
         var $el = $(el);
+        var type = $el[0].nodeName;
 
+        // Attach events to inputs and form elements
+        if(type === 'INPUT' || type === 'TEXTAREA'){
+          $el.on('keypress change keyup', function(event){
+            var model = $el.data('model');
+            view.set(model, $el.val(), false);
+          });
+        }
+
+        if(type === 'SELECT'){
+          $el.on('change', function(event){
+            var model = $el.data('model');
+            view.set(model, $el.val(), false);
+          });
+        }
+        
+
+        // Check for bindings
         for(var i = 0, n = bindersList.length; i < n; i ++){
           (function(){
 
@@ -43,17 +64,20 @@ flour.addHelper('bind', function(){
                 filter = pieces[1];
               }
 
+              // on model change
               view.on('model.' + binding + ':change', function(data){
-
                 if(filter){
                   data = view[filter](data);
                 }
 
                 binders[bindingName]($el, data);
               });
+
+              // first time
+              binders[bindingName]($el, view.get(binding));
             }
 
-          }()); // end of closure
+          }());
         }
       });
     });
@@ -75,7 +99,10 @@ flour.addHelper('bind', function(){
   var bindersList = [
     'html',
     'val',
-    'show'
+    'show',
+    'hide',
+    'text',
+    'class'
   ];
 
   var binders = {
@@ -85,6 +112,14 @@ flour.addHelper('bind', function(){
     //
     'html': function($el, data){
       $el.html(data);
+    },
+
+
+    //
+    //  
+    //
+    'text': function($el, data){
+      $el.text(data);
     },
 
 
@@ -107,6 +142,32 @@ flour.addHelper('bind', function(){
       }else{
         $el.css('display', 'none');
       }
+    },
+
+
+    //
+    //
+    //
+    'hide': function($el, data){
+      if(data){
+        $el.css('display', 'none');
+      }else{
+        $el.css('display', 'block');
+      }
+    },
+
+
+    //
+    //
+    //
+    'class': function($el, data){
+      var lastClass = $el.data('last-class');
+      if(lastClass){
+        $el.removeClass(lastClass);
+      }
+
+      $el.data('last-class', data);
+      $el.addClass(data);
     }
 
   };

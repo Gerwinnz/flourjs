@@ -8,13 +8,6 @@ $(function(){
   });
 
 
-  // Set our default user info
-  flour.store.set('user', {
-    'first_name': 'Gandalf',
-    'last_name': 'the Grey',
-    'email': 'gandalf@whitecouncil.com'
-  });
-
 
   // Create instance of our views
   var mainView = flour.getView('main', {});
