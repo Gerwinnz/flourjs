@@ -384,14 +384,27 @@ flour.validateFormData = function(form)
 					value.push($option.attr('value'));
 				}
 			});
+			
+			formData[name] = value;
 		}
 		else if($input[0].type === 'checkbox') 
 		{
 			var value = $input[0].checked ? true : false;
+			formData[name] = value;
+		}
+		else if($input[0].type === 'radio') 
+		{
+			//var value = $input[0].checked ? true : false;
+			if($input[0].checked)
+			{
+				var value = $input.val();
+				formData[name] = value;
+			}
 		}
 		else
 		{
 			var value = $input.val();	
+			formData[name] = value;
 		}
 
 
@@ -425,9 +438,6 @@ flour.validateFormData = function(form)
 				hasErrors = true;
 			}
 		}
-
-		// add value to form data
-		formData[name] = value;
 	});
 
 

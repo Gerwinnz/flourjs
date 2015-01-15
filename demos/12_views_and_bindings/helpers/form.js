@@ -18,6 +18,12 @@ flour.addHelper('form', function(){
       updateViewModel(view, event, el);
     };
 
+    view.events['click change  checkbox'] = function(event, el){
+      // updateViewModel(view, event, el);
+      console.log(el);
+      console.log(el.checked());
+    };
+
     view.on('render', function(){
       $inputs = view.find('input, select, textarea');
       
