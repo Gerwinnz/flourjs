@@ -32,6 +32,6 @@ flour.addView('main', function(){
   // on form submit
   view.save = function(event, el){
     event.preventDefault();
-  }
+  };
 
 });

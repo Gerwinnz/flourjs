@@ -128,7 +128,7 @@ flour.router = function(routes, basePath)
   // create reg ex
   self.getRegex = function(route)
   {
-    return route.replace(/:(\w+)/g, "([\\w-]+)");
+    return route.replace(/:(\w+)/g, "([\\w-\.]+)");
   };
 
 };

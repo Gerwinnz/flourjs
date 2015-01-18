@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flour.js - View</title>
+
+    <!-- Include jQuery and Handlebars -->
+    <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery-2.1.1.min.js"></script>
+    
+    <!-- Include flour.js -->
+    <script type="text/javascript" src="../../flourjs/flour.app.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.handlebars.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.helper.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.http.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.publish_subscribe.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.router.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.store.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.template.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+
+    <!-- Include our app scripts -->
+    <script type="text/javascript" src="views/nav.js"></script>
+    <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="views/page.js"></script>
+    <script type="text/javascript" src="views/settings.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/animate.css">
+
+    <!-- Include app css -->
+    <link rel="stylesheet" type="text/css" href="app.css">
+
+    <!-- Link to Raleway -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Mobile meta tag -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+
+    <!-- Main template -->
+    <script class="template" data-name="main" type="text/x-handlebars-template">
+      <div class="row">
+        <div class="three columns">
+          <ul>
+            <li><a class="nav-link" href="/index.html">Home</a></li>
+            <li><a class="nav-link" href="/index.html?first_name=Chip&last_name=Chipperson">Home + Extras</a></li>
+            <li><a class="nav-link" href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div id="app" class="nine columns">
+          
+        </div>
+      </div>
+    </script>
+
+    <!-- Page template -->
+    <script class="template" data-name="page" type="text/x-handlebars-template">
+      <h2>Page view</h2>
+      <p>Welcome to the page view. The <code>flour.app</code> has loaded this view and passed the following params to it.</p>
+      <pre><code>{{ data }}</code></pre>
+
+      <p>The route information stored in <code>flour.store.get('route')</code> is as follows.</p>
+      <pre><code>{{ route_data }}</code></pre>
+    </script>
+
+    <!-- Settings template -->
+    <script class="template" data-name="settings" type="text/x-handlebars-template">
+      <h2>Settings</h2>
+      <form method="" action="">
+        <div class="row">
+          <div class="twelve columns">
+            <label>First name</label>
+            <input type="text" name="first_name" value="{{ first_name }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="twelve columns">
+            <label>Last name</label>
+            <input type="text" name="last_name" value="{{ last_name }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="twelve columns">
+            <label>Email</label>
+            <input type="text" name="email" value="{{ email }}" class="u-full-width" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button type="submit" class="button button-primary">Save my details</button>
+        </div>
+      </form>
+    </script>
+
+    <!-- Nav templates -->
+    <script class="template" data-name="nav" type="text/x-handlebars-template">
+      <div class="nav">
+        <div class="app-name">Flour.js</div>
+        <div class="user-dropdown">
+          <div class="user-details">
+            <div class="avatar">
+              <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
+            </div>
+            <div class="name">{{ first_name}}</div>
+          </div>
+        </div>
+      </div>
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row intro">
+        <div class="twelve columns">
+          <h2>07 - App</h2>
+          <p>Note: This demo will only work if accessed via <code>http</code>. Place the flourjs directory into your localhost www or equivalent directory and access them through your localhost server. ie, <code>http://localhost/flourjs/demos/07_app/index.html</code> This demo is setup to use a .htaccess file to direct traffic to index.html always.</p>
+          <p>Here we have a main layout view that has created a <code>flour.app</code> instance and inserted it into the page.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="nav-view"></div>
+        <div id="main-view" class="twelve columns"></div>
+      </div>
+    </div>
+  </body>
+</html>

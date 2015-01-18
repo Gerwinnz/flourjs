@@ -1,0 +1,81 @@
+
+.intro{
+  padding: 40px 0px;
+}
+
+.flour-app,
+.flour-view{
+  position: relative;
+  padding: 20px;
+  border: solid 2px #eee;
+}
+
+.flour-app::before,
+.flour-view::before{
+  content: 'flour-view';
+  position: absolute;
+  top: -20px;
+  left: -2px;
+
+  background-color: #eee;
+  height: 20px;
+  padding: 0px 4px;
+
+  line-height: 20px;
+  color: #bbb;
+  font-size: 11px;
+}
+
+
+.flour-app{
+  border: solid 2px #BBDEFB;
+}
+
+.flour-app::before{
+  content: 'flour-app';
+  color: #fff;
+  background-color: #BBDEFB;
+}
+
+
+
+
+
+/* Styles for our top nav view */
+.nav{
+  height: 60px;
+  line-height: 60px;
+
+  color: #fff;
+  background-color: #33C3F0;
+}
+
+.nav .app-name{
+  float: left;
+  margin-left: 20px;
+}
+
+.nav .user-dropdown{
+  height: 60px;
+  padding: 0px 0px 0px 20px;
+  float: right;
+  border-left: solid 1px rgba(255, 255, 255, .1);
+}
+
+.user-dropdown .user-details{
+  float: left;
+}
+
+.user-dropdown .avatar{
+  float: right;
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 20px;
+  background-color: rgba(0,0,0,.1);
+  overflow: hidden;
+}
+
+.user-dropdown .name{
+  float: right;
+}
