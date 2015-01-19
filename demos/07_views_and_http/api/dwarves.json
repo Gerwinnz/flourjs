@@ -1,0 +1,43 @@
+{
+  "dwarves": [
+    {
+      "name": "Thorin"
+    },
+    {
+      "name": "Fili"
+    },
+    {
+      "name": "Kili"
+    },
+    {
+      "name": "Balin"
+    },
+    {
+      "name": "Dwalin"
+    },
+    {
+      "name": "Oin"
+    },
+    {
+      "name": "Gloin"
+    },
+    {
+      "name": "Dori"
+    },
+    {
+      "name": "Nori"
+    },
+    {
+      "name": "Ori"
+    },
+    {
+      "name": "Bifur"
+    },
+    {
+      "name": "Bofur"
+    },
+    {
+      "name": "Bombur"
+    }
+  ]
+}

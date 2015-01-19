@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flour.js - View</title>
+    <title>Flour.js - 07 - Views + HTTP</title>
 
     <!-- Include jQuery and Handlebars -->
     <script type="text/javascript" src="../../vendor/handlebars.js"></script>
@@ -21,10 +21,12 @@
     <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
 
     <!-- Include our app scripts -->
-    <script type="text/javascript" src="views/nav.js"></script>
+    <script type="text/javascript" src="helpers/pulldown_menu.js"></script>
+
+    <script type="text/javascript" src="views/confirm.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
-    <script type="text/javascript" src="views/page.js"></script>
-    <script type="text/javascript" src="views/settings.js"></script>
+    <script type="text/javascript" src="views/nav.js"></script>
+
     <script type="text/javascript" src="app.js"></script>
 
     <!-- Include skeleton css -->
@@ -42,73 +44,58 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
 
-    <!-- Main template -->
+    <!-- App templates -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
-      <div class="row">
-        <div class="three columns">
-          <ul>
-            <li><a class="nav-link" href="/index.html">Home</a></li>
-            <li><a class="nav-link" href="/index.html?first_name=Chip&last_name=Chipperson">Home + Extras</a></li>
-            <li><a class="nav-link" href="/settings">Settings</a></li>
-          </ul>
-        </div>
-        <div id="app" class="nine columns">
-          
+      <ul class="dwarves">
+        {{#dwarves}}
+          <li>
+            <div class="u-cf u-full-width">
+              <div class="pulldown">
+                <div class="pulldown-toggle pulldown-toggle-round"><div class="lines"></div></div>
+                <div class="pulldown-menu">
+                  <ul>
+                    <li><a class="edit-dwarf" data-index="{{ @index }}">Edit</a></li>
+                    <li><a class="delete-dwarf" data-index="{{ @index }}">Delete</a></li>
+                  </ul>
+                </div>
+              </div>
+              {{ name }}
+            </div>
+          </li>
+        {{else}}
+          <li>No more dwarves left :(</li>
+        {{/dwarves}}
+      </ul>
+    </script>
+
+    <!-- App templates -->
+    <script class="template" data-name="confirm" type="text/x-handlebars-template">
+      <div class="confirm-outer"></div>
+      <div class="confirm animated fast fadeInUp">
+        <div class="confirm-inner">
+          <div class="message">{{ message }}</div>
+          <button class="button confirm-no">No</button>
+          <button class="button-primary confirm-yes">Yes</button>
         </div>
       </div>
     </script>
 
-    <!-- Page template -->
-    <script class="template" data-name="page" type="text/x-handlebars-template">
-      <h2>Page view</h2>
-      <p>Welcome to the page view. The <code>flour.app</code> has loaded this view and passed the following params to it.</p>
-      <pre><code>{{ data }}</code></pre>
-
-      <p>The route information stored in <code>flour.store.get('route')</code> is as follows.</p>
-      <pre><code>{{ route_data }}</code></pre>
-    </script>
-
-    <!-- Settings template -->
-    <script class="template" data-name="settings" type="text/x-handlebars-template">
-      <h2>Settings</h2>
-      <form method="" action="">
-        <div class="row">
-          <div class="twelve columns">
-            <label>First name</label>
-            <input type="text" name="first_name" value="{{ first_name }}" class="u-full-width" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="twelve columns">
-            <label>Last name</label>
-            <input type="text" name="last_name" value="{{ last_name }}" class="u-full-width" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="twelve columns">
-            <label>Email</label>
-            <input type="text" name="email" value="{{ email }}" class="u-full-width" />
-          </div>
-        </div>
-
-        <div class="row">
-          <button type="submit" class="button button-primary">Save my details</button>
-        </div>
-      </form>
-    </script>
-
-    <!-- Nav templates -->
+    <!-- App templates -->
     <script class="template" data-name="nav" type="text/x-handlebars-template">
       <div class="nav">
         <div class="app-name">Flour.js</div>
-        <div class="user-dropdown">
-          <div class="user-details">
+        <div class="user-dropdown pulldown">
+          <div class="user-details pulldown-toggle">
             <div class="avatar">
               <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
             </div>
             <div class="name">{{ first_name}}</div>
+          </div>
+          <div class="pulldown-menu">
+            <ul>
+              <li><a href="">Account settings</a></li>
+              <li><a href="">Log out</a></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -119,9 +106,8 @@
     <div class="container">
       <div class="row intro">
         <div class="twelve columns">
-          <h2>07 - App</h2>
-          <p>Note: This demo will only work if accessed via <code>http</code>. Place the flourjs directory into your localhost www or equivalent directory and access them through your localhost server. ie, <code>http://localhost/flourjs/demos/07_app/index.html</code> This demo is setup to use a .htaccess file to direct traffic to index.html always.</p>
-          <p>Here we have a main layout view that has created a <code>flour.app</code> instance and inserted it into the page.</p>
+          <h2>07 - Views + HTTP</h2>
+          <p>In this demo we are loading the list of Dwarves from a json file on the server using flour's HTTP methods.</p>
         </div>
       </div>
 

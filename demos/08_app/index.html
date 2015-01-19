@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flour.js - 03 - Views + Store</title>
+    <title>Flour.js - 08 - App</title>
 
     <!-- Include jQuery and Handlebars -->
     <script type="text/javascript" src="../../vendor/handlebars.js"></script>
@@ -21,14 +21,15 @@
     <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
 
     <!-- Include our app scripts -->
-    <script type="text/javascript" src="views/nav.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
-    <script type="text/javascript" src="views/form.js"></script>
+    <script type="text/javascript" src="views/page.js"></script>
+    <script type="text/javascript" src="views/settings.js"></script>       
     <script type="text/javascript" src="app.js"></script>
 
     <!-- Include skeleton css -->
     <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
     <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/animate.css">
 
     <!-- Include app css -->
     <link rel="stylesheet" type="text/css" href="app.css">
@@ -40,31 +41,36 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
 
-    <!-- App templates -->
+    <!-- Main template -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
-      <div class="user-profile-card">
-        <div class="user-avatar">
-          <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=100x100" />
+      <div class="row">
+        <div class="three columns">
+          <ul>
+            <li><a class="nav-link" href="/index.html">Home</a></li>
+            <li><a class="nav-link" href="/index.html?first_name=Chip&last_name=Chipperson">Home + Get params</a></li>
+            <li><a class="nav-link" href="/page/extra_information">Page + Route extras</a></li>
+            <li><a class="nav-link" href="/settings">Settings</a></li>
+          </ul>
         </div>
-
-        <div class="user-details">
-          <div class="full-name">
-            <span class="first-name">
-              {{ first_name }}
-            </span>
-            <span class="last-name">
-              {{ last_name }}
-            </span>
-          </div>
-          <div class="email">
-            {{ email }}
-          </div>
+        <div id="app" class="nine columns">
+          
         </div>
       </div>
     </script>
 
-    <!-- App templates -->
-    <script class="template" data-name="form" type="text/x-handlebars-template">
+    <!-- Page template -->
+    <script class="template" data-name="page" type="text/x-handlebars-template">
+      <h2>Page view</h2>
+      <p>Welcome to the page view. The <code>flour.app</code> has loaded this view and passed the following params to it.</p>
+      <pre><code>{{ data }}</code></pre>
+
+      <p>The route information stored in <code>flour.store.get('route')</code> is as follows.</p>
+      <pre><code>{{ route_data }}</code></pre>
+    </script>
+
+    <!-- Settings template -->
+    <script class="template" data-name="settings" type="text/x-handlebars-template">
+      <h2>Settings</h2>
       <form method="" action="">
         <div class="row">
           <div class="twelve columns">
@@ -92,38 +98,20 @@
         </div>
       </form>
     </script>
-
-    <!-- App templates -->
-    <script class="template" data-name="nav" type="text/x-handlebars-template">
-      <div class="nav">
-        <div class="app-name">Flour.js</div>
-        <div class="user-dropdown">
-          <div class="user-details">
-            <div class="avatar">
-              <img src="http://robohash.org/{{ first_name}}-{{ last_name}}?size=40x40" />
-            </div>
-            <div class="name">{{ first_name}}</div>
-          </div>
-        </div>
-      </div>
-    </script>
   </head>
 
   <body>
     <div class="container">
       <div class="row intro">
         <div class="twelve columns">
-          <h2>03 - Views + Store</h2>
-          <p>In this example, there are three seperate <a href="http://flourjs.com/docs/view" target="_blank">views</a>. We use the <a href="http://flourjs.com/docs/store" target="_blank">store</a> to store our user information across the app. When we update the user data, our <a href="http://flourjs.com/docs/view" target="_blank">views</a> will subscribe to a <code>user:change</code> event, fired everytime our <code>user</code> details change.</p>
+          <h2>08 - App</h2>
+          <p>Note: This demo will only work if accessed via <code>http</code>. Place the flourjs directory into your localhost www or equivalent directory and access them through your localhost server. ie, <code>http://localhost/flourjs/demos/07_app/index.html</code> This demo is setup to use a .htaccess file to direct traffic to index.html always.</p>
+          <p>Here we have a main layout view that has created a <code>flour.app</code> instance and inserted it into the page.</p>
         </div>
       </div>
 
       <div class="row">
-        <div id="nav-view"></div>
-      </div>
-      <div class="row">
-        <div id="main-view" class="six columns"></div>
-        <div id="form-view" class="six columns"></div>
+        <div id="main-view" class="twelve columns"></div>
       </div>
     </div>
   </body>

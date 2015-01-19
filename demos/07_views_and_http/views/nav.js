@@ -5,6 +5,14 @@ flour.addView('nav', function(){
 
   view.template = 'nav';
 
+  view.helpers = [
+    'pulldown_menu'
+  ];
+
+  view.events = {
+
+  };
+
   view.init = function(params){
     var user = flour.store.get('user');
     view.set(user);

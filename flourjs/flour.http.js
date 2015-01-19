@@ -79,7 +79,7 @@ flour.request = {
 # HTTP class, returns a simple function that accepts data and callback options
 #
 */
-flour.http = function(url, method)
+flour.http = function(url, method, requestOptions)
 {
   if(method === undefined)
   {
@@ -116,6 +116,35 @@ flour.http = function(url, method)
   return function(data, options)
   {
     var parsedURL = parseURL(data, url);
-    flour.request.doRequest(parsedURL, data, options, method);
+
+    // create our request options
+    var request = {
+      url: parsedURL,
+      type: method,
+      data: data,
+
+      success: function(response, status)
+      {
+        if(options.silent !== true)
+        {
+          flour.publish('http-request:end');
+        }
+
+        flour.requestHandler(response, status, options);
+      }
+    };
+
+    // overide with custom $.ajax options
+    if(requestOptions !== undefined)
+    {
+      for(var option in requestOptions)
+      {
+        request[option] = requestOptions[option];
+      }
+    }
+
+    // do the request
+    $.ajax(request);
+
   };
 };

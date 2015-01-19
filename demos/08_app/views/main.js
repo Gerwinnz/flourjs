@@ -17,6 +17,10 @@ flour.addView('main', function(){
   view.init = function(params){
     myApp = flour.app('My Application', {
       routes: {
+        '/page/:page': {
+          'view': 'page', 
+          'extra': [1,2,3,4,5]
+        },
         '/settings': {view: 'settings'},
         '/:page': {view: 'page'}
       }
