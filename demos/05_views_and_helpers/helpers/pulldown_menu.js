@@ -18,7 +18,7 @@ flour.addHelper('pulldown_menu', function(){
 
     // add an event to our calling view
     view.events['click .pulldown-toggle'] = function(event, el){
-      
+
       // prevent this from propagating up to the document body
       event.preventDefault();
       event.stopPropagation();

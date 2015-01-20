@@ -10,7 +10,8 @@ flour.addView('main', function(){
   ];
 
   view.events = {
-    'click .delete-dwarf': 'deleteDwarf'
+    'click .delete-dwarf': 'deleteDwarf',
+    'click .get-dwarves': 'getDwarves'
   };
 
   // api calls
@@ -18,14 +19,18 @@ flour.addView('main', function(){
 
   // init
   view.init = function(params){
+    view.render();
+  };
+
+
+  // get dwarves
+  view.getDwarves = function(event, el){
     getDwarves({}, {
       success: function(response){
         view.set('dwarves', response.dwarves);
       }
     });
   };
-
-
 
   // delete a dwarf
   view.deleteDwarf = function(event, el){
