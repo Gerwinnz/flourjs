@@ -117,6 +117,12 @@ flour.http = function(url, method, requestOptions)
   {
     var parsedURL = parseURL(data, url);
 
+    // publish http
+    if(options.silent !== true)
+    {
+      flour.publish('http-request:start');
+    }
+
     // create our request options
     var request = {
       url: parsedURL,
