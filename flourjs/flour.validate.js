@@ -6,9 +6,9 @@ var flour = flour || {};
 
 
 /*
-#
-# Test module
-#
+|
+| Test module
+|
 */
 flour.test = {
 

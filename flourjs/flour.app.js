@@ -39,7 +39,7 @@ flour.app = function(appName, options)
 
     $target = $(event.currentTarget);
 
-    if($target.hasClass('classic'))
+    if($target.hasClass('classic') || $target.hasClass('ignore'))
     {
       event.stopPropagation();
       return;

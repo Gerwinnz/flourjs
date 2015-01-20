@@ -2,18 +2,18 @@
 var flour = flour || {};
 
 /*
-#
-# Store subsciption event callbacks here
-#
+|
+| Store subsciption event callbacks here
+|
 */
 flour.subscriptions = {};
 
 
 
 /*
-#
-# Publish events
-#
+|
+| Publish events
+|
 */
 flour.publish = function(eventName, data)
 {
@@ -31,9 +31,9 @@ flour.publish = function(eventName, data)
 
 
 /*
-#
-# Subscribe to an event
-#
+|
+| Subscribe to an event
+|
 */
 flour.subscribe = function(eventName, callback)
 {
@@ -50,9 +50,9 @@ flour.subscribe = function(eventName, callback)
 
 
 /*
-#
-# Unsubscribe from an event
-#
+|
+| Unsubscribe from an event
+|
 */
 flour.unsubscribe = function(eventName, callback)
 {

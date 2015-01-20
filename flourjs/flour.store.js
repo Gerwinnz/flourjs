@@ -3,9 +3,9 @@ var flour = flour || {};
 
 
 /*
-#
-# flour store, stores values used across a project
-#
+|
+| flour store, stores values used across a project
+|
 */
 flour.store = {
   

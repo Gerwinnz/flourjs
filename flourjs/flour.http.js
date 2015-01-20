@@ -3,9 +3,9 @@ var flour = flour || {};
 
 
 /*
-#
-# Default request handler
-#
+|
+| Default request handler
+|
 */
 flour.requestHandler = function(response, status, options)
 {
@@ -19,9 +19,9 @@ flour.requestHandler = function(response, status, options)
 
 
 /*
-#
-# Ajax request wrapper method
-#
+|
+| Ajax request wrapper method
+|
 */
 flour.request = {
   
@@ -75,9 +75,9 @@ flour.request = {
 
 
 /*
-#
-# HTTP class, returns a simple function that accepts data and callback options
-#
+|
+| HTTP class, returns a simple function that accepts data and callback options
+|
 */
 flour.http = function(url, method, requestOptions)
 {

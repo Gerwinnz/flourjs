@@ -5,9 +5,9 @@ var flour = flour || {};
 
 
 /*
-#
-#	Push state
-#
+|
+|	Push state
+|
 */
 flour.pushState = function(url, data, title)
 {
@@ -22,9 +22,9 @@ flour.pushState = function(url, data, title)
 
 
 /*
-#
-#	Returns true if passed param is an object, else false
-#
+|
+|	Returns true if passed param is an object, else false
+|
 */
 flour.isObject = function(obj)
 {
@@ -39,9 +39,9 @@ flour.isObject = function(obj)
 
 
 /*
-#
-#	Returns true if passed param is an array, else false
-#
+|
+|	Returns true if passed param is an array, else false
+|
 */
 flour.isArray = function(arr)
 {
@@ -55,9 +55,9 @@ flour.isArray = function(arr)
 
 
 /*
-#
-#	Returns true if passed param is an object, else false
-#
+|
+|	Returns true if passed param is an object, else false
+|
 */
 flour.isFunction = function(func) 
 {
@@ -68,9 +68,9 @@ flour.isFunction = function(func)
 
 
 /*
-#
-#	Returns true is passed param is a string, else false
-#
+|
+|	Returns true is passed param is a string, else false
+|
 */
 flour.isString = function(str)
 {
@@ -90,9 +90,9 @@ flour.isString = function(str)
 
 
 /*
-#
-#	Returns the string with an s if it's more than 1
-#
+|
+|	Returns the string with an s if it's more than 1
+|
 */
 flour.pluralize = function(string, number)
 {
@@ -103,9 +103,9 @@ flour.pluralize = function(string, number)
 
 
 /*
-#
-#	Converts a rgb to hex
-#
+|
+|	Converts a rgb to hex
+|
 */
 flour.rgb2hex = function(rgb)
 {
@@ -127,9 +127,9 @@ flour.rgb2hex = function(rgb)
 
 
 /*
-#
-#	Filter and return a readable file size format
-#
+|
+|	Filter and return a readable file size format
+|
 */
 flour.readableBytes = function(bytes) 
 {
@@ -144,9 +144,9 @@ flour.readableBytes = function(bytes)
 
 
 /*
-#
-#	Truncates a string
-#
+|
+|	Truncates a string
+|
 */
 flour.truncate = function(str, len)
 {	
@@ -167,9 +167,9 @@ flour.truncate = function(str, len)
 
 
 /*
-#
-#	Defer execution
-#
+|
+|	Defer execution
+|
 */
 flour.defer = function(callback)
 {
@@ -180,11 +180,11 @@ flour.defer = function(callback)
 
 
 /*
-#
-#	Map a string value to an object
-#
-# var re = /\[(['"\w]+)\]/g;
-#
+|
+|	Map a string value to an object
+|
+| var re = /\[(['"\w]+)\]/g;
+|
 */
 flour.setObjectKeyValue = function(object, key, value)
 {
@@ -233,9 +233,9 @@ flour.setObjectKeyValue = function(object, key, value)
 
 
 /*
-#
-#	Return an object value from a string key
-#
+|
+|	Return an object value from a string key
+|
 */
 flour.getObjectKeyValue = function(object, key)
 {
@@ -283,9 +283,9 @@ flour.getObjectKeyValue = function(object, key)
 
 
 /*
-#
-# Set flour app config vars : TODO
-#
+|
+| Set flour app config vars : TODO
+|
 */
 flour.configValues = {};
 
@@ -322,9 +322,9 @@ flour.config = function(param, value)
 
 
 /*
-#
-#	Generates a lookup hash table
-#
+|
+|	Generates a lookup hash table
+|
 */
 flour.generateLookup = function(data, key)
 {
@@ -350,9 +350,9 @@ flour.generateLookup = function(data, key)
 
 
 /*
-#
-#	Extracts and analysis a form submission, returns a formatted object with errors
-#
+|
+|	Extracts and analysis a form submission, returns a formatted object with errors
+|
 */
 flour.validateFormData = function(form)
 {
