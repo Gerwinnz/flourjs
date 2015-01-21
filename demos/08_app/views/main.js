@@ -22,7 +22,8 @@ flour.addView('main', function(){
           'extra': [1,2,3,4,5]
         },
         '/settings': {view: 'settings'},
-        '/:page': {view: 'page'}
+        '/:page': {view: 'page'},
+        '/': {view: 'page'}
       }
     });
 
