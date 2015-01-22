@@ -1,35 +1,4 @@
 
-.intro{
-  padding: 40px 0px;
-}
-
-.flour-view{
-  position: relative;
-  padding: 20px;
-  border: solid 2px #eee;
-}
-
-.flour-view::before{
-  content: 'flour-view';
-  position: absolute;
-  top: -20px;
-  left: -2px;
-
-  background-color: #eee;
-  height: 20px;
-  padding: 0px 4px;
-
-  line-height: 20px;
-  color: #bbb;
-  font-size: 11px;
-}
-
-
-
-
-
-
-
 /* Styles for our list */
 .dwarves{
   list-style: none;

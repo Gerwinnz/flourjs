@@ -1,0 +1,13 @@
+
+.delete-to-do{
+  float: right;
+  display: none;
+}
+
+.is-done .task{
+  text-decoration: line-through;
+}
+
+.is-done .delete-to-do{
+  display: block;
+}

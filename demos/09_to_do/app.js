@@ -9,16 +9,8 @@ $(function(){
 
 
   // Set base url - required when using the app
-  var baseURL = document.URL.replace(/08_app.+/, '08_app');
-  flour.config('base_url', baseURL);
-
-
-  // Set our default user info
-  flour.store.set('user', {
-    'first_name': 'Gandalf',
-    'last_name': 'the Grey',
-    'email': 'gandalf@whitecouncil.com'
-  });
+  // var baseURL = document.URL.replace(/09_to_do.+/, '09_to_do');
+  // flour.config('base_url', baseURL);
 
 
   // Create instance of our views

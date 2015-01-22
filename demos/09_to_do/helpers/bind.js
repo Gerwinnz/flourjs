@@ -20,31 +20,55 @@ flour.addHelper('bind', function(){
   helper.init = function(view){
 
     var $boundElements = [];
+    var $changesListeners = [];
 
     view.on('render', function(){
+      console.log('binding helper!');
       $boundElements = view.find('.bind');
 
       $boundElements.each(function(index, el){
         var $el = $(el);
         var type = $el[0].nodeName;
 
+        //
         // Attach events to inputs and form elements
+        //
         if(type === 'INPUT' || type === 'TEXTAREA'){
-          $el.on('keypress change keyup', function(event){
-            var model = $el.data('model');
-            view.set(model, $el.val(), false);
-          });
+          var inputType = $el[0].type;
+
+          if(inputType === 'checkbox'){
+            $el.on('change', function(event){             
+              var val = ($el.prop('checked'));
+              var model = $el.attr(bindingPrefix + '-model');
+              view.set(model, val, false);
+            });
+          }else if(inputType === 'radio'){
+            $el.on('change', function(event){
+              var val = $el.val();
+              var model = $el.attr(bindingPrefix + '-model');
+              view.set(model, val, false);
+            });
+          }else{
+            $el.on('keypress change keyup', function(event){
+              var val = $el.val();
+              var model = $el.attr(bindingPrefix + '-model');
+              view.set(model, val, false);
+            });
+          }
         }
 
         if(type === 'SELECT'){
           $el.on('change', function(event){
-            var model = $el.data('model');
-            view.set(model, $el.val(), false);
+            var val = $el.val();
+            var model = $el.attr(bindingPrefix + '-model');
+            view.set(model, val, false);
           });
         }
         
 
+        //
         // Check for bindings
+        //
         for(var i = 0, n = bindersList.length; i < n; i ++){
           (function(){
 
@@ -74,12 +98,18 @@ flour.addHelper('bind', function(){
               });
 
               // first time
-              binders[bindingName]($el, view.get(binding));
+              var data = view.get(binding);
+              if(filter){
+                data = view[filter](data);
+              }
+              binders[bindingName]($el, data);
             }
 
           }());
         }
       });
+
+      console.log(view.eventListeners);
     });
 
   };
@@ -98,7 +128,7 @@ flour.addHelper('bind', function(){
   */
   var bindersList = [
     'html',
-    'val',
+    'model',
     'show',
     'hide',
     'text',
@@ -126,9 +156,22 @@ flour.addHelper('bind', function(){
     //
     //  
     //
-    'val': function($el, data){
-      if($el.val() !== data){
-        $el.val(data);
+    'model': function($el, data){
+      var $type = $el[0].nodeName;
+      var $inputType = $el[0].type;
+
+      if($inputType === 'checkbox'){
+        $el.prop('checked', data);
+
+      }else if($el.attr('type') === 'radio'){
+        if($el.val() === data){
+          $el.prop('checked', true);
+        }
+
+      }else{
+        if($el.val() !== data){
+          $el.val(data);
+        }
       }
     },
 

@@ -9,7 +9,7 @@ $(function(){
 
 
   // Set base url - required when using the app
-  var baseURL = document.URL.replace(/07_views_and_http\/.+/, '07_views_and_http');
+  var baseURL = document.URL.replace(/07_views_and_http.+/, '07_views_and_http');
   flour.config('base_url', baseURL);
 
 

@@ -27,9 +27,9 @@
     <script type="text/javascript" src="app.js"></script>
 
     <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/flour_demos.css">
     <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
     <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
-    <link rel="stylesheet" type="text/css" href="../../styles/animate.css">
 
     <!-- Include app css -->
     <link rel="stylesheet" type="text/css" href="app.css">
@@ -40,16 +40,15 @@
     <!-- Mobile meta tag -->
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
-
     <!-- Main template -->
     <script class="template" data-name="main" type="text/x-handlebars-template">
       <div class="row">
         <div class="three columns">
           <ul>
-            <li><a class="nav-link" href="/index.html">Home</a></li>
-            <li><a class="nav-link" href="/index.html?first_name=Chip&last_name=Chipperson">Home + Get params</a></li>
-            <li><a class="nav-link" href="/page/extra_information">Page + Route extras</a></li>
-            <li><a class="nav-link" href="/settings">Settings</a></li>
+            <li><a class="nav-link" href="{{{link_to 'index.html'}}}">Home</a></li>
+            <li><a class="nav-link" href="{{{link_to 'index.html?first_name=Chip&last_name=Chipperson'}}}">Home + Get params</a></li>
+            <li><a class="nav-link" href="{{{link_to 'page/extra_information'}}}">Page + Route extras</a></li>
+            <li><a class="nav-link" href="{{{link_to 'settings'}}}">Settings</a></li>
           </ul>
         </div>
         <div id="app" class="nine columns">

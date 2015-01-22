@@ -42,7 +42,7 @@ flour.addView('main', function(){
     event.stopPropagation();
     event.preventDefault();
 
-    flour.pushState(flour.config('base_url') + el.attr('href'));
+    flour.pushState(el.attr('href'));
   };
 
 });
