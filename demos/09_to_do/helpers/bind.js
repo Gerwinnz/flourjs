@@ -20,12 +20,19 @@ flour.addHelper('bind', function(){
   helper.init = function(view){
 
     var $boundElements = [];
-    var $changesListeners = [];
+    var listeners = [];
 
     view.on('render', function(){
-      console.log('binding helper!');
-      $boundElements = view.find('.bind');
+      
+      // Clear any previous listeners added
+      for(var i = 0, n = listeners.length; i < n; i ++){
+        var listener = listeners[i];
+        view.off(listener.eventName, listener.eventCallback);
+      }
 
+
+      // Fetch our elements with bind class
+      $boundElements = view.find('.bind');
       $boundElements.each(function(index, el){
         var $el = $(el);
         var type = $el[0].nodeName;
@@ -89,13 +96,21 @@ flour.addHelper('bind', function(){
               }
 
               // on model change
-              view.on('model.' + binding + ':change', function(data){
+              var changeEvent = 'model.' + binding + ':change';
+              var onChangeCallback = function(data){
                 if(filter){
                   data = view[filter](data);
                 }
 
                 binders[bindingName]($el, data);
+              };
+
+              listeners.push({
+                'eventName': changeEvent,
+                'eventCallback': onChangeCallback
               });
+
+              view.on(changeEvent, onChangeCallback);
 
               // first time
               var data = view.get(binding);
