@@ -17,44 +17,79 @@ flour.list = function(items, options)
   // Self keyword
   var self = this;
 
-  // Privates
+
+
+
+  // Private vars
   var list = [];
   var lookup = {};
   var lookupKey = options.lookupKey === undefined ? false : options.lookupKey;
   var template = options.template === undefined ? '' : options.template;
+  var itemClass = options.itemClass === undefined ? '' : options.itemClass;
+
+  // Public vars
+  self.el = options.wrapElType ? $('<' + options.wrapElType + ' class="flour-list"></' + options.wrapElType + '>') : $('<div class="flour-list"></div>');
 
 
-  // itterates our items and creates a lookup
+
+
+
+  /*
+  |
+  | itterates our items and creates a lookup
+  |
+  */ 
   var generateLookup = function()
   {
     lookup = {};
 
     if(!lookupKey)
     {
+      for(var i = 0, n = list.length; i < n; i ++)
+      {
+        var item = list[i].data;
+        item['@index'] = i;
+      }
       return;
     }
 
-    for(var i = 0, n = list.length; i ++; i < n)
+    for(var i = 0, n = list.length; i < n; i ++)
     {
       var item = list[i].data;
+      item['@index'] = i;
       lookup[item[lookupKey]] = i;
     }
   };
 
-  // returns item from lookup
+  // var addToLookup = function()
+  // {
+
+  // }
+
+
+
+  /*
+  |
+  | returns item from lookup
+  |
+  */
   var getItem = function(id)
+  {
+    return list[getItemIndex(id)];
+  }
+
+  var getItemIndex = function(id)
   {
     if(!lookupKey)
     {
-      return list[id];
+      return id;
     }
 
-    return list[lookup[id]];
+    return lookup[id];
   }
 
 
-  // Publics
-  self.el = options.wrapElType ? $('<' + options.wrapElType + ' class="flour-list"></' + options.wrapElType + '>') : $('<div class="flour-list"></div>');
+  
 
 
   /*
@@ -65,10 +100,7 @@ flour.list = function(items, options)
   self.init = function()
   {
     // add items to list
-    for(var i = 0, n = items.length; i < n; i ++)
-    {
-      self.add(items[i]);
-    }
+    self.add(items);
   }
 
 
@@ -80,16 +112,34 @@ flour.list = function(items, options)
   */
   self.add = function(item, index)
   {
-    var el = $('<div>');
-    el.html(flour.getTemplate(template)(item));
+    var createItem = function(item){
+      
+      var el = $('<div>');
+      el.attr('class', itemClass);
+      el.html(flour.getTemplate(template)(item));
+      //var el = $(flour.getTemplate(template)(item));
 
-    var newItem = {
-      data: item,
-      el: el
+      var newItem = {
+        data: item,
+        el: el
+      }
+
+      list.push(newItem);
+      self.el.append(el);
+    }
+    
+    if(flour.isArray(item))
+    {
+      for(var i = 0, n = item.length; i < n; i ++)
+      {
+        createItem(items[i]);
+      }
+    }
+    else
+    {
+      createItem(item);
     }
 
-    list.push(newItem);
-    self.el.append(el);
     generateLookup();
   }
 
@@ -102,7 +152,14 @@ flour.list = function(items, options)
   */
   self.remove = function(index)
   {
+    var index = getItemIndex(index);
+    var item = list[index];
+    
+    item.el.remove();
+    item.data = null;
 
+    list.splice(index, 1);
+    generateLookup();
   }
 
 
@@ -114,7 +171,23 @@ flour.list = function(items, options)
   */
   self.update = function(index, key, value)
   {
+    var item = getItem(index);
+    var data = item.data;
 
+    flour.setObjectKeyValue(data, key, value);
+    self.renderItem(index);
+  }
+
+
+  /*
+  |
+  | Render item
+  |
+  */
+  self.renderItem = function(index)
+  {
+    var item = getItem(index);
+    item.el.html(flour.getTemplate(template)(item.data));
   }
 
 

@@ -10,6 +10,7 @@ flour.addView('main', function(){
   // events
   view.events = {
     'submit form': 'addTask',
+    'change .complete-to-do': 'completeTask',
     'click .delete-to-do': 'deleteTask'
   };
 
@@ -31,7 +32,9 @@ flour.addView('main', function(){
     }
 
     toDosList = new flour.list(toDos, {
-      template: 'to_do'
+      template: 'to_do',
+      lookupKey: 'id',
+      itemClass: 'to-do-item'
     });
 
     view.on('model.to_dos:change', function(toDos){
@@ -39,8 +42,6 @@ flour.addView('main', function(){
     });
 
     view.render();
-
-    console.log(toDosList);
   };
 
   // post render
@@ -74,14 +75,20 @@ flour.addView('main', function(){
   };
 
 
+  // mark a task as complete
+  view.completeTask = function(event, el)
+  {
+    var value = el.prop('checked');
+    var id = el.data('id');
+
+    toDosList.update(id, 'complete', value);
+  }
+
+
   // delete item
   view.deleteTask = function(event, el){
-    var toDos = view.get('to_dos');
-    var index = el.data('index');
-    var item = toDos[index];
-
-    toDos.splice(index, 1);
-    view.set('to_dos', toDos);
+    var id = el.data('id');
+    toDosList.remove(id);
   };
 
 });

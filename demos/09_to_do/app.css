@@ -1,19 +1,26 @@
 
 .delete-to-do{
   float: right;
-  display: none;
 }
 
 .is-done .task{
   text-decoration: line-through;
 }
 
-.is-done .delete-to-do{
-  display: block;
+
+.to-dos-list{
+
 }
 
+.to-dos-list .to-do-item{
+  margin-bottom: 10px;
+  line-height: 38px;
+  border-bottom: solid 1px #eee;
+}
 
-
+.to-dos-list .to-do-item:last-of-type{
+  border-bottom: 0;
+}
 
 
 .flour-list{

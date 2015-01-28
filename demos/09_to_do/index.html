@@ -59,10 +59,10 @@
     </script>
 
     <script class="template" data-name="to_do" type="text/x-handlebars-template">
-      <div class="u-cf u-full-width">
-        <button class="button delete-to-do">Delete</button>
-        <input type="checkbox" class="bind"/> 
-        <span class="task">{{task}}</span>
+      <div class="u-cf u-full-width {{#if complete}}is-done{{/if}}">
+        <button class="button delete-to-do" data-id="{{id}}">Delete</button>
+        <input class="complete-to-do" data-id="{{id}}" type="checkbox" {{#if complete}}checked="checked"{{/if}} /> 
+        <span class="task">{{id}}: {{task}}</span>
       </div>
     </script>
   </head>
