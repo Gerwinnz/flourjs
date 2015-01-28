@@ -19,6 +19,7 @@
     <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
     <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
     <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.list.js"></script>
 
     <!-- Include our app scripts -->
     <script type="text/javascript" src="helpers/bind.js"></script>
@@ -52,18 +53,16 @@
         </form>
       </div>
 
-      <div class="list row">
-        <ul>
-          {{#to_dos}}
-            <li class="u-cf u-full-width bind" flour-class="to_dos.{{@index}}.complete | listClass">
-              <button class="button delete-to-do" data-index={{@index}}>Delete</button>
-              <input type="checkbox" class="bind" flour-model="to_dos.{{@index}}.complete" /> 
-              <span class="task">{{task}}</span>
-            </li>
-          {{else}}
-            <li>None found!</li>
-          {{/to_dos}}
-        </ul>
+      <div class="to-dos-list row">
+        
+      </div>
+    </script>
+
+    <script class="template" data-name="to_do" type="text/x-handlebars-template">
+      <div class="u-cf u-full-width">
+        <button class="button delete-to-do">Delete</button>
+        <input type="checkbox" class="bind"/> 
+        <span class="task">{{task}}</span>
       </div>
     </script>
   </head>

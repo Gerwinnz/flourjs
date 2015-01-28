@@ -123,8 +123,6 @@ flour.addHelper('bind', function(){
           }());
         }
       });
-
-      console.log(view.eventListeners);
     });
 
   };

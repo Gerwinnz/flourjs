@@ -11,3 +11,12 @@
 .is-done .delete-to-do{
   display: block;
 }
+
+
+
+
+
+.flour-list{
+  padding: 20px;
+  border: solid 2px #e1bee7;
+}

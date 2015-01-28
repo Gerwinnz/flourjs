@@ -15,22 +15,37 @@ flour.addView('main', function(){
 
   view.helpers = ['bind'];
 
+  var toDosList = null;
+
 
   // init
   view.init = function(params){
     var toDos = localStorage.getItem('to_dos');
     view.set('task', '', false);
+    view.set('view', view, false);
 
     if(toDos === null){
-      view.set('to_dos', []);
+      toDos = [];
     }else{
       toDos = JSON.parse(toDos);
-      view.set('to_dos', toDos);
     }
+
+    toDosList = new flour.list(toDos, {
+      template: 'to_do'
+    });
 
     view.on('model.to_dos:change', function(toDos){
       localStorage.setItem('to_dos', JSON.stringify(toDos));
     });
+
+    view.render();
+
+    console.log(toDosList);
+  };
+
+  // post render
+  view.postRender = function(){
+    view.find('.to-dos-list').append(toDosList.el);
   };
 
   // define class
@@ -53,11 +68,9 @@ flour.addView('main', function(){
       'task': task
     };
 
-    var toDos = view.get('to_dos');
-    toDos.push(toDo);
-
     view.set('task', '', false);
-    view.set('to_dos', toDos);
+    
+    toDosList.add(toDo);
   };
 
 
