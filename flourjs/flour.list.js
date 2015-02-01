@@ -21,6 +21,7 @@ flour.list = function(items, options)
 
 
   // Private vars
+  var raw = items;
   var list = [];
   var lookup = {};
   var lookupKey = options.lookupKey === undefined ? false : options.lookupKey;
@@ -36,35 +37,54 @@ flour.list = function(items, options)
 
   /*
   |
+  | calls a callback method defined in options
+  |
+  */
+  var trigger = function(callback, data)
+  {
+    if(options[callback])
+    {
+      options[callback](data);
+    }
+  };
+
+
+
+
+
+  /*
+  |
   | itterates our items and creates a lookup
   |
   */ 
   var generateLookup = function()
   {
+    raw.length = 0;
     lookup = {};
 
     if(!lookupKey)
     {
       for(var i = 0, n = list.length; i < n; i ++)
       {
-        var item = list[i].data;
-        item['@index'] = i;
+        var itemData = list[i].data;
+        raw.push(itemData);
       }
+
+      trigger('onChange', raw);
       return;
     }
 
     for(var i = 0, n = list.length; i < n; i ++)
     {
-      var item = list[i].data;
-      item['@index'] = i;
-      lookup[item[lookupKey]] = i;
+      var itemData = list[i].data;
+      raw.push(itemData);
+      lookup[itemData[lookupKey]] = i;
     }
+
+    trigger('onChange', raw);
   };
 
-  // var addToLookup = function()
-  // {
 
-  // }
 
 
 
@@ -112,8 +132,27 @@ flour.list = function(items, options)
   */
   self.add = function(item, index)
   {
-    var createItem = function(item){
-      
+    var createItem = function(item)
+    {
+      // set item index and check in range
+      if(index === undefined)
+      {
+        item['index'] = list.length;
+      }
+      else
+      {
+        if(index > list.length)
+        {
+          index = undefined;
+          item['index'] = list.length;
+        }
+        else
+        {
+          item['index'] = index;
+        }
+      }
+
+      // create element with rendered html
       var el = $('<div>');
       el.attr('class', itemClass);
       el.html(flour.getTemplate(template)(item));
@@ -124,10 +163,39 @@ flour.list = function(items, options)
         el: el
       }
 
-      list.push(newItem);
-      self.el.append(el);
+      if(index === undefined)
+      {
+        // add to end of list
+        list.push(newItem);
+        self.el.append(el);
+      }
+      else
+      {
+        // add at specific spot
+        if(index > 0)
+        {
+          var item = list[index - 1];
+          list.splice(index, 0, newItem);
+          item.el.after(el);
+        }
+        else
+        {
+          list.splice(0, 0, newItem);
+          self.el.prepend(el);
+        }
+
+        // update all indexes on items > the one we removed
+        for(var i = (index + 1), n = list.length; i < n; i ++)
+        {
+          item = list[i];
+          var itemIndex = item.data.index;
+          self.updateItem(item, 'index', itemIndex + 1);
+        }
+      }
     }
     
+
+    // create all items if array
     if(flour.isArray(item))
     {
       for(var i = 0, n = item.length; i < n; i ++)
@@ -141,7 +209,7 @@ flour.list = function(items, options)
     }
 
     generateLookup();
-  }
+  };
 
 
 
@@ -157,10 +225,18 @@ flour.list = function(items, options)
     
     item.el.remove();
     item.data = null;
-
     list.splice(index, 1);
+
+    // update all indexes on items > the one we removed
+    for(var i = index, n = list.length; i < n; i ++)
+    {
+      item = list[i];
+      var itemIndex = item.data.index;
+      self.updateItem(item, 'index', itemIndex - 1);
+    }
+
     generateLookup();
-  }
+  };
 
 
 
@@ -172,11 +248,16 @@ flour.list = function(items, options)
   self.update = function(index, key, value)
   {
     var item = getItem(index);
-    var data = item.data;
+    self.updateItem(item, key, value);
+  };
 
+  self.updateItem = function(item, key, value)
+  {
+    var data = item.data;
     flour.setObjectKeyValue(data, key, value);
-    self.renderItem(index);
+    self.renderItem(item);
   }
+
 
 
   /*
@@ -184,11 +265,10 @@ flour.list = function(items, options)
   | Render item
   |
   */
-  self.renderItem = function(index)
+  self.renderItem = function(item)
   {
-    var item = getItem(index);
     item.el.html(flour.getTemplate(template)(item.data));
-  }
+  };
 
 
 

@@ -33,12 +33,12 @@ flour.addView('main', function(){
 
     toDosList = new flour.list(toDos, {
       template: 'to_do',
-      lookupKey: 'id',
-      itemClass: 'to-do-item'
-    });
+      itemClass: 'to-do-item',
 
-    view.on('model.to_dos:change', function(toDos){
-      localStorage.setItem('to_dos', JSON.stringify(toDos));
+      onChange: function(data)
+      {
+        localStorage.setItem('to_dos', JSON.stringify(data));
+      }
     });
 
     view.render();

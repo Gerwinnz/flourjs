@@ -21,9 +21,3 @@
 .to-dos-list .to-do-item:last-of-type{
   border-bottom: 0;
 }
-
-
-.flour-list{
-  padding: 20px;
-  border: solid 2px #e1bee7;
-}
