@@ -80,6 +80,9 @@ flour.baseView = function()
     // add events to our wrapper el
     self.addEvents();
 
+    // create bindings
+    flour.bindView(self);
+
     // init our view
     self.init(params);
   };

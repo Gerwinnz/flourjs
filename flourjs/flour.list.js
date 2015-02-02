@@ -14,10 +14,9 @@ flour.list = function(items, options)
     return new flour.list(items, options);
   }
 
+
   // Self keyword
   var self = this;
-
-
 
 
   // Private vars
@@ -27,6 +26,7 @@ flour.list = function(items, options)
   var lookupKey = options.lookupKey === undefined ? false : options.lookupKey;
   var template = options.template === undefined ? '' : options.template;
   var itemClass = options.itemClass === undefined ? '' : options.itemClass;
+
 
   // Public vars
   self.el = options.wrapElType ? $('<' + options.wrapElType + ' class="flour-list"></' + options.wrapElType + '>') : $('<div class="flour-list"></div>');
@@ -254,8 +254,10 @@ flour.list = function(items, options)
   self.updateItem = function(item, key, value)
   {
     var data = item.data;
-    flour.setObjectKeyValue(data, key, value);
+    var changedKey = flour.setObjectKeyValue(data, key, value);
+  
     self.renderItem(item);
+    trigger('onChange', raw);
   }
 
 

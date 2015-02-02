@@ -6,7 +6,6 @@ flour.addView('main', function(){
 
   view.template = 'main';
 
-
   // events
   view.events = {
     'submit form': 'addTask',
@@ -14,8 +13,8 @@ flour.addView('main', function(){
     'click .delete-to-do': 'deleteTask'
   };
 
-  view.helpers = ['bind'];
 
+  // privates
   var toDosList = null;
 
 
@@ -44,14 +43,10 @@ flour.addView('main', function(){
     view.render();
   };
 
+
   // post render
   view.postRender = function(){
     view.find('.to-dos-list').append(toDosList.el);
-  };
-
-  // define class
-  view.listClass = function(checked){
-    return checked ? 'is-done' : '';
   };
 
 
