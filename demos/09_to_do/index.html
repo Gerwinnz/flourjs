@@ -62,9 +62,12 @@
 
     <script class="template" data-name="to_do" type="text/x-handlebars-template">
       <div class="u-cf u-full-width {{#if complete}}is-done{{/if}}">
-        <button class="button delete-to-do" data-id="{{index}}">Delete {{index}}</button>
+        <button class="button delete-to-do" data-id="{{index}}">Delete</button>
+        <button class="button reset-to-do" data-id="{{index}}">Reset</button>
         <input class="complete-to-do" data-id="{{index}}" type="checkbox" {{#if complete}}checked="checked"{{/if}} /> 
         <span class="task">{{index}}: {{task}}</span>
+
+        <div class="task"><span flour-text="index"></span>: <span flour-html="task"></span></div>
       </div>
     </script>
   </head>

@@ -1,6 +1,8 @@
 
+.reset-to-do,
 .delete-to-do{
   float: right;
+  margin-left: 10px;
 }
 
 .is-done .task{

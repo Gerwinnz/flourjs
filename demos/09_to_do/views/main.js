@@ -10,7 +10,8 @@ flour.addView('main', function(){
   view.events = {
     'submit form': 'addTask',
     'change .complete-to-do': 'completeTask',
-    'click .delete-to-do': 'deleteTask'
+    'click .delete-to-do': 'deleteTask',
+    'click .reset-to-do': 'resetTask'
   };
 
 
@@ -71,11 +72,9 @@ flour.addView('main', function(){
 
 
   // mark a task as complete
-  view.completeTask = function(event, el)
-  {
+  view.completeTask = function(event, el){
     var value = el.prop('checked');
     var id = el.data('id');
-
     toDosList.update(id, 'complete', value);
   }
 
@@ -85,5 +84,12 @@ flour.addView('main', function(){
     var id = el.data('id');
     toDosList.remove(id);
   };
+
+
+  // reset item
+  view.resetTask = function(event, el){
+    var id = el.data('id');
+    toDosList.update(id, 'task', 'Empty item.');
+  }
 
 });

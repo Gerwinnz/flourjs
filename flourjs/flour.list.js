@@ -26,10 +26,11 @@ flour.list = function(items, options)
   var lookupKey = options.lookupKey === undefined ? false : options.lookupKey;
   var template = options.template === undefined ? '' : options.template;
   var itemClass = options.itemClass === undefined ? '' : options.itemClass;
+  var wrapElType = options.wrapElType === undefined ? 'div' : options.wrapElType;
 
 
   // Public vars
-  self.el = options.wrapElType ? $('<' + options.wrapElType + ' class="flour-list"></' + options.wrapElType + '>') : $('<div class="flour-list"></div>');
+  self.el = $('<' + wrapElType + ' class="flour-list"></' + wrapElType + '>');
 
 
 
@@ -117,8 +118,11 @@ flour.list = function(items, options)
   | Initialise list
   |
   */
-  self.init = function()
+  var init = function()
   {
+    // create bindings
+    flour.bindList(self, template);
+
     // add items to list
     self.add(items);
   }
@@ -255,6 +259,8 @@ flour.list = function(items, options)
   {
     var data = item.data;
     var changedKey = flour.setObjectKeyValue(data, key, value);
+
+    console.log(changedKey);
   
     self.renderItem(item);
     trigger('onChange', raw);
@@ -275,6 +281,6 @@ flour.list = function(items, options)
 
 
   // Call init
-  self.init();
+  init();
 
 };

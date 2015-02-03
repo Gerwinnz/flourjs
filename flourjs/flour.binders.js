@@ -70,7 +70,8 @@ flour.addBinder('model',
       }
     }
 
-    if(type === 'SELECT'){
+    if(type === 'SELECT')
+    {
       $el.on('change', function(event)
       {
         var val = $el.val();
@@ -85,16 +86,21 @@ flour.addBinder('model',
     var $type = $el[0].nodeName;
     var $inputType = $el[0].type;
 
-    if($inputType === 'checkbox'){
+    if($inputType === 'checkbox')
+    {
       $el.prop('checked', data);
-
-    }else if($el.attr('type') === 'radio'){
-      if($el.val() === data){
+    }
+    else if($el.attr('type') === 'radio')
+    {
+      if($el.val() === data)
+      {
         $el.prop('checked', true);
       }
-
-    }else{
-      if($el.val() !== data){
+    }
+    else
+    {
+      if($el.val() !== data)
+      {
         $el.val(data);
       }
     }
@@ -111,9 +117,12 @@ flour.addBinder('show',
 {
   change: function($el, data)
   {
-    if(data){
+    if(data)
+    {
       $el.css('display', 'block');
-    }else{
+    }
+    else
+    {
       $el.css('display', 'none');
     }
   }
@@ -129,9 +138,12 @@ flour.addBinder('hide',
 {
   change: function($el, data)
   {
-    if(data){
+    if(data)
+    {
       $el.css('display', 'none');
-    }else{
+    }
+    else
+    {
       $el.css('display', 'block');
     }
   }
@@ -148,7 +160,8 @@ flour.addBinder('class',
   change: function($el, data)
   {
     var lastClass = $el.data('last-class');
-    if(lastClass){
+    if(lastClass)
+    {
       $el.removeClass(lastClass);
     }
 
