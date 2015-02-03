@@ -11,8 +11,6 @@ flour.bind = {};
 
 flour.bind.binders = {};
 
-flour.bind.list = [];
-
 flour.bind.prefix = 'flour';
 
 
@@ -25,7 +23,6 @@ flour.bind.prefix = 'flour';
 flour.addBinder = function(name, methods)
 {
   flour.bind.binders[name] = methods;
-  flour.bind.list.push(name);
 };
 
 
@@ -38,7 +35,7 @@ flour.addBinder = function(name, methods)
 */
 flour.bindView = function(view)
 {
-  var $boundElements = [];
+  var $elements = [];
   var listeners = [];
   var bindingPrefix = flour.bind.prefix;
 
@@ -53,30 +50,31 @@ flour.bindView = function(view)
     }
 
     // Find elements matching our binders
-    for(var i = 0, n = flour.bind.list.length; i < n; i ++)
+    for(var bindingName in flour.bind.binders)
     {
       (function(){
 
-        var bindingName = flour.bind.list[i];
-        var bindingAttribute = bindingPrefix + '-' + bindingName;
-        var $boundElements = view.find('[' + bindingAttribute + ']');
+        var methods = flour.bind.binders[bindingName];
+        var attribute = bindingPrefix + '-' + bindingName;
+        
+        $elements = view.find('[' + attribute + ']');
 
         //
         // Itterate over our bound elements
         //
-        $boundElements.each(function(index, el)
+        $elements.each(function(index, el)
         {
           var $el = $(el);
-          var binding = $el.attr(bindingAttribute);
+          var bindOn = $el.attr(attribute);
         
           //
           // Check for load
           //
-          if(flour.bind.binders[bindingName].load)
+          if(methods.load)
           {
-            flour.bind.binders[bindingName].load($el, function(value)
+            methods.load($el, function(value)
             {
-              view.set(binding, value, false);
+              view.set(bindOn, value, false);
             });
           }
 
