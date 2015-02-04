@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flour.js - 09 - To-Dos</title>
+    <title>Flour.js - 10 - List performance</title>
 
     <!-- Include jQuery and Handlebars -->
     <script type="text/javascript" src="../../vendor/handlebars.js"></script>
@@ -65,7 +65,7 @@
         <button class="button delete-to-do" data-id="{{id}}">Delete</button>
         <button class="button reset-to-do" data-id="{{id}}">Reset</button>
         <input class="complete-to-do" data-id="{{id}}" type="checkbox" {{#if complete}}checked="checked"{{/if}} /> 
-        <span class="task"><span flour-html="id"></span>: <span flour-html="task"></span></span>
+        <span class="task">{{ id }}: {{ task }}</span>
       </div>
     </script>
   </head>
@@ -74,7 +74,7 @@
     <div class="container">
       <div class="row intro">
         <div class="twelve columns">
-          <h2>09 - To-dos</h2>
+          <h2>10 - List performance</h2>
           <p></p>
         </div>
       </div>

@@ -83,6 +83,8 @@ flour.list = function(items, options)
       lookup[itemData[lookupKey]] = i;
     }
 
+    console.log('gen lookup');
+
     trigger('onChange', raw);
   };
 
@@ -160,13 +162,14 @@ flour.list = function(items, options)
       // create element with rendered html
       var el = $('<div>');
       el.attr('class', itemClass);
-      el.html(flour.getTemplate(template)(item));
-      //var el = $(flour.getTemplate(template)(item));
+      //el.html(flour.getTemplate(template)(item));
 
       var newItem = {
         data: item,
         el: el
-      }
+      };
+
+      self.renderItem(newItem);
 
       if(index === undefined)
       {
@@ -259,9 +262,11 @@ flour.list = function(items, options)
   self.updateItem = function(item, key, value)
   {
     var data = item.data;
+    var doRender = true;
     var objectChain = flour.setObjectKeyValue(data, key, value);
   
-    // change events
+
+    // Check for bindings
     if(objectChain)
     {
       var len = objectChain.length;
@@ -270,18 +275,34 @@ flour.list = function(items, options)
         var bindingKey = objectChain.join('.');
         if(listeners[bindingKey] !== undefined)
         {
-          var value = 'a'; //self.get(bindingKey);
+          var value = flour.getObjectKeyValue(data, bindingKey);
+
           for(var i = 0, n = listeners[bindingKey].length; i < n; i ++)
           {
-            // update elements
-            console.log('update: ' + bindingKey);
+            var bindingInfo = listeners[bindingKey][i];
+            var options = flour.bind.binders[bindingInfo.name];
+            var $el = item.el.find(bindingInfo.selector);
+
+            console.log('updating ' + bindingInfo.selector + ' -> ' + value);
+
+            options.change($el, value);
+            doRender = false;
           }
-        }        
+        }
         objectChain.pop();
       }
     }
 
-    self.renderItem(item);
+    // if nothing was bound to that value, re-render?
+    if(doRender)
+    {
+      if(key !== 'index' && lookupKey)
+      {
+        self.renderItem(item);
+      }
+    }
+
+    // trigger callback
     trigger('onChange', raw);
   }
 
@@ -303,7 +324,6 @@ flour.list = function(items, options)
       name: bindingName,
       selector: elementSelector
     });
-    console.log(bindingName, bindOn, elementSelector);
   };
 
 
@@ -315,7 +335,23 @@ flour.list = function(items, options)
   */
   self.renderItem = function(item)
   {
+    console.log('render item');
+
     item.el.html(flour.getTemplate(template)(item.data));
+
+    // populate bound elements
+    for(var key in listeners)
+    {
+      var bindings = listeners[key];
+      for(var i = 0, n = bindings.length; i < n; i ++)
+      {
+        var bindingInfo = bindings[i];
+        var $el = item.el.find(bindingInfo.selector);
+        var value = flour.getObjectKeyValue(item.data, key);
+
+        flour.bind.binders[bindingInfo.name].change($el, value);
+      }
+    }
   };
 
 

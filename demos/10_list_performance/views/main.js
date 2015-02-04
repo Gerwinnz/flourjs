@@ -21,18 +21,13 @@ flour.addView('main', function(){
 
   // init
   view.init = function(params){
-    var toDos = localStorage.getItem('to_dos');
+    
+    var toDos = [];
+
     view.set('task', '', false);
     view.set('view', view, false);
 
-    if(toDos === null){
-      toDos = [];
-    }else{
-      toDos = JSON.parse(toDos);
-    }
-
-    for(var i = 0; i < 1000; i ++)
-    {
+    for(var i = 0; i < 1000; i ++){
       toDos.push({
         id: i,
         task: 'My task is number: ' + i

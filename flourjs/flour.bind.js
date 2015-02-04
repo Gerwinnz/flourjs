@@ -145,7 +145,6 @@ flour.bindList = function(list, template)
   var bindingPrefix = flour.bind.prefix;
 
 
-  console.log('bind list - - - - - - - - - - ');
   
   var $template = $(flour.getTemplate(template)({}));
 
@@ -176,6 +175,4 @@ flour.bindList = function(list, template)
 
     }());
   }
-
-  console.log('- - - - - - - - - - - - - - - ');
 }
