@@ -27,6 +27,7 @@ flour.list = function(items, options)
   var template = options.template === undefined ? '' : options.template;
   var itemClass = options.itemClass === undefined ? '' : options.itemClass;
   var wrapElType = options.wrapElType === undefined ? 'div' : options.wrapElType;
+  var listeners = {};
 
 
   // Public vars
@@ -258,13 +259,52 @@ flour.list = function(items, options)
   self.updateItem = function(item, key, value)
   {
     var data = item.data;
-    var changedKey = flour.setObjectKeyValue(data, key, value);
-
-    console.log(changedKey);
+    var objectChain = flour.setObjectKeyValue(data, key, value);
   
+    // change events
+    if(objectChain)
+    {
+      var len = objectChain.length;
+      for(var i = 0; i < len; i ++)
+      {
+        var bindingKey = objectChain.join('.');
+        if(listeners[bindingKey] !== undefined)
+        {
+          var value = 'a'; //self.get(bindingKey);
+          for(var i = 0, n = listeners[bindingKey].length; i < n; i ++)
+          {
+            // update elements
+            console.log('update: ' + bindingKey);
+          }
+        }        
+        objectChain.pop();
+      }
+    }
+
     self.renderItem(item);
     trigger('onChange', raw);
   }
+
+
+
+  /*
+  |
+  | Add a listener for a value change
+  |
+  */
+  self.addBinding = function(bindingName, bindOn, elementSelector)
+  {
+    if(listeners[bindOn] === undefined)
+    {
+      listeners[bindOn] = [];
+    }
+
+    listeners[bindOn].push({
+      name: bindingName,
+      selector: elementSelector
+    });
+    console.log(bindingName, bindOn, elementSelector);
+  };
 
 
 

@@ -149,8 +149,6 @@ flour.bindList = function(list, template)
   
   var $template = $(flour.getTemplate(template)({}));
 
-
-
   // Find elements matching our binders
   for(var bindingName in flour.bind.binders)
   {
@@ -161,18 +159,19 @@ flour.bindList = function(list, template)
       $elements.length = 0;
       $elements = $template.find('[' + attribute + ']');
 
-      console.log(bindingName + ': ' + $elements.length);
-
       $elements.each(function(index, el)
       {
         var $el = $(el);
         var bindOn = $el.attr(attribute);
         var filter = false;
+
+        bindOn = bindOn.replace(/\s/g, "");
+        var hasFilter = bindOn.indexOf('|') === -1 ? false : true;
       
         var bindOn = $el.attr(attribute);
         var updateSelector = '[' + attribute + '="' + bindOn + '"]';
 
-        
+        list.addBinding(bindingName, bindOn, updateSelector);
       });
 
     }());
