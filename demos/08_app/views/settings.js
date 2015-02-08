@@ -11,17 +11,13 @@ flour.addView('settings', function(){
 
   view.init = function(params){
     var user = flour.store.get('user');
-    view.set(user);
+    view.set('user', user);
   };
 
   // triggered by change event
   view.submit = function(event, el){
     event.preventDefault();
-
-    var formData = flour.validateFormData(el);
-    var user = formData.data;
-
-    flour.store.set('user', user);
+    flour.store.set('user', view.get('user'));
   };
 
 });

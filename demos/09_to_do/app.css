@@ -14,12 +14,16 @@
 
 }
 
-.to-dos-list .to-do-item{
+.to-do-item{
   margin-bottom: 10px;
   line-height: 38px;
   border-bottom: solid 1px #eee;
 }
 
-.to-dos-list .to-do-item:last-of-type{
+.to-do-item .task{
+  padding-left: 10px;
+}
+
+.to-do-item:last-of-type{
   border-bottom: 0;
 }

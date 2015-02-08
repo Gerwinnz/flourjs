@@ -10,46 +10,45 @@ flour.addView('main', function(){
   view.events = {
     'submit form': 'addTask',
     'change .complete-to-do': 'completeTask',
-    'click .delete-to-do': 'deleteTask',
-    'click .reset-to-do': 'resetTask'
+    'click .delete-to-do': 'deleteTask'
   };
 
 
   // privates
   var toDosList = null;
+  var id = 0;
 
 
   // init
   view.init = function(params){
     var toDos = localStorage.getItem('to_dos');
-    view.set('task', '', false);
-    view.set('view', view, false);
+    id = localStorage.getItem('id');
 
+    // set defaults
     if(toDos === null){
       toDos = [];
     }else{
       toDos = JSON.parse(toDos);
     }
 
-    for(var i = 0; i < 1000; i ++)
-    {
-      toDos.push({
-        id: i,
-        task: 'My task is number: ' + i
-      });
+    if(id === null){
+      id = 0;
     }
 
+    // create new flour.list
     toDosList = new flour.list(toDos, {
+      key: 'id',
       template: 'to_do',
       itemClass: 'to-do-item',
-      lookupKey: 'id',
 
-      onChange: function(data)
-      {
-        // localStorage.setItem('to_dos', JSON.stringify(data));
+      // save our data when it changes
+      onChange: function(data){
+        localStorage.setItem('to_dos', JSON.stringify(data));
       }
     });
 
+    // render our view
+    view.set('task', '', false);
     view.render();
   };
 
@@ -65,17 +64,24 @@ flour.addView('main', function(){
     event.preventDefault();
     var task = view.get('task');
 
+    // check for none blank task string
     if(task === ''){
       view.find('.new-input').focus();
       return;
     }
 
+    // create our task object
     var toDo = {
+      'id': id,
       'task': task
     };
 
+    // update locally stored unique id
+    id ++;
+    localStorage.setItem('id', id);
+
+    // clear input and insert item in list
     view.set('task', '', false);
-    
     toDosList.add(toDo);
   };
 
@@ -93,12 +99,5 @@ flour.addView('main', function(){
     var id = el.data('id');
     toDosList.remove(id);
   };
-
-
-  // reset item
-  view.resetTask = function(event, el){
-    var id = el.data('id');
-    toDosList.update(id, 'task', 'Empty item.');
-  }
 
 });

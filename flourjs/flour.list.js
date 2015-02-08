@@ -23,7 +23,7 @@ flour.list = function(items, options)
   var raw = items;
   var list = [];
   var lookup = {};
-  var lookupKey = options.lookupKey === undefined ? false : options.lookupKey;
+  var lookupKey = options.key === undefined ? false : options.key;
   var template = options.template === undefined ? '' : options.template;
   var itemClass = options.itemClass === undefined ? '' : options.itemClass;
   var wrapElType = options.wrapElType === undefined ? 'div' : options.wrapElType;

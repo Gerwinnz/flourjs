@@ -9,7 +9,7 @@ flour.addView('main', function(){
     'submit form': 'save'
   };
 
-  view.helpers = ['form'];
+  // view.helpers = ['form'];
 
 
   // init

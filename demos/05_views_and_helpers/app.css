@@ -250,8 +250,6 @@
 /* when open lines positions */
 .pulldown-toggle-round.open .lines{
   background: transparent;
-  transform: scale3d(0.8, 0.8, 0.8);
-  -webkit-transform: scale3d(0.8, 0.8, 0.8);
 }
 
 .pulldown-toggle-round.open .lines::before{
