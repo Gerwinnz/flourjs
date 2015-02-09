@@ -15,6 +15,7 @@ flour.addView('main', function(){
 
 
   // privates
+  var newList = null;
   var toDosList = null;
   var id = 0;
 
@@ -35,17 +36,25 @@ flour.addView('main', function(){
       id = 0;
     }
 
-    // create new flour.list
-    toDosList = new flour.list(toDos, {
-      key: 'id',
-      template: 'to_do',
-      itemClass: 'to-do-item',
-
-      // save our data when it changes
-      onChange: function(data){
-        localStorage.setItem('to_dos', JSON.stringify(data));
-      }
+    newList = flour.getList('to_dos', {
+      items: toDos
     });
+
+    newList.on('change', function(data){
+      console.log('change', data);
+    });
+
+    // create new flour.list
+    // toDosList = new flour.list(toDos, {
+    //   key: 'id',
+    //   template: 'to_do',
+    //   itemClass: 'to-do-item',
+
+    //   // save our data when it changes
+    //   onChange: function(data){
+    //     localStorage.setItem('to_dos', JSON.stringify(data));
+    //   }
+    // });
 
     // render our view
     view.set('task', '', false);
@@ -55,7 +64,7 @@ flour.addView('main', function(){
 
   // post render
   view.postRender = function(){
-    view.find('.to-dos-list').append(toDosList.el);
+    view.find('.to-dos-list').append(newList.el);
   };
 
 
@@ -82,7 +91,7 @@ flour.addView('main', function(){
 
     // clear input and insert item in list
     view.set('task', '', false);
-    toDosList.add(toDo);
+    newList.add(toDo);
   };
 
 
@@ -90,14 +99,14 @@ flour.addView('main', function(){
   view.completeTask = function(event, el){
     var value = el.prop('checked');
     var id = el.data('id');
-    toDosList.update(id, 'complete', value);
+    newList.update(id, 'complete', value);
   }
 
 
   // delete item
   view.deleteTask = function(event, el){
     var id = el.data('id');
-    toDosList.remove(id);
+    newList.remove(id);
   };
 
 });

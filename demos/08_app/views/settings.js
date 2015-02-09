@@ -10,8 +10,7 @@ flour.addView('settings', function(){
   };
 
   view.init = function(params){
-    var user = flour.store.get('user');
-    view.set('user', user);
+    view.set('user', flour.store.get('user'));
   };
 
   // triggered by change event
