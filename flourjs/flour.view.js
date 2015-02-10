@@ -72,6 +72,10 @@ flour.baseView = function()
   {
     var self = this;
 
+    // some view defaults
+    self.events = self.events ? self.events : {};
+
+    // view element container
     self.el = $('<div class="flour-view"></div>');
 
     // bring helpers into view name space

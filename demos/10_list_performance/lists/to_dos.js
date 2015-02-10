@@ -9,7 +9,8 @@ flour.addList('to_dos', function(){
   // events
   list.events = {
     'change .complete-to-do': 'completeTask',
-    'click .delete-to-do': 'deleteTask'
+    'click .delete-to-do': 'deleteTask',
+    'click .reset-to-do': 'resetTask'
   };
 
   // init
@@ -29,6 +30,13 @@ flour.addList('to_dos', function(){
   list.deleteTask = function(event, el){
     var id = el.data('id');
     list.remove(id);
+  };
+
+
+  // reset item
+  list.resetTask = function(event, el){
+    var id = el.data('id');
+    list.update(id, 'task', 'Empty item.');
   };
 
 });

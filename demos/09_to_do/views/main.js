@@ -2,59 +2,34 @@
 flour.addView('main', function(){
 
   var view = this;
-  var myApp = null;
 
   view.template = 'main';
 
   // events
   view.events = {
-    'submit form': 'addTask',
-    'change .complete-to-do': 'completeTask',
-    'click .delete-to-do': 'deleteTask'
+    'submit form': 'addTask'
   };
 
 
   // privates
-  var newList = null;
-  var toDosList = null;
   var id = 0;
+  var toDosList = null;
+  
 
 
   // init
   view.init = function(params){
-    var toDos = localStorage.getItem('to_dos');
-    id = localStorage.getItem('id');
+    
+    id = localStorage.getItem('id') === null ? 0 : localStorage.getItem('id');
+    var toDos = localStorage.getItem('to_dos') === null ? [] : JSON.parse(localStorage.getItem('to_dos'));
 
-    // set defaults
-    if(toDos === null){
-      toDos = [];
-    }else{
-      toDos = JSON.parse(toDos);
-    }
-
-    if(id === null){
-      id = 0;
-    }
-
-    newList = flour.getList('to_dos', {
+    toDosList = flour.getList('to_dos', {
       items: toDos
     });
 
-    newList.on('change', function(data){
-      console.log('change', data);
+    toDosList.on('change', function(data){
+      localStorage.setItem('to_dos', JSON.stringify(data));
     });
-
-    // create new flour.list
-    // toDosList = new flour.list(toDos, {
-    //   key: 'id',
-    //   template: 'to_do',
-    //   itemClass: 'to-do-item',
-
-    //   // save our data when it changes
-    //   onChange: function(data){
-    //     localStorage.setItem('to_dos', JSON.stringify(data));
-    //   }
-    // });
 
     // render our view
     view.set('task', '', false);
@@ -64,7 +39,7 @@ flour.addView('main', function(){
 
   // post render
   view.postRender = function(){
-    view.find('.to-dos-list').append(newList.el);
+    view.find('.to-dos-list').append(toDosList.el);
   };
 
 
@@ -91,22 +66,9 @@ flour.addView('main', function(){
 
     // clear input and insert item in list
     view.set('task', '', false);
-    newList.add(toDo);
+    view.find('.new-input').focus();
+    toDosList.add(toDo);
   };
 
-
-  // mark a task as complete
-  view.completeTask = function(event, el){
-    var value = el.prop('checked');
-    var id = el.data('id');
-    newList.update(id, 'complete', value);
-  }
-
-
-  // delete item
-  view.deleteTask = function(event, el){
-    var id = el.data('id');
-    newList.remove(id);
-  };
 
 });

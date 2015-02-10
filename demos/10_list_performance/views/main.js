@@ -8,14 +8,12 @@ flour.addView('main', function(){
 
   // events
   view.events = {
-    'submit form': 'addTask',
-    'change .complete-to-do': 'completeTask',
-    'click .delete-to-do': 'deleteTask',
-    'click .reset-to-do': 'resetTask'
+    'submit form': 'addTask'
   };
 
 
   // privates
+  totalItems = 2000;
   var toDosList = null;
 
 
@@ -25,24 +23,16 @@ flour.addView('main', function(){
     var toDos = [];
 
     view.set('task', '', false);
-    view.set('view', view, false);
 
-    for(var i = 0; i < 1000; i ++){
+    for(var i = 0; i < totalItems; i ++){
       toDos.push({
         id: i,
         task: 'My task is number: ' + i
       });
     }
 
-    toDosList = new flour.list(toDos, {
-      template: 'to_do',
-      itemClass: 'to-do-item',
-      lookupKey: 'id',
-
-      onChange: function(data)
-      {
-        // localStorage.setItem('to_dos', JSON.stringify(data));
-      }
+    toDosList = flour.getList('to_dos', {
+      items: toDos
     });
 
     view.render();
@@ -65,35 +55,20 @@ flour.addView('main', function(){
       return;
     }
 
+    // create our task object
     var toDo = {
+      'id': totalItems,
       'task': task
     };
 
+    // keep incrementing out id
+    totalItems ++;
+
+    // reset input
     view.set('task', '', false);
-    
+    view.find('.new-input').focus();
     toDosList.add(toDo);
   };
 
-
-  // mark a task as complete
-  view.completeTask = function(event, el){
-    var value = el.prop('checked');
-    var id = el.data('id');
-    toDosList.update(id, 'complete', value);
-  }
-
-
-  // delete item
-  view.deleteTask = function(event, el){
-    var id = el.data('id');
-    toDosList.remove(id);
-  };
-
-
-  // reset item
-  view.resetTask = function(event, el){
-    var id = el.data('id');
-    toDosList.update(id, 'task', 'Empty item.');
-  }
 
 });

@@ -36,7 +36,9 @@ flour.getList = function(name, params)
   
   // set these on the list
   list.eventListeners = {};
+  self.lookup = {};
   list.list = [];
+  list.raw = [];
   list.el = null;
 
   // init
@@ -64,8 +66,6 @@ flour.baseList = function()
   |
   */
   var self = this;
-
-  var raw = [];
   var itemClass = '';
 
   // var lookup = {};
@@ -85,8 +85,9 @@ flour.baseList = function()
   {
     var self = this;
 
-    // default key
+    // default vals
     self.key = self.key ? self.key : false;
+    self.events = self.events ? self.events : {};
 
     // our list el
     self.el = $('<div class="flour-list"></div>');
@@ -116,31 +117,31 @@ flour.baseList = function()
   {
     var self = this;
 
-    raw.length = 0;
-    lookup = {};
+    self.raw.length = 0;
+    self.lookup = {};
 
     if(!self.key)
     {
       for(var i = 0, n = self.list.length; i < n; i ++)
       {
         var itemData = self.list[i].data;
-        raw.push(itemData);
+        self.raw.push(itemData);
       }
 
-      self.trigger('change', raw);
+      self.trigger('change', self.raw);
       return;
     }
 
     for(var i = 0, n = self.list.length; i < n; i ++)
     {
       var itemData = self.list[i].data;
-      raw.push(itemData);
-      lookup[itemData[self.key]] = i;
+      self.raw.push(itemData);
+      self.lookup[itemData[self.key]] = i;
     }
 
-    console.log('gen lookup');
+    console.log('gen lookup', self.lookup);
 
-    self.trigger('change', raw);
+    self.trigger('change', self.raw);
   };
 
 
@@ -167,7 +168,7 @@ flour.baseList = function()
       return id;
     }
 
-    return lookup[id];
+    return self.lookup[id];
   }
 
 
@@ -254,29 +255,8 @@ flour.baseList = function()
   self.find = function(selector)
   {
     var self = this;
-
     return self.el.find(selector);
   };
-
-
-
-  /*
-  |
-  | Empties view el, inserts template - users self.template and self.model
-  |
-  */
-  self.render = function()
-  {
-  
-
-    // self.trigger('render');
-
-    // if(self.postRender !== undefined)
-    // {
-    //   self.postRender();
-    // }
-  };
-
 
 
 
@@ -345,13 +325,13 @@ flour.baseList = function()
           self.el.prepend(el);
         }
 
-        // update all indexes on items > the one we removed
-        for(var i = (index + 1), n = self.list.length; i < n; i ++)
-        {
-          item = self.list[i];
-          var itemIndex = item.data.index;
-          self.updateItem(item, 'index', itemIndex + 1);
-        }
+        // update all indexes on items > the one we added
+        // for(var i = (index + 1), n = self.list.length; i < n; i ++)
+        // {
+        //   item = self.list[i];
+        //   var itemIndex = item.data.index;
+        //   self.updateItem(item, 'index', itemIndex + 1);
+        // }
       }
     }
     
@@ -383,19 +363,19 @@ flour.baseList = function()
   {
     var self = this;
     var index = self.getItemIndex(index);
-    var item = list[index];
+    var item = self.list[index];
     
     item.el.remove();
     item.data = null;
-    list.splice(index, 1);
+    self.list.splice(index, 1);
 
     // update all indexes on items > the one we removed
-    for(var i = index, n = list.length; i < n; i ++)
-    {
-      item = list[i];
-      var itemIndex = item.data.index;
-      self.updateItem(item, 'index', itemIndex - 1);
-    }
+    // for(var i = index, n = self.list.length; i < n; i ++)
+    // {
+    //   item = self.list[i];
+    //   var itemIndex = item.data.index;
+    //   self.updateItem(item, 'index', itemIndex - 1);
+    // }
 
     self.generateLookup();
   };
@@ -417,9 +397,12 @@ flour.baseList = function()
   self.updateItem = function(item, key, value)
   {
     var self = this;
+
     var data = item.data;
     var doRender = true;
     var objectChain = flour.setObjectKeyValue(data, key, value);
+
+
   
 
     // Check for bindings
@@ -459,7 +442,7 @@ flour.baseList = function()
     }
 
     // trigger callback
-    self.trigger('change', raw);
+    self.trigger('change', self.raw);
   }
 
 
@@ -581,467 +564,3 @@ flour.baseList = function()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-flour.list = function(items, options)
-{
-  // Return an instance if the new keyword wasn't used
-  if (!(this instanceof flour.list)) 
-  {
-    return new flour.list(items, options);
-  }
-
-
-  // Self keyword
-  var self = this;
-
-
-  // Private vars
-  var raw = items;
-  var list = [];
-  var lookup = {};
-  var lookupKey = options.key === undefined ? false : options.key;
-  var template = options.template === undefined ? '' : options.template;
-  var itemClass = options.itemClass === undefined ? '' : options.itemClass;
-  var wrapElType = options.wrapElType === undefined ? 'div' : options.wrapElType;
-  var listeners = {};
-
-
-  // Public vars
-  self.el = $('<' + wrapElType + ' class="flour-list"></' + wrapElType + '>');
-
-
-
-
-
-  /*
-  |
-  | calls a callback method defined in options
-  |
-  */
-  var trigger = function(callback, data)
-  {
-    if(options[callback])
-    {
-      options[callback](data);
-    }
-  };
-
-
-
-
-
-  /*
-  |
-  | itterates our items and creates a lookup
-  |
-  */ 
-  var generateLookup = function()
-  {
-    raw.length = 0;
-    lookup = {};
-
-    if(!lookupKey)
-    {
-      for(var i = 0, n = list.length; i < n; i ++)
-      {
-        var itemData = list[i].data;
-        raw.push(itemData);
-      }
-
-      trigger('onChange', raw);
-      return;
-    }
-
-    for(var i = 0, n = list.length; i < n; i ++)
-    {
-      var itemData = list[i].data;
-      raw.push(itemData);
-      lookup[itemData[lookupKey]] = i;
-    }
-
-    console.log('gen lookup');
-
-    trigger('onChange', raw);
-  };
-
-
-
-
-
-  /*
-  |
-  | returns item from lookup
-  |
-  */
-  var getItem = function(id)
-  {
-    return list[getItemIndex(id)];
-  }
-
-  var getItemIndex = function(id)
-  {
-    if(!lookupKey)
-    {
-      return id;
-    }
-
-    return lookup[id];
-  }
-
-
-  
-
-
-  /*
-  |
-  | Initialise list
-  |
-  */
-  var init = function()
-  {
-    // create bindings
-    flour.bindList(self, template);
-
-    // add items to list
-    self.add(items);
-  }
-
-
-
-  /*
-  |
-  | Add an item to the list
-  |
-  */
-  self.add = function(item, index)
-  {
-    var createItem = function(item)
-    {
-      // set item index and check in range
-      if(index === undefined)
-      {
-        item['index'] = list.length;
-      }
-      else
-      {
-        if(index > list.length)
-        {
-          index = undefined;
-          item['index'] = list.length;
-        }
-        else
-        {
-          item['index'] = index;
-        }
-      }
-
-      // create element with rendered html
-      var el = $('<div>');
-      el.attr('class', itemClass);
-      //el.html(flour.getTemplate(template)(item));
-
-      var newItem = {
-        data: item,
-        el: el
-      };
-
-      self.renderItem(newItem);
-
-      if(index === undefined)
-      {
-        // add to end of list
-        list.push(newItem);
-        self.el.append(el);
-      }
-      else
-      {
-        // add at specific spot
-        if(index > 0)
-        {
-          var item = list[index - 1];
-          list.splice(index, 0, newItem);
-          item.el.after(el);
-        }
-        else
-        {
-          list.splice(0, 0, newItem);
-          self.el.prepend(el);
-        }
-
-        // update all indexes on items > the one we removed
-        for(var i = (index + 1), n = list.length; i < n; i ++)
-        {
-          item = list[i];
-          var itemIndex = item.data.index;
-          self.updateItem(item, 'index', itemIndex + 1);
-        }
-      }
-    }
-    
-
-    // create all items if array
-    if(flour.isArray(item))
-    {
-      for(var i = 0, n = item.length; i < n; i ++)
-      {
-        createItem(items[i]);
-      }
-    }
-    else
-    {
-      createItem(item);
-    }
-
-    generateLookup();
-  };
-
-
-
-  /*
-  |
-  | Remove an item from the list
-  |
-  */
-  self.remove = function(index)
-  {
-    var index = getItemIndex(index);
-    var item = list[index];
-    
-    item.el.remove();
-    item.data = null;
-    list.splice(index, 1);
-
-    // update all indexes on items > the one we removed
-    for(var i = index, n = list.length; i < n; i ++)
-    {
-      item = list[i];
-      var itemIndex = item.data.index;
-      self.updateItem(item, 'index', itemIndex - 1);
-    }
-
-    generateLookup();
-  };
-
-
-
-  /*
-  |
-  | Updates an item in the list
-  |
-  */
-  self.update = function(index, key, value)
-  {
-    var item = getItem(index);
-    self.updateItem(item, key, value);
-  };
-
-  self.updateItem = function(item, key, value)
-  {
-    var data = item.data;
-    var doRender = true;
-    var objectChain = flour.setObjectKeyValue(data, key, value);
-  
-
-    // Check for bindings
-    if(objectChain)
-    {
-      var len = objectChain.length;
-      for(var i = 0; i < len; i ++)
-      {
-        var bindingKey = objectChain.join('.');
-        if(listeners[bindingKey] !== undefined)
-        {
-          var value = flour.getObjectKeyValue(data, bindingKey);
-
-          for(var i = 0, n = listeners[bindingKey].length; i < n; i ++)
-          {
-            var bindingInfo = listeners[bindingKey][i];
-            var options = flour.bind.binders[bindingInfo.name];
-            var $el = item.el.find(bindingInfo.selector);
-
-            console.log('updating ' + bindingInfo.selector + ' -> ' + value);
-
-            options.change($el, value);
-            doRender = false;
-          }
-        }
-        objectChain.pop();
-      }
-    }
-
-    // if nothing was bound to that value, re-render?
-    if(doRender)
-    {
-      if(key !== 'index' && lookupKey)
-      {
-        self.renderItem(item);
-      }
-    }
-
-    // trigger callback
-    trigger('onChange', raw);
-  }
-
-
-
-  /*
-  |
-  | Add a listener for a value change
-  |
-  */
-  self.addBinding = function(bindingName, bindOn, elementSelector)
-  {
-    if(listeners[bindOn] === undefined)
-    {
-      listeners[bindOn] = [];
-    }
-
-    listeners[bindOn].push({
-      name: bindingName,
-      selector: elementSelector
-    });
-  };
-
-
-
-  /*
-  |
-  | Render item
-  |
-  */
-  self.renderItem = function(item)
-  {
-    console.log('render item');
-
-    item.el.html(flour.getTemplate(template)(item.data));
-
-    // populate bound elements
-    for(var key in listeners)
-    {
-      var bindings = listeners[key];
-      for(var i = 0, n = bindings.length; i < n; i ++)
-      {
-        var bindingInfo = bindings[i];
-        var $el = item.el.find(bindingInfo.selector);
-        var value = flour.getObjectKeyValue(item.data, key);
-
-        flour.bind.binders[bindingInfo.name].change($el, value);
-      }
-    }
-  };
-
-
-
-  // Call init
-  init();
-
-};
