@@ -66,14 +66,9 @@ flour.baseList = function()
   |
   */
   var self = this;
-  var itemClass = '';
+  
 
-  // var lookup = {};
-  // var lookupKey = false; //options.key === undefined ? false : options.key;
-  // var template = false; //options.template === undefined ? '' : options.template;
-  // var itemClass = false; //options.itemClass === undefined ? '' : options.itemClass;
-  // var wrapElType = false; //options.wrapElType === undefined ? 'div' : options.wrapElType;
-
+  
 
 
   /*
@@ -88,18 +83,19 @@ flour.baseList = function()
     // default vals
     self.key = self.key ? self.key : false;
     self.events = self.events ? self.events : {};
+    
+    self.itemElClass = self.itemElClass ? self.itemElClass : '';
+    self.itemElType = self.itemElType ? self.itemElType : 'div';
+    self.wrapElType = self.wrapElType ? self.wrapElType : 'div';
 
     // our list el
-    self.el = $('<div class="flour-list"></div>');
+    self.el = $('<' + self. wrapElType + ' class="flour-list"></' + self. wrapElType + '>');
 
     // bring helpers into view name space
     self.addHelpers();
 
     // add events to our wrapper el
     self.addEvents();
-
-    // add items
-    self.add(params.items);
 
     // init our view
     self.init(params);
@@ -293,8 +289,8 @@ flour.baseList = function()
       }
 
       // create element with rendered html
-      var el = $('<div>');
-      el.attr('class', itemClass);
+      var el = $('<' + self.itemElType + '>');
+      el.attr('class', self.itemElClass);
       //el.html(flour.getTemplate(template)(item));
 
       var newItem = {
@@ -457,7 +453,6 @@ flour.baseList = function()
   self.renderItem = function(item)
   {
     var self = this;
-    console.log('render item');
 
     item.el.html(flour.getTemplate(self.template)(item.data));
 

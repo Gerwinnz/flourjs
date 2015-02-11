@@ -15,7 +15,7 @@ flour.addList('to_dos', function(){
 
   // init
   list.init = function(params){
-    
+    list.add(params.items);
   };
 
   // mark a task as complete

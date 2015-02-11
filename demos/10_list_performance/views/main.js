@@ -13,7 +13,7 @@ flour.addView('main', function(){
 
 
   // privates
-  totalItems = 2000;
+  totalItems = 1000;
   var toDosList = null;
 
 
