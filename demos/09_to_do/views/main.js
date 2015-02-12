@@ -13,6 +13,7 @@ flour.addView('main', function(){
 
   // privates
   var id = 0;
+  var toDos = [];
   var toDosList = null;
   
 
@@ -20,10 +21,12 @@ flour.addView('main', function(){
   // init
   view.init = function(params){
     
+    // load values from local storage
     id = localStorage.getItem('id') === null ? 0 : localStorage.getItem('id');
-    var toDos = localStorage.getItem('to_dos') === null ? [] : JSON.parse(localStorage.getItem('to_dos'));
+    toDos = localStorage.getItem('to_dos') === null ? [] : JSON.parse(localStorage.getItem('to_dos'));
 
-    toDosList = flour.getList('to_dos', {
+    // create our list
+    toDosList = view.getList('to_dos', {
       items: toDos
     });
 
@@ -48,7 +51,7 @@ flour.addView('main', function(){
     event.preventDefault();
     var task = view.get('task');
 
-    // check for none blank task string
+    // check for empty task string
     if(task === ''){
       view.find('.new-input').focus();
       return;
@@ -69,6 +72,5 @@ flour.addView('main', function(){
     view.find('.new-input').focus();
     toDosList.add(toDo);
   };
-
 
 });

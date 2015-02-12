@@ -36,7 +36,9 @@ flour.getList = function(name, params)
   
   // set these on the list
   list.eventListeners = {};
-  self.lookup = {};
+  list.subscriptions = [];
+  list.lookup = {};
+  list.views = [];
   list.list = [];
   list.raw = [];
   list.el = null;
@@ -135,7 +137,6 @@ flour.baseList = function()
       self.lookup[itemData[self.key]] = i;
     }
 
-    console.log('gen lookup', self.lookup);
 
     self.trigger('change', self.raw);
   };
@@ -326,7 +327,7 @@ flour.baseList = function()
         // {
         //   item = self.list[i];
         //   var itemIndex = item.data.index;
-        //   self.updateItem(item, 'index', itemIndex + 1);
+        //   self.setItem(item, 'index', itemIndex + 1);
         // }
       }
     }
@@ -370,7 +371,7 @@ flour.baseList = function()
     // {
     //   item = self.list[i];
     //   var itemIndex = item.data.index;
-    //   self.updateItem(item, 'index', itemIndex - 1);
+    //   self.setItem(item, 'index', itemIndex - 1);
     // }
 
     self.generateLookup();
@@ -383,14 +384,14 @@ flour.baseList = function()
   | Updates an item in the list
   |
   */
-  self.update = function(index, key, value)
+  self.set = function(index, key, value)
   {
     var self = this;
     var item = self.getItem(index);
-    self.updateItem(item, key, value);
+    self.setItem(item, key, value);
   };
 
-  self.updateItem = function(item, key, value)
+  self.setItem = function(item, key, value)
   {
     var self = this;
 
@@ -418,7 +419,6 @@ flour.baseList = function()
     //         var options = flour.bind.binders[bindingInfo.name];
     //         var $el = item.el.find(bindingInfo.selector);
 
-    //         console.log('updating ' + bindingInfo.selector + ' -> ' + value);
 
     //         options.change($el, value);
     //         doRender = false;
@@ -439,7 +439,26 @@ flour.baseList = function()
 
     // trigger callback
     self.trigger('change', self.raw);
-  }
+  };
+
+
+
+
+
+
+  /*
+  |
+  | Return an item's value
+  |
+  */
+  self.get = function(index, key)
+  {
+    var self = this;
+    var item = self.getItem(index);
+    
+    return flour.getObjectKeyValue(item.data, key);
+  };
+
 
 
 
@@ -547,12 +566,101 @@ flour.baseList = function()
 
   /*
   |
+  | Subscribe to events, handled by view so subscriptions can be destroyed
+  |
+  */
+  self.subscribe = function(eventName, callback)
+  {
+    var self = this;
+    var subscription = flour.subscribe(eventName, callback);
+    
+    self.subscriptions.push(
+    {
+      eventName: eventName,
+      callback: callback
+    });
+  };
+
+
+
+
+
+  /*
+  |
+  | Gets a view and keeps a copy of it to destroy on 
+  |
+  */
+  self.getView = function(viewName, params)
+  {
+    var self = this;
+    var view = flour.getView(viewName, params);
+    self.views.push(view);
+
+    return view;
+  };
+
+
+
+
+  
+  /*
+  |
+  | Gets a list and keeps a copy of it to destroy on 
+  |
+  */
+  self.getList = function(listName, params)
+  {
+    var self = this;
+    var list = flour.getList(listName, params);
+    self.views.push(list);
+
+    return list;
+  };
+
+
+
+
+
+  /*
+  |
   | Destroy this view, remove events, subscriptions etc
   |
   */
   self.destroy = function()
   {
-    
+    var self = this;
+
+    // Trigger destroy event
+    self.trigger('destroy');
+
+    // Remove element events
+    self.el.off();
+
+    // Remove all subscriptions
+    for(var i = 0, n = self.subscriptions.length; i < n; i ++)
+    {
+      var subscription = self.subscriptions[i];
+      flour.unsubscribe(subscription.eventName, subscription.callback);
+    }
+
+    // Destroy all sub views created
+    for(var i = 0, n = self.views.length; i < n; i ++)
+    {
+      var view = self.views[i];
+      view.destroy();
+    }
+
+    // Remove all event listeners
+    for(var eventName in self.eventListeners)
+    {
+      self.eventListeners[eventName] = null;
+    }
+
+    // Call post destroy
+    if(self.postDestroy !== undefined)
+    {
+      self.postDestroy();
+    }
   };
 
 };

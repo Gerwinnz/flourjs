@@ -32,9 +32,9 @@ flour.getView = function(name, params)
   var view = new flour.views[name]();
   
   // set these on the view
-  view.model = {};
   view.eventListeners = {};
   view.subscriptions = [];
+  view.model = {};
   view.views = [];
   view.el = null;
 
@@ -394,6 +394,24 @@ flour.baseView = function()
     self.views.push(view);
 
     return view;
+  };
+
+
+
+
+
+  /*
+  |
+  | Gets a list and keeps a copy of it to destroy on 
+  |
+  */
+  self.getList = function(listName, params)
+  {
+    var self = this;
+    var list = flour.getList(listName, params);
+    self.views.push(list);
+
+    return list;
   };
 
 

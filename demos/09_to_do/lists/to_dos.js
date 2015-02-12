@@ -21,7 +21,7 @@ flour.addList('to_dos', function(){
   list.completeTask = function(event, el){
     var value = el.prop('checked');
     var id = el.data('id');
-    list.update(id, 'complete', value);
+    list.set(id, 'complete', value);
   };
 
 

@@ -34,7 +34,9 @@ flour.store = {
       return self.values;
     }
 
-    return flour.getObjectKeyValue(self.values, name);
+    var property = flour.getObjectKeyValue(self.values, name);
+
+    return flour.clone(property);
   }
 
 };
