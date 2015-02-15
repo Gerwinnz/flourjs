@@ -4,11 +4,11 @@ var flour = flour || {};
 
 
 //
-//  
+//  Sets passed elements innerHTML to the data
 //
 flour.addBinder('html', 
 {
-  change: function($el, data)
+  update: function($el, data)
   {
     $el.html(data);
   }
@@ -18,11 +18,11 @@ flour.addBinder('html',
 
 
 //
-//  
+//  Sets passed elements text to the data
 //
 flour.addBinder('text', 
 {
-  change: function($el, data)
+  update: function($el, data)
   {
     $el.text(data);
   }
@@ -32,11 +32,12 @@ flour.addBinder('text',
 
 
 //
-//  
+//  Sets the value of a form element to the data and also
+//  adds change event listeners and updates the model
 //
 flour.addBinder('model', 
 {
-  load: function($el, onChange)
+  attach: function($el, binding, view)
   {
     var type = $el[0].nodeName;
 
@@ -49,7 +50,7 @@ flour.addBinder('model',
         $el.on('change', function(event)
         {             
           var val = ($el.prop('checked'));
-          onChange(val);
+          view.set(binding, val, false);
         });
       }
       else if(inputType === 'radio')
@@ -57,7 +58,7 @@ flour.addBinder('model',
         $el.on('change', function(event)
         {
           var val = $el.val();
-          onChange(val);
+          view.set(binding, val, false);
         });
       }
       else
@@ -65,7 +66,7 @@ flour.addBinder('model',
         $el.on('keypress change keyup', function(event)
         {
           var val = $el.val();
-          onChange(val);
+          view.set(binding, val, false);
         });
       }
     }
@@ -75,13 +76,13 @@ flour.addBinder('model',
       $el.on('change', function(event)
       {
         var val = $el.val();
-        onChange(val);
+        view.set(binding, val, false);
       });
     }
   },
   
 
-  change: function($el, data)
+  update: function($el, data)
   {
     var $type = $el[0].nodeName;
     var $inputType = $el[0].type;
@@ -111,11 +112,11 @@ flour.addBinder('model',
 
 
 //
-//
+//  Shows and hides the passed element depending on the data
 //
 flour.addBinder('show', 
 {
-  change: function($el, data)
+  update: function($el, data)
   {
     if(data)
     {
@@ -132,11 +133,11 @@ flour.addBinder('show',
 
 
 //
-//
+//  Hides and shows the passed element depending on the data
 //
 flour.addBinder('hide', 
 {
-  change: function($el, data)
+  update: function($el, data)
   {
     if(data)
     {
@@ -153,11 +154,11 @@ flour.addBinder('hide',
 
 
 //
-//
+//  Straight up adds the class to the passed element from the data
 //
 flour.addBinder('class', 
 {
-  change: function($el, data)
+  update: function($el, data)
   {
     var lastClass = $el.data('last-class');
     if(lastClass)

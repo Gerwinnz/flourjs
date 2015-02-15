@@ -71,13 +71,11 @@ flour.bindView = function(view)
           //
           // Check for load
           //
-          if(options.load)
+          if(options.attach)
           {
-            options.load($el, function(value)
-            {
-              view.set(bindOn, value, false);
-            });
+            options.attach($el, bindOn, view);
           }
+
 
           //
           // Listen for changes to the bindOn value
@@ -102,25 +100,32 @@ flour.bindView = function(view)
               data = view[filter](data);
             }
 
-            options.change($el, data);
+            options.update($el, data);
           };
 
-          listeners.push({
-            'eventName': changeEvent,
-            'eventCallback': onChangeCallback
-          });
 
-          view.on(changeEvent, onChangeCallback);
-
-
-          // first time
-          var data = view.get(bindOn);
-          if(filter)
+          //
+          // Update element and listen for model changes
+          //
+          if(options.update)
           {
-            data = view[filter](data);
-          }
+            // listen to changes
+            listeners.push({
+              'eventName': changeEvent,
+              'eventCallback': onChangeCallback
+            });
 
-          options.change($el, data);
+            view.on(changeEvent, onChangeCallback);
+
+            // set initial
+            var data = view.get(bindOn);
+            if(filter)
+            {
+              data = view[filter](data);
+            }
+            
+            options.update($el, data);
+          }
 
         });
 
