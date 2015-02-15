@@ -215,6 +215,21 @@ flour.baseList = function()
   };
 
 
+  // self.addEvent = function(eventType, eventSelector, eventCallback)
+  // {
+  //   var self = this;
+    
+  //   if(flour.isFunction(eventCallback))
+  //   {
+  //     self.el.on(eventType, eventSelector, function(event)
+  //     {
+  //       var $target = $(event.currentTarget);
+  //       eventCallback(event, $target);
+  //     });
+  //   }
+  // };
+
+
 
 
   /*
@@ -339,6 +354,10 @@ flour.baseList = function()
       for(var i = 0, n = item.length; i < n; i ++)
       {
         createItem(item[i]);
+        if(index !== undefined)
+        {
+          index ++;
+        }
       }
     }
     else

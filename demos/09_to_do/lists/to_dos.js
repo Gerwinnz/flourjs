@@ -3,8 +3,11 @@ flour.addList('to_dos', function(){
 
   var list = this;
 
+
+  // required properties
   list.template = 'to_do';
   list.key = 'id';
+
 
   // events
   list.events = {
@@ -12,10 +15,12 @@ flour.addList('to_dos', function(){
     'click .delete-to-do': 'deleteTask'
   };
 
+
   // init
   list.init = function(params){
     list.add(params.items);
   };
+
 
   // mark a task as complete
   list.completeTask = function(event, el){
