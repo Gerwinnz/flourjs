@@ -35,7 +35,7 @@ flour.addBinder('text',
 //  Sets the value of a form element to the data and also
 //  adds change event listeners and updates the model
 //
-flour.addBinder('model', 
+flour.addBinder('value', 
 {
   attach: function($el, binding, view)
   {

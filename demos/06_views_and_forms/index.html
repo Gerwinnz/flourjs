@@ -51,15 +51,15 @@
           <form>
             <div class="row">
               <label>First name</label>
-              <input type="text" flour-model="user.first_name" class="u-full-width validate"/>
+              <input type="text" flour-value="user.first_name" class="u-full-width validate"/>
             </div>
             <div class="row">
               <label>Last name</label>
-              <input type="text" flour-model="user.last_name" class="u-full-width"/>
+              <input type="text" flour-value="user.last_name" class="u-full-width"/>
             </div>
             <div class="row">
               <label>Gender</label>
-              <select class="u-full-width" flour-model="user.gender">
+              <select class="u-full-width" flour-value="user.gender">
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
@@ -67,16 +67,16 @@
             </div>
             <div class="row">
               <label>Adventurer</label>
-              <input type="checkbox" flour-model="user.adventurer"/>
+              <input type="checkbox" flour-value="user.adventurer"/>
             </div>
             <div class="row">
               <label>Smokes</label>
-              <div><input type="radio" name="smoker" value="yes" flour-model="user.smokes"/> Yes</div>
-              <div><input type="radio" name="smoker" value="no" flour-model="user.smokes"/> No</div>
+              <div><input type="radio" name="smoker" value="yes" flour-value="user.smokes"/> Yes</div>
+              <div><input type="radio" name="smoker" value="no" flour-value="user.smokes"/> No</div>
             </div>
             <div class="row">
               <label>Description</label>
-              <textarea class="u-full-width" flour-model="user.description" rows="6"></textarea>
+              <textarea class="u-full-width" flour-value="user.description" rows="6"></textarea>
             </div>
             <div class="row">
               <button class="button button-primary reset-first-name">Save!</button>
@@ -96,7 +96,7 @@
       <div class="row intro">
         <div class="twelve columns">
           <h2>06 - Views + Forms</h2>
-          <p>Getting information from users is obviously important in web apps. In this demo, we're adding a <code>flour-model</code> attribute to our input elements. Flourjs will automatically update our <code>view.model</code> to contain the value of the input when it changes. Flourjs will also update the form elements to reflect changes in the model without requiring a whole <code>view.render</code>.</p>
+          <p>Getting information from users is obviously important in web apps. In this demo, we're using flour.js's basic bindings by adding a <code>flour-value</code> attribute to our input elements. Flour.js will automatically update our <code>view.model</code> to contain the value of the input when it changes. Flourjs will also update the form elements to reflect changes in the model without requiring a whole <code>view.render</code>.</p>
         </div>
       </div>
 
