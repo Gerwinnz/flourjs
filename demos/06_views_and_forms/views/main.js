@@ -9,15 +9,9 @@ flour.addView('main', function(){
     'submit form': 'save'
   };
 
-  // view.helpers = ['form'];
-
 
   // init
   view.init = function(params){
-    view.on('model.user:change', function(user){
-      view.find('#form-data').text(JSON.stringify(user, undefined, 2));
-    });
-
     view.set('user', {
       'first_name': 'Gandalf',
       'last_name': 'the Grey',

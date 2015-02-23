@@ -22,9 +22,10 @@
     <script type="text/javascript" src="../../flourjs/flour.list.js"></script>
     <script type="text/javascript" src="../../flourjs/flour.bind.js"></script>
     <script type="text/javascript" src="../../flourjs/flour.binders.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.filter.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.filters.js"></script>
 
     <!-- Include our app scripts -->
-    <script type="text/javascript" src="helpers/form.js"></script>
     <script type="text/javascript" src="views/main.js"></script>
     <script type="text/javascript" src="app.js"></script>
 
@@ -85,7 +86,7 @@
         </div>
 
         <div class="six columns">
-          <pre><code id="form-data">{}</code></pre>
+          <pre><code flour-text="user | json_format">{}</code></pre>
         </div>
       </div>
     </script>

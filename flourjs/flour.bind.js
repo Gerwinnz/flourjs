@@ -95,12 +95,27 @@ flour.bindView = function(view)
           var changeEvent = 'model.' + bindOn + ':change';
           var onChangeCallback = function(data)
           {
+            data = filterData(data);
+            options.update($el, data);
+          };
+
+
+          // filter
+          var filterData = function(data)
+          {
             if(filter)
             {
-              data = view[filter](data);
+              if(flour.filters[filter] !== undefined)
+              {
+                data = flour.filters[filter](data);
+              }
+              else if(view[filter] !== undefined)
+              {
+                data = view[filter](data);
+              }
             }
 
-            options.update($el, data);
+            return data;
           };
 
 
@@ -119,10 +134,7 @@ flour.bindView = function(view)
 
             // set initial
             var data = view.get(bindOn);
-            if(filter)
-            {
-              data = view[filter](data);
-            }
+            data = filterData(data);
             
             options.update($el, data);
           }
