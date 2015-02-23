@@ -53,7 +53,8 @@ flour.router = function(routes, basePath)
   {
     var bits = false;
     var params = {};
-    var getVariables = {};
+    var getVariables = [];
+    var hash = false;
 
     requestURL = document.URL;
 
@@ -66,9 +67,21 @@ flour.router = function(routes, basePath)
       requestURL = bits[0];
     }
 
+    // Pull out hash variables from the url
+    if(requestURL.indexOf('#') !== -1) 
+    {
+      bits = requestURL.split('#');
+      hash = bits[1];
+      requestURL = bits[0];
+    }
+
+
     var strippedRequestURL = requestURL.replace(flour.config('base_url') + basePath, '');
     var routeDetails = self.match(strippedRequestURL);
     routeDetails.requestURL = strippedRequestURL;
+
+    // add hash value
+    routeDetails.hash = hash;
 
     // add get vars to the params
     if(getVariables)
