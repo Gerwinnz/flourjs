@@ -67,6 +67,7 @@ flour.bindView = function(view)
           var $el = $(el);
           var bindOn = $el.attr(attribute);
           var filter = false;
+          var filterParams = undefined;
         
           //
           // Check for load
@@ -83,11 +84,29 @@ flour.bindView = function(view)
           bindOn = bindOn.replace(/\s/g, "");
           var hasFilter = bindOn.indexOf('|') === -1 ? false : true;
 
+          // Parse filter and filter params
           if(hasFilter)
           {
             var pieces = bindOn.split('|');
             bindOn = pieces[0];
             filter = pieces[1];
+
+            if(filter.indexOf(':') !== -1)
+            {
+              var pieces = filter.split(':');
+              filter = pieces[0];
+              filterParams = pieces[1];
+
+              var lastCharIndex = filterParams.length - 1;
+              if((filterParams[0] === '\'' || filterParams[0] === '"') && (filterParams[lastCharIndex] === '\'' || filterParams[lastCharIndex] === '"'))
+              {
+                filterParams = filterParams.substring(1, lastCharIndex);
+              }
+              
+              // {
+              //   filterParams = view.get(filterParams);
+              // }
+            }
           }
 
 
@@ -107,11 +126,11 @@ flour.bindView = function(view)
             {
               if(flour.filters[filter] !== undefined)
               {
-                data = flour.filters[filter](data);
+                data = flour.filters[filter](data, filterParams);
               }
               else if(view[filter] !== undefined)
               {
-                data = view[filter](data);
+                data = view[filter](data, filterParams);
               }
             }
 
