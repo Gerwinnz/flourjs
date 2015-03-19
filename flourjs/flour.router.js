@@ -74,6 +74,10 @@ flour.router = function(routes, basePath)
       hash = bits[1];
       requestURL = bits[0];
     }
+    else if(window.location.hash)
+    {
+      hash = window.location.hash.replace('#', '');
+    }
 
 
     var strippedRequestURL = requestURL.replace(flour.config('base_url') + basePath, '');
