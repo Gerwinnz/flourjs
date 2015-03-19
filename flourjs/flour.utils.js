@@ -263,7 +263,7 @@ flour.setObjectKeyValue = function(object, key, value)
 			}
 			else
 			{
-				if(objectPoint[nextPoint] === undefined)
+				if(!objectPoint[nextPoint])
 				{
 					objectPoint[nextPoint] = {};
 				}
@@ -314,7 +314,7 @@ flour.getObjectKeyValue = function(object, key)
 			}
 			else
 			{
-				if(objectPoint[nextPoint] === undefined)
+				if(!objectPoint[nextPoint])
 				{
 					return undefined;
 				}
