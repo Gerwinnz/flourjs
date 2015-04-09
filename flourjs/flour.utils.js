@@ -238,6 +238,11 @@ flour.defer = function(callback)
 */
 flour.setObjectKeyValue = function(object, key, value)
 {
+	if(!object || !key)
+	{
+		return;
+	}
+
 	// Create booleans
 	var hasFullstop = key.indexOf('.') === -1 ? false : true;
 	var hasSquareBrace = key.indexOf('[') === -1 ? false : true;
@@ -289,6 +294,11 @@ flour.setObjectKeyValue = function(object, key, value)
 */
 flour.getObjectKeyValue = function(object, key)
 {
+	if(!object || !key)
+	{
+		return;
+	}
+
 	// Create booleans
 	var hasFullstop = key.indexOf('.') === -1 ? false : true;
 	var hasSquareBrace = key.indexOf('[') === -1 ? false : true;
