@@ -115,6 +115,7 @@ flour.http = function(url, method, requestOptions)
   //
   return function(data, options)
   {
+    var data = flour.clone(data);
     var parsedURL = parseURL(data, url);
 
     // publish http
