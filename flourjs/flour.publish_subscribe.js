@@ -23,7 +23,10 @@ flour.publish = function(eventName, data)
   {
     for(var i = 0, n = subscriptions.length; i < n; i ++)
     {
-      subscriptions[i](data);
+      if(subscriptions[i])
+      {
+        subscriptions[i](data);
+      }
     }
   }
 };
