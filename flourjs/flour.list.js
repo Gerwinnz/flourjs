@@ -286,12 +286,6 @@ flour.baseList = function()
 
     var createItem = function(item)
     {
-      // check if this item already exists
-      if(self.lookup[item[self.key]] !== undefined)
-      {
-        return;
-      }
-
       // set item index and check in range
       if(index === undefined)
       {
@@ -372,6 +366,8 @@ flour.baseList = function()
     }
 
     self.generateLookup();
+
+    return index === undefined ? self.list.length : index;
   };
 
 
@@ -407,6 +403,44 @@ flour.baseList = function()
     }
 
     return false;
+  };
+
+
+
+  /*
+  |
+  | Move an item from one slot to the other
+  |
+  */
+  self.move = function(id, newIndex)
+  {
+    var self = this;
+    var item = self.getItem(id);
+    var oldIndex = self.getItemIndex(id);
+    var direction = oldIndex > newIndex ? 'up' : 'down';
+
+    // max out
+    if(newIndex > self.list.length)
+    {
+      newIndex = self.list.length;
+    }
+
+    // move the element
+    if(newIndex > 0)
+    {
+      // when moving down, use newIndex as the item still
+      // exists before the item you wish to append it after
+      var beforeItem = direction === 'up' ? self.list[newIndex - 1] : self.list[newIndex];
+      beforeItem.el.after(item.el);
+    }
+    else
+    {
+      self.el.prepend(item.el);
+    }
+
+    // move the item
+    self.list.splice(newIndex, 0, self.list.splice(oldIndex, 1)[0]);
+    self.generateLookup();
   };
 
 
