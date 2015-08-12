@@ -387,19 +387,26 @@ flour.baseList = function()
     var index = self.getItemIndex(index);
     var item = self.list[index];
     
-    item.el.remove();
-    item.data = null;
-    self.list.splice(index, 1);
+    if(item)
+    {
+      item.el.remove();
+      item.data = null;
+      self.list.splice(index, 1);
 
-    // update all indexes on items > the one we removed
-    // for(var i = index, n = self.list.length; i < n; i ++)
-    // {
-    //   item = self.list[i];
-    //   var itemIndex = item.data.index;
-    //   self.setItem(item, 'index', itemIndex - 1);
-    // }
+      // update all indexes on items > the one we removed
+      // for(var i = index, n = self.list.length; i < n; i ++)
+      // {
+      //   item = self.list[i];
+      //   var itemIndex = item.data.index;
+      //   self.setItem(item, 'index', itemIndex - 1);
+      // }
 
-    self.generateLookup();
+      self.generateLookup();
+
+      return index;
+    }
+
+    return false;
   };
 
 
