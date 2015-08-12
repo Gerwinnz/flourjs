@@ -286,6 +286,12 @@ flour.baseList = function()
 
     var createItem = function(item)
     {
+      // check if this item already exists
+      if(self.lookup[item[self.key]] !== undefined)
+      {
+        return;
+      }
+
       // set item index and check in range
       if(index === undefined)
       {
