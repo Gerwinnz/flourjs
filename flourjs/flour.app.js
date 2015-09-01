@@ -37,6 +37,11 @@ flour.app = function(appName, options)
       return;
     }
 
+    if(event.metaKey)
+    {
+      return;
+    }
+
     $target = $(event.currentTarget);
 
     if($target.hasClass('classic') || $target.hasClass('ignore'))
