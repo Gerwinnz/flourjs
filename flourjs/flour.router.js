@@ -125,7 +125,7 @@ flour.router = function(routes, basePath)
         for(var i = 0; i < routeSections.length; i ++)
         {
 
-          if(paramName = routeSections[i].match(/:([\w-]+)/))
+          if(paramName = routeSections[i].match(/:([\w-=]+)/))
           {
             params[paramName[1]] = routeValues[i];
           }
@@ -145,7 +145,7 @@ flour.router = function(routes, basePath)
   // create reg ex
   self.getRegex = function(route)
   {
-    return route.replace(/:(\w+)/g, "([\\w-\.]+)");
+    return route.replace(/:(\w+)/g, "([\\w-=\.]+)");
   };
 
 };
