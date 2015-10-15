@@ -30,10 +30,7 @@ flour.router = function(routes, basePath)
   */
   flour.subscribe('history:state_change', function(data)
   {
-    if(data.silent !== true)
-    {
-      self.matchCurrentRequest();
-    }
+    self.matchCurrentRequest(data);
   });
 
   window.addEventListener('popstate', function(e)
@@ -49,13 +46,24 @@ flour.router = function(routes, basePath)
   | Match the current request
   |
   */
-  self.matchCurrentRequest = function()
+  self.matchCurrentRequest = function(data)
   {
     var bits = false;
     var params = {};
     var getVariables = [];
     var hash = false;
+    
+    // define flag for publishing route change by silent 
+    var publish = true;
+    if(flour.isObject(data))
+    {
+      if(data.silent === true)
+      {
+        publish = false;
+      }
+    }
 
+    // fetch the request url
     requestURL = document.URL;
 
     // Pull out get variables from the url
@@ -97,7 +105,7 @@ flour.router = function(routes, basePath)
       }
     }
 
-    flour.store.set('route', routeDetails);
+    flour.store.set('route', routeDetails, publish);
   };
 
 
