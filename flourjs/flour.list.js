@@ -415,6 +415,28 @@ flour.baseList = function()
 
   /*
   |
+  | Remove all items from the list
+  |
+  */
+  self.removeAll = function()
+  {
+    var self = this;
+    
+    for(var i = 0, n = self.list.length; i < n; i ++)
+    {
+      var item = self.list[i];
+      item.el.remove();
+      item.data = null;
+    }
+
+    self.list.length = 0;
+    self.generateLookup();
+  };
+
+
+
+  /*
+  |
   | Move an item from one slot to the other
   |
   */
