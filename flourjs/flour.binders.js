@@ -171,3 +171,19 @@ flour.addBinder('class',
   }
 });
 
+
+
+
+//
+//  Injects an already created view into the passed element
+//
+flour.addBinder('view',
+{
+  attach: function($el, binding, view)
+  {
+    if(view[binding])
+    {
+      $el.append(view[binding].el);
+    }
+  }
+});
