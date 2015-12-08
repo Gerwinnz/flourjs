@@ -131,6 +131,23 @@ flour.addBinder('show',
 
 
 
+flour.addBinder('show-inline', 
+{
+  update: function($el, data)
+  {
+    if(data)
+    {
+      $el.css('display', 'inline');
+    }
+    else
+    {
+      $el.css('display', 'none');
+    }
+  }
+});
+
+
+
 
 //
 //  Hides and shows the passed element depending on the data
@@ -171,3 +188,19 @@ flour.addBinder('class',
   }
 });
 
+
+
+
+//
+//  Injects an already created view into the passed element
+//
+flour.addBinder('view',
+{
+  attach: function($el, binding, view)
+  {
+    if(view[binding])
+    {
+      $el.append(view[binding].el);
+    }
+  }
+});
