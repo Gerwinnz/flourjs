@@ -1,0 +1,29 @@
+
+.reset-to-do,
+.delete-to-do{
+  float: right;
+  margin-left: 10px;
+}
+
+.is-done .task{
+  text-decoration: line-through;
+}
+
+
+.to-dos-list{
+
+}
+
+.to-do-item{
+  margin-bottom: 10px;
+  line-height: 38px;
+  border-bottom: solid 1px #eee;
+}
+
+.to-do-item .task{
+  padding-left: 10px;
+}
+
+.to-do-item:last-of-type{
+  border-bottom: 0;
+}

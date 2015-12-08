@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flour.js - 09 - To-Dos</title>
+
+    <!-- Include jQuery and Handlebars -->
+    <script type="text/javascript" src="../../vendor/handlebars.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery-2.1.1.min.js"></script>
+    
+    <!-- Include flour.js -->
+    <script type="text/javascript" src="../../flourjs/flour.app.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.handlebars.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.helper.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.http.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.publish_subscribe.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.router.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.store.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.template.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.utils.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.validate.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.view.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.list.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.bind.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.binders.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.filter.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.filters.js"></script>
+    <script type="text/javascript" src="../../flourjs/flour.log.js"></script>
+
+    <!-- Include our app scripts -->
+    <script type="text/javascript" src="views/main.js"></script>
+    <script type="text/javascript" src="lists/to_dos.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <!-- Include skeleton css -->
+    <link rel="stylesheet" type="text/css" href="../../styles/flour_demos.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+
+    <!-- Include app css -->
+    <link rel="stylesheet" type="text/css" href="app.css">
+    <link rel="stylesheet" type="text/css" href="flour_log.css">
+
+    <!-- Link to Raleway -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Mobile meta tag -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+    <!-- Main template -->
+    <script class="template" data-name="main" type="text/x-handlebars-template">
+      <div class="add-to-do-wrap row">
+        <form>
+          <div class="ten columns">
+            <input type="text" class="u-full-width new-input" flour-value="task"/>
+          </div>
+          <div class="two columns">
+            <button class="button button-primary u-full-width">Add!</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="twelve columns to-dos-list"></div>
+      </div>
+    </script>
+
+    <script class="template" data-name="to_do" type="text/x-handlebars-template">
+      <div class="u-cf u-full-width {{#if complete}}is-done{{/if}}">
+        <button class="button delete-to-do" data-id="{{id}}">Delete</button>
+        <input class="complete-to-do" data-id="{{id}}" type="checkbox" {{#if complete}}checked="checked"{{/if}} /> 
+        <span class="task">{{ task }}</span>
+      </div>
+    </script>
+
+    <script class="template" data-name="flour_log" type="text/x-handlebars-template">
+      <div>Flour log</div>
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row intro">
+        <div class="twelve columns">
+          <h2>09 - To-dos</h2>
+          <p>This is a simple to-dos demo using a <code>flour.list</code> to display the items and a simple form for adding them. All the items and their state are stored in localstorage so they will persist.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="main-view" class="twelve columns"></div>
+      </div>
+    </div>
+  </body>
+</html>
