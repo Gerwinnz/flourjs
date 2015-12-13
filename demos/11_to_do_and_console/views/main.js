@@ -70,6 +70,10 @@ flour.addView('main', function(){
     // clear input and insert item in list
     view.set('task', '', false);
     view.find('.new-input').focus();
+
+    // console
+    flour.log(toDo);
+
     toDosList.add(toDo);
   };
 
