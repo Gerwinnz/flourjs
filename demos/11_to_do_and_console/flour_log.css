@@ -58,6 +58,20 @@
   transform-origin: right bottom;
 }
 
+.flour-log.close .flour-log-console{
+  -webkit-animation-name: closeConsole;
+  animation-name: closeConsole;
+
+  -webkit-animation-duration: 200ms;
+  animation-duration: 200ms;
+
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+
+  -webkit-transform-origin: right bottom;
+  transform-origin: right bottom;
+}
+
 
 
 
@@ -103,6 +117,14 @@
 
 .flour-log-pane{
   display: none;
+  position: absolute;
+  top: 46px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+
+  overflow: auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .flour-log-pane-active{
@@ -178,6 +200,7 @@
   font-size: 12px;
   font-family: monospace;
   overflow: hidden;
+  word-wrap: break-word;
 }
 
 
@@ -252,6 +275,40 @@
     transform: translate(0%, 0%);
   }
 }
+
+
+
+
+
+/*
+|
+| Close console
+|
+*/
+@-webkit-keyframes closeConsole {
+  0% {
+    opacity: 1;
+    transform: translate(0%, 0%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(50%, 0%);
+  }
+}
+
+@keyframes closeConsole {
+  0% {
+    opacity: 1;
+    transform: translate(0%, 0%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(50%, 0%);
+  }
+}
+
 
 
 

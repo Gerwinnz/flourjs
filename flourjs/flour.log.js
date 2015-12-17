@@ -131,7 +131,20 @@ flour.addView('flour_log', function()
 	//
 	view.toggleConsole = function()
 	{
-		view.el.toggleClass('open');
+		if(view.el.hasClass('open'))
+		{
+			view.el.addClass('close');
+			view.el.one('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function()
+      {
+        view.el.off('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd');
+        view.el.removeClass('open');
+        view.el.removeClass('close');
+      });
+		}
+		else
+		{
+			view.el.addClass('open');
+		}
 	};
 
 
