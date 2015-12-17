@@ -38,6 +38,9 @@ flour.getView = function(name, params)
   view.views = [];
   view.el = null;
 
+  // publish create event
+  flour.publish('flour:view_create', view.template);
+
   // init
   view.initialize(params);
 
@@ -459,6 +462,9 @@ flour.baseView = function()
       self.postDestroy();
     }
     
+    // publish destroy
+    flour.publish('flour:view_destroy');
+
     // console.log('destroy view');
   };
 

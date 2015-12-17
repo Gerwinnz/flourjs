@@ -9,20 +9,18 @@ var flour = flour || {};
 | ------------------------------------------------------------------------------------------------------------------------------
 */
 flour.addTemplate('flour_log', 
-	'<div class="flour-log">' + 
-	'  <div class="flour-log-toggle">Log</div>' + 
-	'  <div class="flour-log-console">' +
-	'		 <div class="flour-log-tabs">' +
-	'      <div class="flour-log-tab flour-log-tab-active" data-tab="console">Console</div>' + 
-	'      <div class="flour-log-tab" data-tab="views">Views <span class="flour-log-tab-stat" flour-text="view_count"></span></div>' + 
-	'      <div class="flour-log-tab" data-tab="store">Store</div>' + 
-	'    </div>' + 
+	'<div class="flour-log-toggle"></div>' + 
+	'<div class="flour-log-console">' +
+	'	 <div class="flour-log-tabs">' +
+	'    <div class="flour-log-tab flour-log-tab-active" data-tab="console">Console</div>' + 
+	'    <div class="flour-log-tab" data-tab="views">Views <span class="flour-log-tab-stat" flour-text="view_count"></span></div>' + 
+	'    <div class="flour-log-tab" data-tab="store">Store <span class="flour-log-tab-stat" flour-text="store_count"></span></div>' + 
+	'  </div>' + 
 
-	'		 <div class="flour-log-panes">' +
-	'      <div class="flour-log-pane" data-tab="console" flour-view="consoleView"></div>' + 
-	'      <div class="flour-log-pane" data-tab="views" flour-view="viewsView"></div>' + 
-	'      <div class="flour-log-pane" data-tab="store" flour-view="storeView"></div>' + 
-	'    </div>' + 
+	'  <div class="flour-log-panes">' +
+	'    <div class="flour-log-pane" data-tab="console" flour-view="consoleView"></div>' + 
+	'    <div class="flour-log-pane" data-tab="views" flour-view="viewsView"></div>' + 
+	'    <div class="flour-log-pane" data-tab="store" flour-view="storeView"></div>' + 
 	'  </div>' + 
 	'</div>'
 );
@@ -35,7 +33,8 @@ flour.addView('flour_log', function()
 	// view params
 	view.template = 'flour_log';
 	view.events = {
-		'click .flour-log-tab': 'setTabEvent'
+		'click .flour-log-tab': 'setTabEvent',
+		'click .flour-log-toggle': 'toggleConsole'
 	};
 
 	// privates
@@ -49,15 +48,31 @@ flour.addView('flour_log', function()
 	view.storeView = false;
 
 
+	//
 	// init
+	//
 	view.init = function()
 	{
 		view.el.removeClass('flour-view');
-		view.consoleView = view.getView('flour_log_console', {});
-		view.viewsView = view.getView('flour_log_views', {});
-		view.storeView = view.getView('flour_log_store', {});
+		view.el.addClass('flour-log');
 
-		view.set('view_count', 2);
+		view.consoleView = view.getView('flour_log_console', {});
+		view.storeView = view.getView('flour_log_store', {});
+		view.viewsView = view.getView('flour_log_views', {});
+
+		view.viewsView.on('updateViewCount', function(viewCount)
+		{
+			view.set('view_count', viewCount, false);
+		});
+
+		view.storeView.on('updateStoreCount', function(storeCount)
+		{
+			view.set('store_count', storeCount, false);
+		});
+
+		view.set('store_count', 0, false);
+		view.set('view_count', 0, false);
+
 		view.render();
 	};
 
@@ -109,8 +124,18 @@ flour.addView('flour_log', function()
 	};
 
 
+
 	//
-	//	log
+	// open close console
+	//
+	view.toggleConsole = function()
+	{
+		view.el.toggleClass('open');
+	};
+
+
+	//
+	// log
 	//
 	view.log = function(data, type)
 	{
@@ -162,13 +187,17 @@ flour.addView('flour_log_console', function()
 
 	view.consoleList = false;
 
+
+	//
 	// init
+	//
 	view.init = function()
 	{
 		view.consoleList = view.getList('flour_log_console_list');
 		view.el.removeClass('flour-view');
 		view.render();
 	};
+
 
 	//
 	// log
@@ -238,7 +267,10 @@ flour.addList('flour_log_console_list', function()
 	list.template = 'flour_log_console_item';
 	list.itemElClass = 'flour-log-console-item';
 
+
+	//
 	// init
+	//
 	list.init = function()
 	{
 		list.el.removeClass('flour-list');
@@ -270,7 +302,7 @@ flour.addList('flour_log_console_list', function()
 flour.addTemplate('flour_log_views', 
 	'<div>' + 
 	'  <div>' +
-	'		 VIEWS!' + 
+	'		 Views: <div flour-text="view_count"></div>' + 
 	'  </div>' + 
 	'</div>'
 );
@@ -284,10 +316,58 @@ flour.addView('flour_log_views', function()
 	view.template = 'flour_log_views';
 	view.events = {};
 
+	// privates
+	var viewCount = 0;
+
+
+	//
 	// init
+	//
 	view.init = function()
 	{
+		view.set('view_count', viewCount, false);
 		view.el.removeClass('flour-view');
+
+
+		// VIEW
+		view.subscribe('flour:view_create', function(viewTemplate)
+		{
+			viewCount ++;
+			view.set('view_count', viewCount, false);
+			flour.defer(function(){
+				flour.log('create view: ' + viewTemplate);
+			});
+
+			view.trigger('updateViewCount', viewCount);
+		});
+
+		view.subscribe('flour:view_destroy', function()
+		{
+			viewCount --;
+			view.set('view_count', viewCount, false);
+			view.trigger('updateViewCount', viewCount);
+		});
+
+
+		// LIST
+		view.subscribe('flour:list_create', function(viewTemplate)
+		{
+			viewCount ++;
+			view.set('view_count', viewCount, false);
+			flour.defer(function(){
+				flour.log('create list: ' + viewTemplate);
+			});
+
+			view.trigger('updateViewCount', viewCount);
+		});
+
+		view.subscribe('flour:list_destroy', function()
+		{
+			viewCount --;
+			view.set('view_count', viewCount, false);
+			view.trigger('updateViewCount', viewCount);
+		});
+
 		view.render();
 	};
 
@@ -318,9 +398,7 @@ flour.addView('flour_log_views', function()
 */
 flour.addTemplate('flour_log_store', 
 	'<div>' + 
-	'  <div>' +
-	'		 STORE!' + 
-	'  </div>' + 
+	'  <div flour-view="storeList"></div>' + 
 	'</div>'
 );
 
@@ -333,11 +411,54 @@ flour.addView('flour_log_store', function()
 	view.template = 'flour_log_store';
 	view.events = {};
 
+	view.storeList = false;
+
+
+	//
 	// init
+	//
 	view.init = function()
 	{
+		view.storeList = view.getList('flour_store_list');
+		
+		view.subscribe('flour:store_update', function(items)
+		{
+			view.displayItems(items);
+		});
+
+		view.displayItems(flour.store.get());
+
 		view.el.removeClass('flour-view');
 		view.render();
+	};
+
+
+	//
+	// display items
+	//
+	view.displayItems = function(items)
+	{
+		var itemsCount = 0;
+		view.storeList.removeAll();
+		
+		for(var key in items)
+		{
+			var itemData = {
+				key: key,
+				data: items[key]
+			};
+
+			if(flour.isObject(itemData.data))
+			{
+				itemData.is_object = true;
+				itemData.data = flour.filters['json_format'](items[key]);
+			}
+			
+			view.storeList.add(itemData);
+			itemsCount ++;
+		}
+
+		view.trigger('updateStoreCount', itemsCount);
 	};
 
 });
@@ -349,6 +470,51 @@ flour.addView('flour_log_store', function()
 
 
 
+
+
+
+
+
+
+/*
+| ------------------------------------------------------------------------------------------------------------------------------
+|
+|	Store list
+|
+|	------------------------------------------------------------------------------------------------------------------------------
+*/
+
+flour.addTemplate('flour_store_item', 
+	'<div class="flour-store-item-inner">' + 
+	'  <div class="flour-store-item-key">{{ key }}</div>' + 
+	'  {{#if is_object }}' + 
+	'    <pre>{{ data }}</pre>' +
+	'  {{else}}' +
+	'    {{ data }}' + 
+	'  {{/if}}' +
+	'</div>'
+);
+
+flour.addList('flour_store_list', function()
+{
+
+	var list = this;
+
+	// list params
+	list.template = 'flour_store_item';
+	list.itemElClass = 'flour-store-item';
+	list.key = 'key';
+
+
+	//
+	// init
+	//
+	list.init = function()
+	{
+		list.el.removeClass('flour-list');
+	};
+
+});
 
 
 
@@ -367,12 +533,10 @@ flour.log = function(data, type)
 	flour.logView.log(data, type);
 };
 
+
+
 $(function(){ 
 	$('body').append(flour.logView.el); 
-
-	setTimeout(function(){
-		flour.log('Welcome, to flour console.');
-	}, 2000);
 });
 
 

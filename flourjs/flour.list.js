@@ -43,6 +43,9 @@ flour.getList = function(name, params)
   list.raw = [];
   list.el = null;
 
+  // publish create event
+  flour.publish('flour:list_create', list.template);
+
   // init
   list.initialize(params);
 
@@ -755,6 +758,9 @@ flour.baseList = function()
     {
       self.postDestroy();
     }
+
+    // publish destroy
+    flour.publish('flour:list_destroy');
   };
 
 };

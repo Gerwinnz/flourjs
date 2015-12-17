@@ -23,6 +23,8 @@ flour.store = {
 
       flour.publish(rootKey + ':change', rootValue);
     }
+
+    flour.publish('flour:store_update', self.values);
   },
 
   get: function(name)
