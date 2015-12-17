@@ -38,8 +38,11 @@ flour.getView = function(name, params)
   view.views = [];
   view.el = null;
 
+  view.id = flour.instanceId;
+  flour.instanceId ++;
+
   // publish create event
-  flour.publish('flour:view_create', view.template);
+  flour.publish('flour:view_create', {name: name, view: view});
 
   // init
   view.initialize(params);
@@ -463,7 +466,7 @@ flour.baseView = function()
     }
     
     // publish destroy
-    flour.publish('flour:view_destroy');
+    flour.publish('flour:view_destroy', self.id);
 
     // console.log('destroy view');
   };

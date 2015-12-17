@@ -1,6 +1,7 @@
 
 var flour = flour || {};
 
+
 /*
 | ------------------------------------------------------------------------------------------------------------------------------
 |
@@ -301,9 +302,7 @@ flour.addList('flour_log_console_list', function()
 */
 flour.addTemplate('flour_log_views', 
 	'<div>' + 
-	'  <div>' +
-	'		 Views: <div flour-text="view_count"></div>' + 
-	'  </div>' + 
+	'  <div flour-view="viewList"></div>' + 
 	'</div>'
 );
 
@@ -325,50 +324,132 @@ flour.addView('flour_log_views', function()
 	//
 	view.init = function()
 	{
-		view.set('view_count', viewCount, false);
 		view.el.removeClass('flour-view');
 
+		// create view list
+		view.viewList = flour.getList('flour_view_list');
 
-		// VIEW
-		view.subscribe('flour:view_create', function(viewTemplate)
+		// view
+		view.subscribe('flour:view_create', function(newView)
 		{
-			viewCount ++;
-			view.set('view_count', viewCount, false);
-			flour.defer(function(){
-				flour.log('create view: ' + viewTemplate);
-			});
-
-			view.trigger('updateViewCount', viewCount);
+			view.increaseViewCount();
+			view.addViewToList(newView);
 		});
 
-		view.subscribe('flour:view_destroy', function()
+		view.subscribe('flour:view_destroy', function(id)
 		{
-			viewCount --;
-			view.set('view_count', viewCount, false);
-			view.trigger('updateViewCount', viewCount);
+			view.decreaseViewCount();
+			view.removeViewFromList(id);
 		});
 
 
-		// LIST
-		view.subscribe('flour:list_create', function(viewTemplate)
+		// list
+		view.subscribe('flour:list_create', function(newView)
 		{
-			viewCount ++;
-			view.set('view_count', viewCount, false);
-			flour.defer(function(){
-				flour.log('create list: ' + viewTemplate);
-			});
-
-			view.trigger('updateViewCount', viewCount);
+			view.increaseViewCount();
+			view.addViewToList(newView);
 		});
 
-		view.subscribe('flour:list_destroy', function()
+		view.subscribe('flour:list_destroy', function(id)
 		{
-			viewCount --;
-			view.set('view_count', viewCount, false);
-			view.trigger('updateViewCount', viewCount);
+			view.decreaseViewCount();
+			view.removeViewFromList(id);
 		});
 
 		view.render();
+	};
+
+
+	//
+	// increase and decrease view count
+	//
+	view.increaseViewCount = function()
+	{
+		viewCount ++;
+		view.trigger('updateViewCount', viewCount);
+	};
+
+	view.decreaseViewCount = function()
+	{
+		viewCount --;
+		view.trigger('updateViewCount', viewCount);
+	};
+
+
+	//
+	// add view/list
+	//
+	view.addViewToList = function(newView)
+	{
+		var viewReference = newView.view ? newView.view : newView.list;
+		var data = {
+			id: viewReference.id,
+			name: newView.name,
+
+			template: viewReference.template,
+			helpers: (viewReference.helpers ? viewReference.helpers.join(',') : 'none')
+		};
+
+		view.viewList.add(data);
+	};
+
+
+	//
+	// add view/list
+	//
+	view.removeViewFromList = function(id)
+	{
+		view.viewList.remove(id);
+	};
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+| ------------------------------------------------------------------------------------------------------------------------------
+|
+|	View list
+|
+|	------------------------------------------------------------------------------------------------------------------------------
+*/
+
+flour.addTemplate('flour_view_item', 
+	'<div class="flour-view-item-inner">' + 
+	'  <div class="flour-view-item-name">{{ name }}</div>' + 
+	'  <div class="flour-view-item-stat">Id: {{ id }}</div>' +
+	'  <div class="flour-view-item-stat">Template: {{ template }}</div>' +
+	'  <div class="flour-view-item-stat">Helpers: {{ helpers }}</div>' +
+	'</div>'
+);
+
+flour.addList('flour_view_list', function()
+{
+
+	var list = this;
+
+	// list params
+	list.template = 'flour_view_item';
+	list.itemElClass = 'flour-view-item';
+	list.key = 'id';
+
+
+	//
+	// init
+	//
+	list.init = function()
+	{
+		list.el.removeClass('flour-list');
 	};
 
 });

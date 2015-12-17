@@ -1,6 +1,17 @@
 
 var flour = flour || {};
 
+
+
+/*
+|
+| Instance Id, increments for each instance created
+|
+*/
+flour.instanceId = 1;
+
+
+
 /*
 |
 | flour app core : class

@@ -43,8 +43,11 @@ flour.getList = function(name, params)
   list.raw = [];
   list.el = null;
 
+  list.id = flour.instanceId;
+  flour.instanceId ++;
+
   // publish create event
-  flour.publish('flour:list_create', list.template);
+  flour.publish('flour:list_create', {name: name, list: list});
 
   // init
   list.initialize(params);
@@ -760,7 +763,7 @@ flour.baseList = function()
     }
 
     // publish destroy
-    flour.publish('flour:list_destroy');
+    flour.publish('flour:list_destroy', self.id);
   };
 
 };
