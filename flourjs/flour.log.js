@@ -39,6 +39,7 @@ flour.addView('flour_log', function()
 	};
 
 	// privates
+	var isOpen = false;
 	var currentTab = 'console';
 	var $tabs = false;
 	var $panes = false;
@@ -73,6 +74,14 @@ flour.addView('flour_log', function()
 
 		view.set('store_count', 0, false);
 		view.set('view_count', 0, false);
+
+		isOpen = localStorage.getItem('flour_console_open') === undefined ? 0 : parseInt(localStorage.getItem('flour_console_open'));
+		currentTab = localStorage.getItem('flour_console_tab') === undefined ? 'console' : localStorage.getItem('flour_console_tab');
+		
+		if(isOpen)
+		{
+			view.el.addClass('open');
+		}
 
 		view.render();
 	};
@@ -122,6 +131,8 @@ flour.addView('flour_log', function()
 				$pane.addClass('flour-log-pane-active');
 			}
 		});
+
+		localStorage.setItem('flour_console_tab', tabName);
 	};
 
 
@@ -133,6 +144,7 @@ flour.addView('flour_log', function()
 	{
 		if(view.el.hasClass('open'))
 		{
+			localStorage.setItem('flour_console_open', 0); 
 			view.el.addClass('close');
 			view.el.one('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function()
       {
@@ -143,6 +155,7 @@ flour.addView('flour_log', function()
 		}
 		else
 		{
+			localStorage.setItem('flour_console_open', 1);
 			view.el.addClass('open');
 		}
 	};
