@@ -484,19 +484,19 @@ flour.baseList = function()
   | Updates an item in the list
   |
   */
-  self.set = function(index, key, value)
+  self.set = function(index, key, value, doRender)
   {
     var self = this;
     var item = self.getItem(index);
-    self.setItem(item, key, value);
+    self.setItem(item, key, value, doRender);
   };
 
-  self.setItem = function(item, key, value)
+  self.setItem = function(item, key, value, doRender)
   {
     var self = this;
 
     var data = item.data;
-    var doRender = true;
+    var doRender = doRender === undefined ? true : doRender;
     var objectChain = flour.setObjectKeyValue(data, key, value);
 
 
