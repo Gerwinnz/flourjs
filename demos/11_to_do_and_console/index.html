@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flour.js - 09 - To-Dos</title>
+    <title>Flour.js - 11 - To-Dos + Flour console</title>
 
     <!-- Include jQuery and Handlebars -->
     <script type="text/javascript" src="../../vendor/handlebars.js"></script>
@@ -35,10 +35,11 @@
     <link rel="stylesheet" type="text/css" href="../../styles/flour_demos.css">
     <link rel="stylesheet" type="text/css" href="../../styles/normalize.css">
     <link rel="stylesheet" type="text/css" href="../../styles/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/flour_log.css">
 
     <!-- Include app css -->
     <link rel="stylesheet" type="text/css" href="app.css">
-    <link rel="stylesheet" type="text/css" href="flour_log.css">
+    
 
     <!-- Link to Raleway -->
     <link href='http://fonts.googleapis.com/css?family=Raleway:500,600,700,400,300' rel='stylesheet' type='text/css'>
@@ -70,10 +71,6 @@
         <input class="complete-to-do" data-id="{{id}}" type="checkbox" {{#if complete}}checked="checked"{{/if}} /> 
         <span class="task">{{ task }}</span>
       </div>
-    </script>
-
-    <script class="template" data-name="flour_log" type="text/x-handlebars-template">
-      <div>Flour log</div>
     </script>
   </head>
 
