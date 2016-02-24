@@ -86,19 +86,20 @@ flour.app = function(appName, options)
   });
 
 
+
+
   /*
   |
-  | Removes the last view and places the new one in it's place when ready
+  | Loads our new view and calls display when ready
   |
   */
-  self.displayView = function()
+  self.loadView = function()
   {
     if(self.view.ready === false)
     {
       var onReady = function()
       {
-        self.el.empty();
-        self.el.append(self.view.el);
+        self.displayView();
         self.view.off('ready', onReady); // stop listening for this as we only need it first time
       };
 
@@ -106,12 +107,33 @@ flour.app = function(appName, options)
     }
     else
     {
-      self.el.empty();
-      self.el.append(self.view.el);
+      self.displayView();
     }
   };
 
+
+
+
+  /*
+  |
+  | Displays our new view while removing the last one
+  |
+  */
+  self.displayView = function()
+  {
+    self.el.empty();
+
+    if(self.view.willDisplay !== undefined)
+    {
+      self.view.willDisplay();
+    }
+
+    self.el.append(self.view.el);
+  };
+
   
+
+
   /*
   |
   | Create new router and listen to route change event
@@ -132,7 +154,7 @@ flour.app = function(appName, options)
         }
 
         self.view = flour.getView(route.view, route.params);
-        self.displayView();
+        self.loadView();
         
         self.currentView = route.view;
         self.currentParams = route.params;
