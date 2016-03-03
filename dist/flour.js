@@ -605,6 +605,18 @@ flour.addBinder('view',
 
 
 
+//
+//  Adds the element as a view property 
+//
+flour.addBinder('name',
+{
+  attach: function($el, binding, view)
+  {
+    view[binding] = null;
+    view[binding] = $el;
+  }
+});
+
 
 
 
