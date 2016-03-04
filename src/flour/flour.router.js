@@ -125,7 +125,7 @@ flour.router = function(routes, basePath)
       var routeDetails = routes[i];
       
       // Create the regular expression
-      var routeRegex = new RegExp('^' + self.getRegex(route) + '*$', 'i');
+      var routeRegex = new RegExp('^' + self.getRegex(route) + '$', 'i');
 
       // Test for a match against our current URL
       if(routeRegex.test(requestURL))
@@ -136,7 +136,6 @@ flour.router = function(routes, basePath)
         var paramName = '';
         for(var i = 0; i < routeSections.length; i ++)
         {
-
           if(paramName = routeSections[i].match(/:([\w-]+)/))
           {
             params[paramName[1]] = routeValues[i];
