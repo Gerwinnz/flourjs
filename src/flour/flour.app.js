@@ -143,17 +143,23 @@ flour.app = function(appName, options)
 
   flour.subscribe('route:change', function(route)
   { 
+    
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
       if(route.view !== self.currentView || JSON.stringify(route.params) !== JSON.stringify(self.currentParams))
       {
+        // destroy old view
         if(self.currentView !== undefined)
         {
+          if(self.view.willDestroy)
+          {
+          }
+
           self.view.destroy();
         }
 
-        self.view = flour.getView(route.view, route.params);
+        // load new view
         self.loadView();
         
         self.currentView = route.view;

@@ -143,17 +143,26 @@ flour.app = function(appName, options)
 
   flour.subscribe('route:change', function(route)
   { 
+    var extra = undefined;
+    
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
       if(route.view !== self.currentView || JSON.stringify(route.params) !== JSON.stringify(self.currentParams))
       {
+        // destroy old view
         if(self.currentView !== undefined)
         {
+          if(self.view.willDestroy)
+          {
+            extra = self.view.willDestroy();
+          }
+
           self.view.destroy();
         }
 
-        self.view = flour.getView(route.view, route.params);
+        // load new view
+        self.view = flour.getView(route.view, route.params, extra);
         self.loadView();
         
         self.currentView = route.view;
@@ -2566,7 +2575,7 @@ flour.addView = function(name, view)
 | Returns an instance of a view
 |
 */
-flour.getView = function(name, params)
+flour.getView = function(name, params, extra)
 {
   var view = new flour.views[name]();
   
@@ -2584,7 +2593,7 @@ flour.getView = function(name, params)
   flour.publish('flour:view_create', {name: name, view: view});
 
   // init
-  view.initialize(params);
+  view.initialize(params, extra);
 
   return view;
 }
@@ -2613,7 +2622,7 @@ flour.baseView = function()
   | Set up our default el and add delegated events
   |
   */
-  self.initialize = function(params)
+  self.initialize = function(params, extra)
   {
     var self = this;
 
@@ -2633,7 +2642,7 @@ flour.baseView = function()
     flour.bindView(self);
 
     // init our view
-    self.init(params);
+    self.init(params, extra);
   };
 
 
@@ -2932,10 +2941,10 @@ flour.baseView = function()
   | Gets a view and keeps a copy of it to destroy on 
   |
   */
-  self.getView = function(viewName, params)
+  self.getView = function(viewName, params, extra)
   {
     var self = this;
-    var view = flour.getView(viewName, params);
+    var view = flour.getView(viewName, params, extra);
     self.views.push(view);
 
     return view;
