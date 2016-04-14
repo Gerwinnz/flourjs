@@ -143,6 +143,7 @@ flour.app = function(appName, options)
 
   flour.subscribe('route:change', function(route)
   { 
+    var extra = undefined;
     
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
@@ -154,12 +155,14 @@ flour.app = function(appName, options)
         {
           if(self.view.willDestroy)
           {
+            extra = self.view.willDestroy();
           }
 
           self.view.destroy();
         }
 
         // load new view
+        self.view = flour.getView(route.view, route.params, extra);
         self.loadView();
         
         self.currentView = route.view;

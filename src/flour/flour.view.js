@@ -27,6 +27,7 @@ flour.addView = function(name, view)
 | Returns an instance of a view
 |
 */
+flour.getView = function(name, params, extra)
 {
   var view = new flour.views[name]();
   
@@ -44,6 +45,7 @@ flour.addView = function(name, view)
   flour.publish('flour:view_create', {name: name, view: view});
 
   // init
+  view.initialize(params, extra);
 
   return view;
 }
@@ -72,6 +74,7 @@ flour.baseView = function()
   | Set up our default el and add delegated events
   |
   */
+  self.initialize = function(params, extra)
   {
     var self = this;
 
@@ -91,6 +94,7 @@ flour.baseView = function()
     flour.bindView(self);
 
     // init our view
+    self.init(params, extra);
   };
 
 
@@ -389,8 +393,10 @@ flour.baseView = function()
   | Gets a view and keeps a copy of it to destroy on 
   |
   */
+  self.getView = function(viewName, params, extra)
   {
     var self = this;
+    var view = flour.getView(viewName, params, extra);
     self.views.push(view);
 
     return view;
