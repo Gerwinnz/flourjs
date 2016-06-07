@@ -17,6 +17,18 @@ flour.requestHandler = function(response, status, options)
 
 
 
+/*
+|
+| Default request pre processor
+|
+*/
+flour.requestPreProcessor = function(data)
+{
+  return data;
+};
+
+
+
 
 /*
 |
@@ -52,6 +64,7 @@ flour.request = {
       flour.publish('http-request:start');
     }
 
+    data = flour.requestPreProcessor(data);
 
     $.ajax({
       url: url,
@@ -79,7 +92,7 @@ flour.request = {
 | HTTP class, returns a simple function that accepts data and callback options
 |
 */
-flour.http = function(url, method, requestOptions, requestExtras)
+flour.http = function(url, method, requestOptions)
 {
   if(method === undefined)
   {
@@ -118,18 +131,13 @@ flour.http = function(url, method, requestOptions, requestExtras)
     var data = flour.clone(data);
     var parsedURL = parseURL(data, url);
 
+    // pre process
+    data = flour.requestPreProcessor(data);
+
     // publish http
     if(options.silent !== true)
     {
       flour.publish('http-request:start');
-    }
-
-    if(requestExtras !== undefined)
-    {
-      for(var extra in requestExtras)
-      {
-        data[extra] = requestExtras[extra];
-      }
     }
 
     // create our request options
