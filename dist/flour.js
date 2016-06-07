@@ -754,7 +754,7 @@ flour.requestHandler = function(response, status, options)
 | Default request pre processor
 |
 */
-flour.requestPreProcessor = function(data)
+flour.requestPreProcessor = function(data, method)
 {
   return data;
 };
@@ -796,7 +796,7 @@ flour.request = {
       flour.publish('http-request:start');
     }
 
-    data = flour.requestPreProcessor(data);
+    data = flour.requestPreProcessor(data, method);
 
     $.ajax({
       url: url,
@@ -864,7 +864,7 @@ flour.http = function(url, method, requestOptions)
     var parsedURL = parseURL(data, url);
 
     // pre process
-    data = flour.requestPreProcessor(data);
+    data = flour.requestPreProcessor(data, method);
 
     // publish http
     if(options.silent !== true)
