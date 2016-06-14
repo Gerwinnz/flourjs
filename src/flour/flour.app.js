@@ -31,9 +31,11 @@ flour.app = function(appName, options)
   // Setup some app params
   self.el = $('<div class="flour-app"></div>');
 
-  self.currentView = undefined;
-  self.currentParams = undefined;
+  self.currentViewName = undefined;
+  self.currentViewParams = undefined;
+  
   self.view = undefined;
+  self.oldViewEl = undefined;
 
 
   /*
@@ -121,14 +123,20 @@ flour.app = function(appName, options)
   */
   self.displayView = function()
   {
-    self.el.empty();
-
     if(self.view.willDisplay !== undefined)
     {
       self.view.willDisplay();
     }
 
-    self.el.append(self.view.el);
+    if(options.transition)
+    {
+      options.transition(self.view.el, self.oldViewEl);
+    }
+    else
+    {
+      self.el.empty();
+      self.el.append(self.view.el);
+    }
   };
 
   
@@ -148,10 +156,10 @@ flour.app = function(appName, options)
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
-      if(route.view !== self.currentView || JSON.stringify(route.params) !== JSON.stringify(self.currentParams))
+      if(route.view !== self.currentViewName || JSON.stringify(route.params) !== JSON.stringify(self.currentViewParams))
       {
         // destroy old view
-        if(self.currentView !== undefined)
+        if(self.currentViewName !== undefined)
         {
           if(self.view.willDestroy)
           {
@@ -159,22 +167,22 @@ flour.app = function(appName, options)
           }
 
           self.view.destroy();
+          self.oldViewEl = self.view.el;
         }
 
         // load new view
         self.view = flour.getView(route.view, route.params, extra);
         self.loadView();
         
-        self.currentView = route.view;
-        self.currentParams = route.params;
+        // update currents
+        self.currentViewName = route.view;
+        self.currentViewParams = route.params;
       }
 
-      if(route.action !== undefined)
+      
+      if(route.action && self.view[route.action] !== undefined)
       {
-        if(self.view[route.action] !== undefined)
-        {
-          self.view[route.action](route.params);
-        }
+        self.view[route.action](route.params);
       }
     }    
   });
@@ -187,6 +195,8 @@ flour.app = function(appName, options)
   | On init
   |
   */
-  router.matchCurrentRequest();
+  flour.defer(function(){
+    router.matchCurrentRequest();
+  });
 
 };
