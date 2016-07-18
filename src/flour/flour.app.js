@@ -163,7 +163,7 @@ flour.app = function(appName, options)
         {
           if(self.view.willDestroy)
           {
-            extra = self.view.willDestroy();
+            extra = self.view.willDestroy(route.view);
           }
 
           self.view.destroy();
