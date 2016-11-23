@@ -19,6 +19,8 @@ flour.router = function(routes, basePath)
 
   // Self keyword
   var self = this;
+  var requestedURLs = [];
+  var lastRequestIndex = false;
 
 
 
@@ -35,7 +37,9 @@ flour.router = function(routes, basePath)
 
   window.addEventListener('popstate', function(e)
   {
-    flour.publish('history:state_change', {});
+    flour.publish('history:state_change', {
+      popstate: true
+    });
   });
 
 
@@ -48,6 +52,8 @@ flour.router = function(routes, basePath)
   */
   self.matchCurrentRequest = function(data)
   {
+    data = data === undefined ? {} : data;
+
     var bits = false;
     var params = {};
     var getVariables = [];
@@ -92,12 +98,28 @@ flour.router = function(routes, basePath)
     // Strip and match our request URL
     var strippedRequestURL = requestURL.replace(flour.config('base_url') + basePath, '');
     var routeDetails = self.match(strippedRequestURL);
+    var direction = 'forward';
 
     // Save full request URL with get params and # as original string
     routeDetails.requestURL = originalRequestURL.replace(flour.config('base_url') + basePath, '');
 
     // add hash value
     routeDetails.hash = hash;
+
+    // check for direction
+    var i = requestedURLs.length - 2;
+    if(data.popstate && routeDetails.requestURL === requestedURLs[i])
+    {
+      requestedURLs.pop();
+      direction = 'back';
+    }
+    else
+    {
+      requestedURLs.push(routeDetails.requestURL);
+    }
+
+    // add direction
+    routeDetails.direction = direction
 
     // add get vars to the params
     if(getVariables)

@@ -404,7 +404,20 @@ flour.generateLookup = function(data, key)
 	}
 
 	return false;
-}
+};
+
+
+
+
+/*
+|
+|	Consoles our an error
+|
+*/
+flour.error = function(error)
+{
+	console.error('flour: ' + error);
+};
 
 
 

@@ -20,7 +20,7 @@ flour.instanceId = 1;
 flour.app = function(appName, options)
 {
   // Return an instance if the new keyword wasn't used
-  if (!(this instanceof flour.app)) 
+  if(!(this instanceof flour.app)) 
   {
     return new flour.app(name, options);
   }
@@ -28,14 +28,17 @@ flour.app = function(appName, options)
   // Self keyword
   var self = this;
 
+
+  // Privates
+  var views = [];
+  var current = 0;
+  var currentViewName = undefined;
+  var currentViewParams = undefined;
+
+
   // Setup some app params
   self.el = $('<div class="flour-app"></div>');
-
-  self.currentViewName = undefined;
-  self.currentViewParams = undefined;
   
-  self.view = undefined;
-  self.oldViewEl = undefined;
 
 
   /*
@@ -92,24 +95,25 @@ flour.app = function(appName, options)
 
   /*
   |
-  | Loads our new view and calls display when ready
+  | Checks when new view is ready and then calls our transition method
   |
   */
-  self.loadView = function()
+  self.displayView = function(nextView, lastView)
   {
-    if(self.view.ready === false)
+    if(nextView.ready === false)
     {
       var onReady = function()
       {
-        self.displayView();
-        self.view.off('ready', onReady); // stop listening for this as we only need it first time
+        self.transitionViews(nextView, lastView);
+        nextView.ready = true;
+        nextView.off('ready', onReady);
       };
 
-      self.view.on('ready', onReady);
+      nextView.on('ready', onReady);
     }
     else
     {
-      self.displayView();
+      self.transitionViews(nextView, lastView);
     }
   };
 
@@ -118,24 +122,46 @@ flour.app = function(appName, options)
 
   /*
   |
-  | Displays our new view while removing the last one
+  | Transitions our views
   |
   */
-  self.displayView = function()
+  self.transitionViews = function(nextView, lastView)
   {
-    if(self.view.willDisplay !== undefined)
+    if(nextView.willShow !== undefined)
     {
-      self.view.willDisplay();
+      nextView.willShow();
     }
 
     if(options.transition)
     {
-      options.transition(self.view.el, self.oldViewEl);
+      options.transition(nextView, lastView, function(){
+        self.cleanUp(nextView, lastView);
+      });
     }
     else
     {
-      self.el.empty();
-      self.el.append(self.view.el);
+      self.el.append(nextView.el);
+      self.cleanUp(nextView, lastView);
+    }
+  };
+
+
+
+  /*
+  |
+  | Will destroy previous views
+  |
+  */
+  self.cleanUp = function(nextView, lastView)
+  {
+    lastView.el.detach();
+
+    if(views.length > 5)
+    {
+      var view = views.shift();
+      view.destroy();
+      view.el.remove();
+      current --;
     }
   };
 
@@ -150,33 +176,58 @@ flour.app = function(appName, options)
   var router = new flour.router(options.routes, options.base_path);
 
   flour.subscribe('route:change', function(route)
-  { 
+  {
     var extra = undefined;
     
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
-      if(route.view !== self.currentViewName || JSON.stringify(route.params) !== JSON.stringify(self.currentViewParams))
+      if(route.view !== currentViewName || JSON.stringify(route.params) !== JSON.stringify(currentViewParams))
       {
         // destroy old view
-        if(self.currentViewName !== undefined)
-        {
-          if(self.view.willDestroy)
-          {
-            extra = self.view.willDestroy(route.view);
-          }
+        var nextView;
+        var lastView = views[current];
+        
 
-          self.view.destroy();
-          self.oldViewEl = self.view.el;
+        // calls will hide and gets hand over data if available
+        if(lastView)
+        {
+          if(lastView.willHide)
+          {
+            extra = lastView.willHide(route.view);
+          }
         }
 
-        // load new view
-        self.view = flour.getView(route.view, route.params, extra);
-        self.loadView();
+        // check for back to re-use previous view
+        if(route.direction === 'back')
+        {
+          lastView = views.pop();
+          lastView.destroy();
+          current --;
+
+          if(views[current] !== undefined)
+          {
+            nextView = views[current];
+          }
+          else
+          {
+            nextView = flour.getView(route.view, route.params, extra);
+            views.push(nextView);
+          }
+        }
+        else
+        {
+          nextView = flour.getView(route.view, route.params, extra);
+          views.push(nextView);
+        }
+
+        // update our stack and start loading
+        current = views.length - 1;
+        self.displayView(nextView, lastView);
         
-        // update currents
-        self.currentViewName = route.view;
-        self.currentViewParams = route.params;
+        // update currents for checking against
+        currentViewName = route.view;
+        currentViewParams = route.params;
       }
 
       
@@ -184,7 +235,9 @@ flour.app = function(appName, options)
       {
         self.view[route.action](route.params);
       }
-    }    
+    }else{
+      flour.error('View "' + route.view + '" does not exist.');
+    }   
   });
 
 
