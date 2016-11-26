@@ -154,7 +154,10 @@ flour.app = function(appName, options)
   */
   self.cleanUp = function(nextView, lastView)
   {
-    lastView.el.detach();
+    if(lastView)
+    {
+      lastView.el.detach();
+    }
 
     if(views.length > 5)
     {
