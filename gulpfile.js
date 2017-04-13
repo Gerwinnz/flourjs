@@ -33,25 +33,6 @@ var randomString = function(length)
   }
   return result;
 };
- 
-
-
-/*
-|
-|
-| ENVIRONMENT
-|
-| When starting the server, define your environment in the command line like this:
-|
-| NODE_ENV=production gulp server
-|
-|
-| 'production' - this will minify and remove src maps on css and js
-| 'development' - this will concat but not minify files
-|
-|
-*/
-var env = process.env.NODE_ENV || 'development';
 
 
 
@@ -190,7 +171,6 @@ gulp.task('minify_log', function()
 */
 gulp.task('compile_log_templates', function()
 {
-
   return gulp.src('src/log/templates/**/*.html')
     .pipe(wrap('flour.addTemplate(\'flour_<%= parseName(file.relative) %>\', \'<%= parseContents(contents) %>\');', {}, {
       imports: {
@@ -214,7 +194,6 @@ gulp.task('compile_log_templates', function()
     }))
     .pipe(concat('templates.js'))
     .pipe(gulp.dest('src/log/'));
-
 });
 
 
@@ -228,7 +207,6 @@ gulp.task('compile_log_templates', function()
 */
 gulp.task('compile_log_css', function()
 {
-
   logTemplateVars.css = '';
 
   return gulp.src('src/log/css/**/*.css')
@@ -246,7 +224,6 @@ gulp.task('compile_log_css', function()
         }
       }
     }));
-
 });
 
 
@@ -303,10 +280,9 @@ gulp.task('compile_log_css', function()
 |
 |
 */
-gulp.task('clean', function(cb) {
-  
+gulp.task('clean', function(cb) 
+{  
   del(['dist/*.js'], cb);
-
 });
 
 
@@ -325,9 +301,7 @@ gulp.task('clean', function(cb) {
 */
 gulp.task('build', function()
 {
-
   gulp.start(['minify', 'minify_log']);
-
 });
 
 
@@ -345,17 +319,14 @@ gulp.task('build', function()
 */
 gulp.task('watch', ['clean', 'compile', 'compile_log_css', 'compile_log_templates', 'compile_log'], function()
 {
-
   // Watch flour src
   gulp.watch('src/flour/**/*.js', ['compile']);
-
 
   // Watch log code
   gulp.watch('src/log/*.js', ['compile_log']);
   gulp.watch('src/log/views/*.js', ['compile_log']);
   gulp.watch('src/log/css/*.css', ['compile_log_css', 'compile_log']);
   gulp.watch('src/log/templates/*.html', ['compile_log_templates']);
-
 });
 
 

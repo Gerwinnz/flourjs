@@ -39,22 +39,22 @@ flour.request = {
   
   get: function(url, data, options)
   {
-    this.doRequest(url, data, options, 'get');
+    return this.doRequest(url, data, options, 'get');
   },
 
   put: function(url, data, options)
   {
-    this.doRequest(url, data, options, 'put');
+    return this.doRequest(url, data, options, 'put');
   },
 
   post: function(url, data, options)
   {
-    this.doRequest(url, data, options, 'post');
+    return this.doRequest(url, data, options, 'post');
   },
 
   delete: function(url, data, options)
   {
-    this.doRequest(url, data, options, 'delete');
+    return this.doRequest(url, data, options, 'delete');
   },
 
   doRequest: function(url, data, options, method) 
@@ -66,7 +66,7 @@ flour.request = {
 
     data = flour.requestPreProcessor(data, method);
 
-    $.ajax({
+    return $.ajax({
       url: url,
       type: method,
       data: data,
@@ -167,7 +167,6 @@ flour.http = function(url, method, requestOptions)
     }
 
     // do the request
-    $.ajax(request);
-
+    return $.ajax(request);
   };
 };
