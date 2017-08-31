@@ -2,7 +2,6 @@
 var flour = flour || {};
 
 
-
 /*
 |
 | Instance Id, increments for each instance created
@@ -28,9 +27,11 @@ flour.app = function(appName, options)
   // Self keyword
   var self = this;
 
+  options = options || {};
 
   // Privates
   var views = [];
+  var cacheViewsCount = options.cache_views_count === undefined ? 5 : options.cache_views_count;
   var current = 0;
   var currentViewName = undefined;
   var currentViewParams = undefined;
@@ -159,7 +160,7 @@ flour.app = function(appName, options)
       lastView.el.detach();
     }
 
-    if(views.length > 5)
+    if(views.length > cacheViewsCount)
     {
       var view = views.shift();
       view.destroy();
