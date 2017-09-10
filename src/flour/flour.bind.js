@@ -67,7 +67,39 @@ flour.bindView = function(view)
           var $el = $(el);
           var bindOn = $el.attr(attribute);
           var filter = false;
+          var condition = false;
           var filterParams = undefined;
+          
+
+
+          //
+          //  Our handler methods
+          //
+          var onChangeHandler = function(data)
+          {
+            options.update($el, data);
+          };
+
+          var filterData = function(data)
+          {
+            if(flour.filters[filter] !== undefined)
+            {
+              data = flour.filters[filter](data, filterParams);
+            }
+            else if(view[filter] !== undefined)
+            {
+              data = view[filter](data, filterParams);
+            }
+
+            return data;
+          };
+
+          var testCondition = function(data)
+          {
+            return data == condition;
+          };
+
+
         
           //
           // Check for load
@@ -78,11 +110,13 @@ flour.bindView = function(view)
           }
 
 
+
           //
-          // Listen for changes to the bindOn value
+          // Parse the attribute 
           //
           bindOn = bindOn.replace(/\s/g, "");
           var hasFilter = bindOn.indexOf('|') === -1 ? false : true;
+          var isConditional = bindOn.indexOf('=') === -1 ? false : true;
 
           // Parse filter and filter params
           if(hasFilter)
@@ -102,60 +136,49 @@ flour.bindView = function(view)
               {
                 filterParams = filterParams.substring(1, lastCharIndex);
               }
-              
-              // {
-              //   filterParams = view.get(filterParams);
-              // }
+            }
+
+            onChangeHandler = function(data)
+            {
+              options.update($el, filterData(data));
             }
           }
 
-
-          // on model change
-          var changeEvent = 'model.' + bindOn + ':change';
-          var onChangeCallback = function(data)
+          // Parse condition
+          if(isConditional)
           {
-            data = filterData(data);
-            options.update($el, data);
-          };
+            var pieces = bindOn.split('=');
+            bindOn = pieces[0];
+            condition = pieces[1];
 
-
-          // filter
-          var filterData = function(data)
-          {
-            if(filter)
+            onChangeHandler = function(data)
             {
-              if(flour.filters[filter] !== undefined)
-              {
-                data = flour.filters[filter](data, filterParams);
-              }
-              else if(view[filter] !== undefined)
-              {
-                data = view[filter](data, filterParams);
-              }
-            }
+              options.update($el, testCondition(data));
+            };
+          }
 
-            return data;
-          };
+          // Set change event after we've checked for filters and conditions
+          var changeEvent = 'model.' + bindOn + ':change';
+
 
 
           //
-          // Update element and listen for model changes
+          // Add event listeners
           //
           if(options.update)
           {
-            // listen to changes
+            // Store listeners
             listeners.push({
               'eventName': changeEvent,
-              'eventCallback': onChangeCallback
+              'eventCallback': onChangeHandler
             });
 
-            view.on(changeEvent, onChangeCallback);
+            // 
+            view.on(changeEvent, onChangeHandler);
 
             // set initial
             var data = view.get(bindOn);
-            data = filterData(data);
-            
-            options.update($el, data);
+            onChangeHandler(data);
           }
 
         });
