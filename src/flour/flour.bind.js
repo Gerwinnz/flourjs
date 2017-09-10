@@ -66,9 +66,13 @@ flour.bindView = function(view)
         {
           var $el = $(el);
           var bindOn = $el.attr(attribute);
+          
           var filter = false;
-          var condition = false;
           var filterParams = undefined;
+
+          var condition = false;
+          var conditionTrue = true;
+          var conditionFalse = false;
           
 
 
@@ -96,7 +100,7 @@ flour.bindView = function(view)
 
           var testCondition = function(data)
           {
-            return data == condition;
+            return data == condition ? conditionTrue : conditionFalse;
           };
 
 
@@ -151,6 +155,16 @@ flour.bindView = function(view)
             bindOn = pieces[0];
             condition = pieces[1];
 
+            if(condition.indexOf('?') !== -1)
+            {
+              var pieces = condition.split('?');
+              var results = pieces[1].split(':');
+              
+              condition = pieces[0];
+              conditionTrue = results[0];
+              conditionFalse = results[1] === undefined ? false : results[1];
+            }
+
             onChangeHandler = function(data)
             {
               options.update($el, testCondition(data));
@@ -180,7 +194,6 @@ flour.bindView = function(view)
             var data = view.get(bindOn);
             onChangeHandler(data);
           }
-
         });
 
       }());
