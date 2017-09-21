@@ -16,6 +16,13 @@ flour.addView('flour_log_console', function()
   view.template = 'flour_log_console';
   view.events = {};
 
+  //  Privates
+  var mId = 0;
+  var mLastId = false;
+  var mLastData = false;
+
+
+  //  Children
   view.consoleList = false;
 
 
@@ -37,7 +44,8 @@ flour.addView('flour_log_console', function()
   {
     var params = {
       data: data,
-      type: type
+      type: type,
+      count: false
     };
 
     if(flour.isObject(data))
@@ -46,7 +54,20 @@ flour.addView('flour_log_console', function()
       params.data = flour.filters['json_format'](data);
     }
 
-    view.consoleList.add(params);
+    if(params.data === mLastData)
+    {
+      var count = view.consoleList.get(mId, 'count');
+      count = count === false ? 2 : (count + 1);
+      view.consoleList.set(mId, 'count', count);
+    }
+    else
+    {
+      mId ++;
+      params.id = mId;
+
+      view.consoleList.add(params);
+      mLastData = params.data;
+    }
   };
 
 });
