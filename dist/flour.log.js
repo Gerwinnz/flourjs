@@ -464,7 +464,13 @@ flour.addList('flour_log_views_list', function()
   };
 
 });
-
+flour.addTemplate('flour_log', '<div class=\"flour-log-toggle\"></div> <div class=\"flour-log-console\">  <div class=\"flour-log-tabs\">    <div class=\"flour-log-tab flour-log-tab-active\" data-tab=\"console\">Console</div>     <div class=\"flour-log-tab\" data-tab=\"views\">Views <span class=\"flour-log-tab-stat\" flour-text=\"view_count\"></span></div>     <div class=\"flour-log-tab\" data-tab=\"store\">Store <span class=\"flour-log-tab-stat\" flour-text=\"store_count\"></span></div>   </div>   <div class=\"flour-log-panes\">    <div class=\"flour-log-pane\" data-tab=\"console\" flour-view=\"consoleView\"></div>     <div class=\"flour-log-pane\" data-tab=\"views\" flour-view=\"viewsView\"></div>     <div class=\"flour-log-pane\" data-tab=\"store\" flour-view=\"storeView\"></div>   </div> </div>');
+flour.addTemplate('flour_log_console', '<div>   <div flour-view=\"consoleList\">  </div> </div>');
+flour.addTemplate('flour_log_console_item', '<div class=\"flour-log-console-item-inner\">   {{#if is_object }}     <pre>{{ data }}</pre>  {{else}}    {{{ data }}}   {{/if}}</div>');
+flour.addTemplate('flour_log_store', '<div>   <div flour-view=\"storeList\"></div> </div>');
+flour.addTemplate('flour_log_store_item', '<div class=\"flour-log-store-item-inner\">   <div class=\"flour-log-store-item-key\">{{ key }}</div>   {{#if is_object }}     <pre>{{ data }}</pre>  {{else}}    {{ data }}   {{/if}}</div>');
+flour.addTemplate('flour_log_views', '<div>   <div flour-view=\"viewList\"></div> </div>');
+flour.addTemplate('flour_log_views_item', '<div class=\"flour-log-view-item-inner\">   <div class=\"flour-log-view-item-name\">{{ name }}</div>   <div class=\"flour-log-view-item-stat\">Id: {{ id }}</div>  <div class=\"flour-log-view-item-stat\">Template: {{ template }}</div>  <div class=\"flour-log-view-item-stat\">Helpers: {{ helpers }}</div></div>');
 
 
 
