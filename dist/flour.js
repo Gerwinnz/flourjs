@@ -442,22 +442,13 @@ flour.bindView = function(view)
     // Now itterate them
     $elements.each(function(index, el)
     {
-      var $el = false;
-
-      for(var i = 0, n = el.attributes.length; i < n; i ++)
+      var $el = $(el);
+      for(var binderName in flour.bind.binders)
       {
-        var attribute = el.attributes[i];
-        var name = attribute.nodeName;
-        var value = attribute.nodeValue;
-        
-        if(flour.bind.binders[name] !== undefined)
-        {
-          if($el === false)
-          {
-            $el = $(el);
-          }
-
-          bindElement($el, flour.bind.binders[name], value);
+        var attributeValue = $el.attr(binderName);
+        if(attributeValue !== undefined)
+        { 
+          bindElement($el, flour.bind.binders[binderName], attributeValue);
         }
       }
     });
