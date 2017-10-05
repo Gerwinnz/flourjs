@@ -186,12 +186,23 @@ flour.app = function(appName, options)
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
-      if(route.view !== currentViewName || JSON.stringify(route.params) !== JSON.stringify(currentViewParams))
+      var isDifferentView = route.view !== currentViewName;
+      var isDifferentParams = JSON.stringify(route.params) !== JSON.stringify(currentViewParams);
+
+      if(isDifferentView || isDifferentParams)
       {
-        // destroy old view
         var nextView;
         var lastView = views[current];
-        
+
+        if(!isDifferentView && lastView.routeUpdate)
+        {
+          var handled = lastView.routeUpdate(route);
+          currentViewParams = route.params;
+
+          if(handled !== false){
+            return;
+          }
+        }
 
         // calls will hide and gets hand over data if available
         if(lastView)
