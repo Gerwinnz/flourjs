@@ -33,6 +33,7 @@ flour.app = function(appName, options)
   var views = [];
   var cacheViewsCount = options.cache_views_count === undefined ? 5 : options.cache_views_count;
   var current = 0;
+  var currentRoute = undefined;
   var currentViewName = undefined;
   var currentViewParams = undefined;
 
@@ -186,18 +187,21 @@ flour.app = function(appName, options)
     // place the view into our app element
     if(flour.views[route.view] !== undefined)
     {
+      var isDifferentRoute = route.route !== currentRoute;
       var isDifferentView = route.view !== currentViewName;
       var isDifferentParams = JSON.stringify(route.params) !== JSON.stringify(currentViewParams);
 
-      if(isDifferentView || isDifferentParams)
+      if(isDifferentRoute || isDifferentView || isDifferentParams)
       {
         var nextView;
         var lastView = views[current];
 
+        // If the view's the same, ask it to handle the route change itself...
         if(!isDifferentView && lastView.routeUpdate)
         {
           var handled = lastView.routeUpdate(route);
           currentViewParams = route.params;
+          currentRoute = route.route;
 
           if(handled !== false){
             return;
@@ -241,6 +245,7 @@ flour.app = function(appName, options)
         self.displayView(nextView, lastView);
         
         // update currents for checking against
+        currentRoute = route.route;
         currentViewName = route.view;
         currentViewParams = route.params;
       }
