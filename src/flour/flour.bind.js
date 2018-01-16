@@ -59,7 +59,8 @@ flour.bindView = function(view)
     var filterParams = undefined;
 
     var isConditional = false;
-    var condition = false;
+    var isTernary = false;
+    var condition = undefined;
     var conditionTrue = true;
     var conditionFalse = false;
 
@@ -81,6 +82,7 @@ flour.bindView = function(view)
     value = value.replace(/\s/g, "");
     hasFilter = value.indexOf('|') === -1 ? false : true;
     isConditional = value.indexOf('=') === -1 ? false : true;
+    isTernary = value.indexOf('?') === -1 ? false : true;
 
     // Parse filter and filter params
     if(hasFilter)
@@ -118,27 +120,50 @@ flour.bindView = function(view)
     }
 
     // Parse condition
-    if(isConditional)
+    if(isConditional || isTernary)
     {
-      var pieces = value.split('=');
-      value = pieces[0];
-      condition = pieces[1];
+      if(isConditional){
+        var pieces = value.split('=');
+        value = pieces[0];
+        condition = pieces[1];
 
-      if(condition.indexOf('?') !== -1)
+        if(isTernary)
+        {
+          var pieces = condition.split('?');
+          var results = pieces[1].split(':');
+          
+          condition = pieces[0];
+          conditionTrue = results[0];
+          conditionFalse = results[1] === undefined ? false : results[1];
+
+          if(conditionTrue === 'true'){ conditionTrue = true; }
+          if(conditionFalse === 'false'){ conditionFalse = false; }
+        }
+
+        onChangeHandler = function(data)
+        {
+          data = data == condition ? conditionTrue : conditionFalse;
+          binder.update($el, data);
+        };
+      }
+      else
       {
-        var pieces = condition.split('?');
+        var pieces = value.split('?');
         var results = pieces[1].split(':');
         
-        condition = pieces[0];
+        value = pieces[0];
         conditionTrue = results[0];
         conditionFalse = results[1] === undefined ? false : results[1];
-      }
 
-      onChangeHandler = function(data)
-      {
-        data = data == condition ? conditionTrue : conditionFalse;
-        binder.update($el, data);
-      };
+        if(conditionTrue === 'true'){ conditionTrue = true; }
+        if(conditionFalse === 'false'){ conditionFalse = false; }
+
+        onChangeHandler = function(data)
+        {
+          data = data ? conditionTrue : conditionFalse;
+          binder.update($el, data);
+        };
+      }
     }
 
 
