@@ -617,14 +617,25 @@ flour.addBinder('show',
 {
   update: function($el, data)
   {
+    var display = $el.data('display');
     if(data)
     {
-      $el.css('display', 'block');
+      $el.css('display', display);
     }
     else
     {
       $el.css('display', 'none');
     }
+  },
+  attach: function($el, binding, view)
+  {
+    var displayDefault = $el.css('display');
+    if(displayDefault === 'none')
+    {
+      displayDefault = 'block';
+    }
+
+    $el.data('display', displayDefault);
   }
 });
 
