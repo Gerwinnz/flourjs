@@ -613,6 +613,7 @@ flour.addBinder('value',
 //
 //  Shows and hides the passed element depending on the data
 //
+//
 flour.addBinder('show', 
 {
   update: function($el, data)
@@ -666,14 +667,25 @@ flour.addBinder('hide',
 {
   update: function($el, data)
   {
+    var display = $el.data('display');
     if(data)
     {
       $el.css('display', 'none');
     }
     else
     {
-      $el.css('display', 'block');
+      $el.css('display', display);
     }
+  },
+  attach: function($el, binding, view)
+  {
+    var displayDefault = $el.css('display');
+    if(displayDefault === 'none')
+    {
+      displayDefault = 'block';
+    }
+
+    $el.data('display', displayDefault);
   }
 });
 
