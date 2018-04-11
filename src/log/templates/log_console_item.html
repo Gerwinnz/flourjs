@@ -1,11 +1,26 @@
-<div class="flour-log-console-item-inner"> 
+<div class="flour-log-console-item-inner flour-log-item-{{ type }}"> 
   {{#if is_object }} 
     <pre>{{ data }}</pre>
   {{else}}
-    {{{ data }}} 
+    <div>{{{ data }}} </div>
   {{/if}}
 
-  {{#if count}}
-    <div class="flour-log-count">{{ count }}</div>
+  {{#if extra}}
+  	<div class="flour-log-extra">
+	  	{{#if extra_is_object}}
+	  		<pre>{{ extra }}</pre>
+	  	{{else}}
+	  		<div>{{{ extra }}}</div>
+	  	{{/if}}
+	  </div>
   {{/if}}
+
+  <div class="flour-log-controls">
+  	{{#if extra}}
+  		<div class="flour-log-expand" data-id="{{ id }}"></div>
+  	{{/if}}
+	  {{#if count}}
+	    <div class="flour-log-count">{{ count }}</div>
+	  {{/if}}
+	</div>
 </div>

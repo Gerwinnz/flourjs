@@ -16,7 +16,8 @@ flour.addView('flour_log', function()
   view.template = 'flour_log';
   view.events = {
     'click .flour-log-tab': 'setTabEvent',
-    'click .flour-log-toggle': 'toggleConsole'
+    'click .flour-log-toggle': 'toggleConsole',
+    'click .flour-log-expand': 'expandLog'
   };
 
   // privates
@@ -121,7 +122,7 @@ flour.addView('flour_log', function()
   //
   // open close console
   //
-  view.toggleConsole = function()
+  view.toggleConsole = function(event, el)
   {
     if(view.el.hasClass('open'))
     {
@@ -142,13 +143,25 @@ flour.addView('flour_log', function()
   };
 
 
+
   //
-  // log
+  // logs
   //
-  view.log = function(data, type)
+  view.log = function(data, extra)
   {
-    view.consoleView.log(data, type);
+    view.consoleView.createLog(data, extra, 'log');
   };
+  
+  view.warn = function(data, extra)
+  {
+    view.consoleView.createLog(data, extra, 'warn');
+  };
+
+  view.error = function(data, extra)
+  {
+    view.consoleView.createLog(data, extra, 'error');
+  };
+  
 
 });
 
@@ -167,7 +180,10 @@ flour.addView('flour_log_console', function()
 
   // view params
   view.template = 'flour_log_console';
-  view.events = {};
+  view.events = {
+    'click .flour-log-clear-console': 'clearLogs',
+    'click .flour-log-expand': 'expandLog'
+  };
 
   //  Privates
   var mId = 0;
@@ -177,6 +193,8 @@ flour.addView('flour_log_console', function()
 
   //  Children
   view.consoleList = false;
+
+
 
 
   //
@@ -190,21 +208,30 @@ flour.addView('flour_log_console', function()
   };
 
 
+
+
   //
-  // log
+  // Create log
   //
-  view.log = function(data, type)
+  view.createLog = function(data, extra, type)
   {
     var params = {
       data: data,
       type: type,
+      extra: extra,
       count: false
     };
 
-    if(flour.isObject(data))
+    if(flour.isObject(data) || flour.isArray(data))
     {
       params.is_object = true;
       params.data = flour.filters['json_format'](data);
+    }
+
+    if(params.extra !== undefined && (flour.isObject(extra) || flour.isArray(extra)))
+    {
+      params.extra_is_object = true;
+      params.extra = flour.filters['json_format'](extra);
     }
 
     if(params.data === mLastData)
@@ -221,6 +248,30 @@ flour.addView('flour_log_console', function()
       view.consoleList.add(params);
       mLastData = params.data;
     }
+  };
+
+
+
+  //
+  //  Clear logs
+  //
+  view.clearLogs = function(event, el)
+  {
+    mLastData = undefined;
+    view.consoleList.removeAll();
+  };
+
+
+
+  //
+  //
+  //
+  view.expandLog = function(event, el)
+  {
+    var logId = el.data('id');
+    var item = view.consoleList.getItem(logId);
+
+    item.el.toggleClass('flour-log-expanded');
   };
 
 });
@@ -487,8 +538,8 @@ flour.addList('flour_log_views_list', function()
 
 });
 flour.addTemplate('flour_log', '<div class=\"flour-log-toggle\"></div> <div class=\"flour-log-console\">  <div class=\"flour-log-tabs\">    <div class=\"flour-log-tab flour-log-tab-active\" data-tab=\"console\">Console</div>     <div class=\"flour-log-tab\" data-tab=\"views\">Views <span class=\"flour-log-tab-stat\" flour-text=\"view_count\"></span></div>     <div class=\"flour-log-tab\" data-tab=\"store\">Store <span class=\"flour-log-tab-stat\" flour-text=\"store_count\"></span></div>   </div>   <div class=\"flour-log-panes\">    <div class=\"flour-log-pane\" data-tab=\"console\" flour-view=\"consoleView\"></div>     <div class=\"flour-log-pane\" data-tab=\"views\" flour-view=\"viewsView\"></div>     <div class=\"flour-log-pane\" data-tab=\"store\" flour-view=\"storeView\"></div>   </div> </div>');
-flour.addTemplate('flour_log_console', '<div>   <div flour-view=\"consoleList\">  </div> </div>');
-flour.addTemplate('flour_log_console_item', '<div class=\"flour-log-console-item-inner\">   {{#if is_object }}     <pre>{{ data }}</pre>  {{else}}    {{{ data }}}   {{/if}}  {{#if count}}    <div class=\"flour-log-count\">{{ count }}</div>  {{/if}}</div>');
+flour.addTemplate('flour_log_console', '<div> <div class=\"flour-log-console-actions\"><a class=\"flour-log-clear-console\">Clear</a></div>  <div flour-view=\"consoleList\">  </div> </div>');
+flour.addTemplate('flour_log_console_item', '<div class=\"flour-log-console-item-inner flour-log-item-{{ type }}\">   {{#if is_object }}     <pre>{{ data }}</pre>  {{else}}    <div>{{{ data }}} </div>  {{/if}}  {{#if extra}}  <div class=\"flour-log-extra\">  {{#if extra_is_object}}  <pre>{{ extra }}</pre>  {{else}}  <div>{{{ extra }}}</div>  {{/if}}  </div>  {{/if}}  <div class=\"flour-log-controls\">  {{#if extra}}  <div class=\"flour-log-expand\" data-id=\"{{ id }}\"></div>  {{/if}}  {{#if count}}    <div class=\"flour-log-count\">{{ count }}</div>  {{/if}}</div></div>');
 flour.addTemplate('flour_log_store', '<div>   <div flour-view=\"storeList\"></div> </div>');
 flour.addTemplate('flour_log_store_item', '<div class=\"flour-log-store-item-inner\">   <div class=\"flour-log-store-item-key\">{{ key }}</div>   {{#if is_object }}     <pre>{{ data }}</pre>  {{else}}    {{ data }}   {{/if}}</div>');
 flour.addTemplate('flour_log_views', '<div>   <div flour-view=\"viewList\"></div> </div>');
@@ -505,7 +556,7 @@ flour.addTemplate('flour_log_views_item', '<div class=\"flour-log-view-item-inne
 |
 */
 var styleTag = document.createElement("style");
-styleTag.innerHTML = '/*||| Contains the css for our flour log console||*/.flour-log{  position: fixed;  bottom: 10px;  right: 10px;  z-index: 100;}.flour-log-toggle{  height: 30px;  width: 30px;  background-color: rgba(0,0,0,.75);  color: #fff;  line-height: 30px;  border-radius: 15px;  cursor: pointer;}.flour-log-console{  position: fixed;  top: 10px;  right: 10px;  bottom: 50px;  width: 400px;    background-color: rgba(0,0,0,.75);  color: #fff;  display: none;}@media(max-width: 550px){  .flour-log-console{    top: 0px;    right: 0px;    left: 0px;    width: auto;  }}.flour-log.open .flour-log-console{  display: block;  -webkit-animation-name: openConsole;  animation-name: openConsole;  -webkit-animation-duration: 200ms;  animation-duration: 200ms;  -webkit-animation-fill-mode: both;  animation-fill-mode: both;  -webkit-transform-origin: right bottom;  transform-origin: right bottom;}.flour-log.close .flour-log-console{  -webkit-animation-name: closeConsole;  animation-name: closeConsole;  -webkit-animation-duration: 200ms;  animation-duration: 200ms;  -webkit-animation-fill-mode: both;  animation-fill-mode: both;  -webkit-transform-origin: right bottom;  transform-origin: right bottom;}.flour-log-tabs{  display: -webkit-flex;  display: flex;  background-color: rgba(0,0,0,.3);}.flour-log-tab{  position: relative;  padding: 10px;  text-align: center;  cursor: pointer;  flex: 1 0 0;  color: rgba(255, 255, 255, .7);  border-bottom: solid 2px rgba(255, 255, 255, .3);}.flour-log-tab-active{  color: #fff;  border-bottom: solid 2px #fff;}.flour-log-tab:last-of-type{  border-right: 0;}.flour-log-tab-stat{  display: inline-block;  margin: 0 0 0 4px;  width: 20px;  height: 20px;    font-size: 14px;  line-height: 20px;  text-align: center;  background-color: #039BE5;  border-radius: 10px;}.flour-log-pane{  display: none;  position: absolute;  top: 46px;  right: 0px;  bottom: 0px;  left: 0px;  overflow: auto;  -webkit-overflow-scrolling:touch;}.flour-log-pane-active{  display: block;}/*|| Console view styles|*/.flour-log-view-item{  position: relative;  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-view-item-name{  position: absolute;  top: 10px;  right: 10px;  font-size: 10px;}.flour-log-view-item-stat{  font-size: 12px;}.flour-log-view-item-inner{  border-left: solid 2px #03A9F4;  padding: 10px;  font-size: 12px;}.flour-log-view-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;}/*|| Console log styles|*/.flour-log-console-item{  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-console-item-inner{  position: relative;  border-left: solid 2px #03A9F4;  padding: 10px;  font-size: 12px;  font-family: monospace;}.flour-log-console-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;  word-wrap: break-word;}.flour-log-console-item-inner .flour-log-count{  position: absolute;  top: 10px;  right: 10px;  width: 20px;  height: 20px;    color: #fff;  font-size: 14px;  line-height: 20px;  text-align: center;  background-color: #039BE5;  border-radius: 10px;}/*|| Console store styles|*/.flour-log-store-item{  position: relative;  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-store-item-key{  position: absolute;  top: 10px;  right: 10px;  font-size: 10px;}.flour-log-store-item-inner{  border-left: solid 2px #03A9F4;  padding: 10px;  font-size: 12px;}.flour-log-store-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;}/*|| Open console|*/@-webkit-keyframes openConsole {  0% {    opacity: 0;    transform: translate(50%, 0%);  }  100% {    opacity: 1;    transform: translate(0%, 0%);  }}@keyframes openConsole {  0% {    opacity: 0;    transform: translate(50%, 0%);  }  100% {    opacity: 1;    transform: translate(0%, 0%);  }}/*|| Close console|*/@-webkit-keyframes closeConsole {  0% {    opacity: 1;    transform: translate(0%, 0%);  }  100% {    opacity: 0;    transform: translate(50%, 0%);  }}@keyframes closeConsole {  0% {    opacity: 1;    transform: translate(0%, 0%);  }  100% {    opacity: 0;    transform: translate(50%, 0%);  }}';
+styleTag.innerHTML = '/*||| Contains the css for our flour log console||*/.flour-log{  position: fixed;  bottom: 10px;  right: 10px;  z-index: 100;}.flour-log-toggle{  height: 30px;  width: 30px;  background-color: rgba(0,0,0,.75);  color: #fff;  line-height: 30px;  border-radius: 15px;  cursor: pointer;}.flour-log-console{  position: fixed;  top: 10px;  right: 10px;  bottom: 50px;  width: 400px;    background-color: rgba(0,0,0,.75);  color: #fff;  display: none;}@media(max-width: 550px){  .flour-log-console{    top: 0px;    right: 0px;    left: 0px;    width: auto;  }}.flour-log.open .flour-log-console{  display: block;  -webkit-animation-name: openConsole;  animation-name: openConsole;  -webkit-animation-duration: 200ms;  animation-duration: 200ms;  -webkit-animation-fill-mode: both;  animation-fill-mode: both;  -webkit-transform-origin: right bottom;  transform-origin: right bottom;}.flour-log.close .flour-log-console{  -webkit-animation-name: closeConsole;  animation-name: closeConsole;  -webkit-animation-duration: 200ms;  animation-duration: 200ms;  -webkit-animation-fill-mode: both;  animation-fill-mode: both;  -webkit-transform-origin: right bottom;  transform-origin: right bottom;}.flour-log-tabs{  display: -webkit-flex;  display: flex;  background-color: rgba(0,0,0,.3);}.flour-log-tab{  position: relative;  padding: 10px;  text-align: center;  cursor: pointer;  flex: 1 0 0;  color: rgba(255, 255, 255, .7);  border-bottom: solid 2px rgba(255, 255, 255, .3);}.flour-log-tab-active{  color: #fff;  border-bottom: solid 2px #fff;}.flour-log-tab:last-of-type{  border-right: 0;}.flour-log-tab-stat{  display: inline-block;  margin: 0 0 0 4px;  width: 20px;  height: 20px;    font-size: 14px;  line-height: 20px;  text-align: center;  background-color: #039BE5;  border-radius: 10px;}.flour-log-pane{  display: none;  position: absolute;  top: 46px;  right: 0px;  bottom: 0px;  left: 0px;  overflow: auto;  -webkit-overflow-scrolling:touch;}.flour-log-pane-active{  display: block;}/*|| Console view styles|*/.flour-log-view-item{  position: relative;  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-view-item-name{  position: absolute;  top: 10px;  right: 10px;  font-size: 10px;}.flour-log-view-item-stat{  font-size: 12px;}.flour-log-view-item-inner{  border-left: solid 2px #03A9F4;  padding: 10px;  font-size: 12px;}.flour-log-view-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;}/*|| Console log styles|*/.flour-log-console-actions{  padding: 10px;  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-console-actions a{  cursor: pointer;}.flour-log-console-item{  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-console-item-inner{  position: relative;  padding: 10px;  font-size: 12px;  font-family: monospace;}.flour-log-item-log{  border-left: solid 3px #03A9F4;}.flour-log-item-warn{  border-left: solid 3px #fdd835;}.flour-log-item-error{  border-left: solid 3px #ef5350;}.flour-log-console-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;  word-wrap: break-word;}.flour-log-console-item-inner .flour-log-controls{  position: absolute;  display: flex;  top: 10px;  right: 10px;}.flour-log-console-item-inner .flour-log-extra{  display: none;}.flour-log-console-item-inner .flour-log-expand{  width: 20px;  height: 20px;  margin-right: 5px;  color: #fff;  font-size: 14px;  line-height: 20px;  text-align: center;  background-color: rgba(0,0,0,.2);  border-radius: 10px;  cursor: pointer;}.flour-log-console-item-inner .flour-log-expand::before{  content: \'+\';}.flour-log-console-item-inner .flour-log-count{  width: 20px;  height: 20px;    color: #fff;  font-size: 14px;  line-height: 20px;  text-align: center;  background-color: #039BE5;  border-radius: 10px;}.flour-log-expanded .flour-log-console-item-inner .flour-log-extra{  display: block;}.flour-log-expanded .flour-log-console-item-inner .flour-log-expand::before{  content: \'-\';}/*|| Console store styles|*/.flour-log-store-item{  position: relative;  border-bottom: solid 1px rgba(0, 0, 0, .1);}.flour-log-store-item-key{  position: absolute;  top: 10px;  right: 10px;  font-size: 10px;}.flour-log-store-item-inner{  border-left: solid 2px #03A9F4;  padding: 10px;  font-size: 12px;}.flour-log-store-item pre{  margin: 0;  padding: 0;  font-size: 12px;  font-family: monospace;  overflow: hidden;}/*|| Open console|*/@-webkit-keyframes openConsole {  0% {    opacity: 0;    transform: translate(50%, 0%);  }  100% {    opacity: 1;    transform: translate(0%, 0%);  }}@keyframes openConsole {  0% {    opacity: 0;    transform: translate(50%, 0%);  }  100% {    opacity: 1;    transform: translate(0%, 0%);  }}/*|| Close console|*/@-webkit-keyframes closeConsole {  0% {    opacity: 1;    transform: translate(0%, 0%);  }  100% {    opacity: 0;    transform: translate(50%, 0%);  }}@keyframes closeConsole {  0% {    opacity: 1;    transform: translate(0%, 0%);  }  100% {    opacity: 0;    transform: translate(50%, 0%);  }}';
 document.getElementsByTagName("head")[0].appendChild(styleTag);
 
 

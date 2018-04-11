@@ -409,16 +409,6 @@ flour.generateLookup = function(data, key)
 
 
 
-/*
-|
-|	Consoles our an error
-|
-*/
-flour.error = function(error)
-{
-	console.error('flour: ' + error);
-};
-
 
 
 

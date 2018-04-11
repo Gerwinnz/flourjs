@@ -16,7 +16,8 @@ flour.addView('flour_log', function()
   view.template = 'flour_log';
   view.events = {
     'click .flour-log-tab': 'setTabEvent',
-    'click .flour-log-toggle': 'toggleConsole'
+    'click .flour-log-toggle': 'toggleConsole',
+    'click .flour-log-expand': 'expandLog'
   };
 
   // privates
@@ -121,7 +122,7 @@ flour.addView('flour_log', function()
   //
   // open close console
   //
-  view.toggleConsole = function()
+  view.toggleConsole = function(event, el)
   {
     if(view.el.hasClass('open'))
     {
@@ -142,12 +143,24 @@ flour.addView('flour_log', function()
   };
 
 
+
   //
-  // log
+  // logs
   //
-  view.log = function(data, type)
+  view.log = function(data, extra)
   {
-    view.consoleView.log(data, type);
+    view.consoleView.createLog(data, extra, 'log');
   };
+  
+  view.warn = function(data, extra)
+  {
+    view.consoleView.createLog(data, extra, 'warn');
+  };
+
+  view.error = function(data, extra)
+  {
+    view.consoleView.createLog(data, extra, 'error');
+  };
+  
 
 });

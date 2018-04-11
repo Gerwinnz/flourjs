@@ -1802,11 +1802,39 @@ var flour = flour || {};
 |
 |
 */
-flour.log = function(data, type)
+flour.log = function(data, extra)
 {
   if(flour.logView !== undefined)
   {
-    flour.logView.log(data, type);
+    flour.logView.log(data, extra);
+  }
+  else
+  {
+  	console.log(data);
+  }
+};
+
+flour.warn = function(data, extra)
+{
+	if(flour.logView !== undefined)
+  {
+    flour.logView.warn(data, extra);
+  }
+  else
+  {
+  	console.warn(data);
+  }
+};
+
+flour.error = function(data, extra)
+{
+	if(flour.logView !== undefined)
+  {
+    flour.logView.error(data, extra);
+  }
+  else
+  {
+  	console.error(data);
   }
 };
 
@@ -2566,16 +2594,6 @@ flour.generateLookup = function(data, key)
 
 
 
-
-/*
-|
-|	Consoles our an error
-|
-*/
-flour.error = function(error)
-{
-	console.error('flour: ' + error);
-};
 
 
 

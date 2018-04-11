@@ -53,6 +53,7 @@ flour.addView('main', function(){
 
     // check for empty task string
     if(task === ''){
+      flour.log('Error: Empty to do');
       view.find('.new-input').focus();
       return;
     }
