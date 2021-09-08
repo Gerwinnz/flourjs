@@ -1,5 +1,15 @@
 var flour = flour || {};
 
+
+
+
+/*
+|
+|
+|
+|
+|
+*/
 flour.view = 
 {
 	id: 0,
@@ -21,7 +31,6 @@ flour.view.add = function(name, view)
 	view.prototype = new flour.view.base();
 	flour.view.defined[name] = view;
 };
-
 
 
 flour.view.get = function(name, params)
@@ -61,8 +70,8 @@ flour.view.base = function()
 	|
 	|	Main view initialiser
 	|
-	|   @params: view params
-	|   @id: unique id
+	|   @params - view params
+	|   @id - unique id
 	|
 	| 	- Define view variables
 	|   - Call user defined init (constructor)

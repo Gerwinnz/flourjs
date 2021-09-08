@@ -2,6 +2,14 @@ var flour = flour || {};
 
 
 
+
+/*
+|
+|
+|
+|
+|
+*/
 flour.app = function(params)
 {
 	var instance = new flour_app(params);
