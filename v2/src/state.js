@@ -64,45 +64,52 @@ flour.state = function(name)
 	|	
 	|
 	*/
-	var changed = [];
-
 	var set = function(key, value)
 	{
 		var changedKey = false;
-		changed.length = 0;	
-		setValue(values, key, value);
+		var setResponse = setValue(values, key, value);
 
-		// TODO: set value should return true or false if there was a change and then we determine if we need to fire callbacks?
-		// TODO: should we have to get the values to call the callbacks? can this be more efficient?
-
-		for(var i = 0, n = changed.length; i < n; i ++)
+		if(setResponse.changes)
 		{
-			changedKey = changedKey === false ? changed[i] : changedKey + '.' + changed[i];
-			if(changeListeners[changedKey])
+			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
-				console.log('call back for: ' + changedKey);
-				changeListeners[changedKey](get(changedKey));
+				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
+				if(changeListeners[changedKey])
+				{
+					console.log('call back for: ' + changedKey);
+					changeListeners[changedKey](get(changedKey));
+				}
 			}
 		}
 	}
 
-	function setValue(obj, key, value)
+	function setValue(obj, key, value, changes)
 	{
-	    key = (typeof key === "string") ? key.split(".") : key;
+		key = (typeof key === "string") ? key.split(".") : key;
+		if(changes === undefined)
+		{
+			changes = [];
+		}
+
 	    var currentKey = key.shift();
-	    changed.push(currentKey);
+	    var valueChanged = false;
+	    changes.push(currentKey);
 
 	    if (key.length === 0)
 	    {
+	    	valueChanged = obj[currentKey] !== value;
 	        obj[currentKey] = value;
-	        return;
+	        return {
+	        	value: value,
+	        	changes: valueChanged ? changes : false
+	        };
 	    }
 	    else if (!obj.hasOwnProperty(currentKey))
 	    {
 	        obj[currentKey] = {};
 	    }
 
-	    setValue(obj[currentKey], key, value);
+	    return(setValue(obj[currentKey], key, value, changes));
 	}
 
 
