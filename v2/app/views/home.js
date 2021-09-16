@@ -13,6 +13,7 @@ flour.view.add('home', function(){
 
 	view.init = function(params)
 	{
+		view.state.set('name', 'gerwin');
 		view.render();
 	};
 

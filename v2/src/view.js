@@ -80,7 +80,7 @@ flour.view.base = function()
 	*/
 	this.initialize = function(params, id)
 	{
-		if(!this.state){ this.state = {}; }
+		if(!this.state){ this.state = flour.state(); }
 		if(!this.tag){ this.tag = 'div'; }
 		if(!this.events){ this.events = {}; }
 
