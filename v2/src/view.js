@@ -83,6 +83,7 @@ flour.view.base = function()
 		if(!this.state){ this.state = flour.state(); }
 		if(!this.tag){ this.tag = 'div'; }
 		if(!this.events){ this.events = {}; }
+		if(!this.refs){ this.refs = {}; }
 
 		this.el = document.createElement(this.tag);
 
@@ -112,8 +113,13 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
+		templateHTML = templateHTML.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
+			return this.state.get(tagInside);
+		});
+
 		this.el.innerHTML = templateHTML;
-		console.log('render template ' + this.template);
+
+		var elsWithEvents = this.el.querySelectorAll('[on-click]');
 	};
 
 
