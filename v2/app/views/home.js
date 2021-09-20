@@ -19,4 +19,10 @@ flour.view.add('home', function(){
 	};
 
 
+
+	view.test = function(event, el)
+	{
+		console.log(event, el);
+	}
+
 });

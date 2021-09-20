@@ -7,12 +7,16 @@
 		<script type="text/javascript" src="src/app.js"></script>
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
+		<script type="text/javascript" src="src/binding.js"></script>
+
+		<script type="text/javascript" src="src/bindings/click.js"></script>
 	</head>
 	<body>
 		<template id="flour-template.home">
 			<div>Hello world</div>
 			<div>
-				<p>Hi {{ user.name }}, Welcome to flourjs example application.</p>
+				<p>Hi {{user.name}}, Welcome to flourjs example application.</p>
+				<p>Hello {{user.name}}.</p>
 				<div>
 					<button class="button" on-click="test">Next</button>
 				</div>

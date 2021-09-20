@@ -86,6 +86,8 @@ flour.view.base = function()
 		if(!this.refs){ this.refs = {}; }
 
 		this.el = document.createElement(this.tag);
+		this.el.style.backgroundColor = '#eee';
+		this.el.style.padding = '8px';
 
 		if(this.template)
 		{
@@ -113,13 +115,32 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
+		var templateFragment = document.createElement('template');
 		templateHTML = templateHTML.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
 			return this.state.get(tagInside);
 		});
 
-		this.el.innerHTML = templateHTML;
 
-		var elsWithEvents = this.el.querySelectorAll('[on-click]');
+		//
+		templateFragment.innerHTML = templateHTML;
+
+
+		//
+		this.el.appendChild(templateFragment.content);
+
+
+		// attach bindings
+		for(var bindingName in flour.binding.defined)
+		{
+			var elements = this.el.querySelectorAll('[' + bindingName + ']');
+			if(elements.length > 0)
+			{
+				for(var i = 0, n = elements.length; i < n; i ++)
+				{
+					flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), this);
+				}
+			}
+		}
 	};
 
 
