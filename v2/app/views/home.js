@@ -15,14 +15,15 @@ flour.view.add('home', function(){
 	{
 		view.state.set('name', 'gerwin');
 		view.state.set('user.name', 'Gerwin');
+		view.state.set('count', 0);
 		view.render();
 	};
 
 
 
-	view.test = function(event, el)
+	view.incrementCount = function(event, el)
 	{
-		console.log(event, el);
-	}
+		view.state.set('count', view.state.get('count') + 1);
+	};
 
 });

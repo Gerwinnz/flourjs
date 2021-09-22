@@ -76,8 +76,7 @@ flour.state = function(name)
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
 				if(changeListeners[changedKey])
 				{
-					console.log('call back for: ' + changedKey);
-					changeListeners[changedKey](get(changedKey));
+					callChangeListeners(changedKey);
 				}
 			}
 		}
@@ -127,7 +126,33 @@ flour.state = function(name)
 	*/
 	var onChange = function(key, callback)
 	{
-		changeListeners[key] = callback;
+		if(changeListeners[key] === undefined)
+		{
+			changeListeners[key] = [];
+		}
+
+		changeListeners[key].push(callback);
+	};
+
+
+
+
+	/*
+	|
+	|
+	|	Call all the change listeners stored against a key
+	|
+	|   @key - string - name of stored value callbacks are stored which need to be called
+	|	
+	|
+	*/
+	function callChangeListeners(key)
+	{
+		var value = get(key);
+		for(var i = 0, n = changeListeners[key].length; i < n; i ++)
+		{
+			changeListeners[key][i](value);
+		}
 	};
 
 

@@ -116,16 +116,21 @@ flour.view.base = function()
 	this.render = function()
 	{
 		var templateFragment = document.createElement('template');
-		templateHTML = templateHTML.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
+		
+		// parse standard output tag
+		var html = templateHTML.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
 			return this.state.get(tagInside);
 		});
 
-
-		//
-		templateFragment.innerHTML = templateHTML;
+		// parse block tag
 
 
 		//
+		templateFragment.innerHTML = html;
+
+
+		//
+		this.el.innerHTML = '';
 		this.el.appendChild(templateFragment.content);
 
 
