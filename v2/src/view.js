@@ -115,14 +115,19 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
+		var html = templateHTML;
 		var templateFragment = document.createElement('template');
 		
 		// parse standard output tag
-		var html = templateHTML.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
+		html = html.replace(/{{[^#^/]\s?(\S*)\s?}}/g, (tag, tagInside) => {
 			return this.state.get(tagInside);
 		});
 
 		// parse block tag
+		html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, list, itemHTML) => {
+			console.log('list', list);
+			return itemHTML;
+		});
 
 
 		//
