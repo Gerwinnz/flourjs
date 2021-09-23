@@ -13,6 +13,7 @@ var flour = flour || {};
 flour.view = 
 {
 	id: 0,
+	elementUniqueId: 0,
 	defined: {}
 };
 
@@ -117,26 +118,45 @@ flour.view.base = function()
 	{
 		var html = templateHTML;
 		var templateFragment = document.createElement('template');
+		var blocks = [];
 		
+		// parse block tag
+		html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, list, itemHTML) => {
+			
+			flour.view.elementUniqueId ++;
+
+			var elementUniqueId = flour.view.elementUniqueId;
+			blocks.push({
+				type: 'list',
+				elementUniqueId: elementUniqueId,
+				stateKey: list,
+				html: itemHTML
+			});
+
+			return '<div id="flour-' + elementUniqueId + '">LIST GOES HERE</div>';
+		});
+
+
 		// parse standard output tag
-		html = html.replace(/{{[^#^/]\s?(\S*)\s?}}/g, (tag, tagInside) => {
+		html = html.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
 			return this.state.get(tagInside);
 		});
 
-		// parse block tag
-		html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, list, itemHTML) => {
-			console.log('list', list);
-			return itemHTML;
-		});
 
-
-		//
+		// set our template HTML to our parsed output
 		templateFragment.innerHTML = html;
 
 
-		//
+		// empty our view element and append our fragment contents
 		this.el.innerHTML = '';
 		this.el.appendChild(templateFragment.content);
+
+
+		// go through our blocks and fetch their destination element
+		for(var i = 0, n = blocks.length; i < n; i ++)
+		{
+			blocks[i].el = this.el.querySelector('#flour-' + blocks[i].elementUniqueId);
+		}
 
 
 		// attach bindings
@@ -151,6 +171,9 @@ flour.view.base = function()
 				}
 			}
 		}
+
+
+		console.log(blocks);
 	};
 
 

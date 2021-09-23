@@ -13,9 +13,10 @@ flour.view.add('home', function(){
 
 	view.init = function(params)
 	{
-		view.state.set('name', 'gerwin');
 		view.state.set('user.name', 'Gerwin');
 		view.state.set('count', 0);
+		view.state.set('items', []);
+		
 		view.render();
 	};
 
