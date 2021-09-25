@@ -130,10 +130,11 @@ flour.view.base = function()
 				type: 'list',
 				elementUniqueId: elementUniqueId,
 				stateKey: list,
-				html: itemHTML
+				html: itemHTML,
+				items: []
 			});
 
-			return '<div id="flour-' + elementUniqueId + '">LIST GOES HERE</div>';
+			return '<div id="flour-' + elementUniqueId + '"></div>';
 		});
 
 
@@ -156,6 +157,12 @@ flour.view.base = function()
 		for(var i = 0, n = blocks.length; i < n; i ++)
 		{
 			blocks[i].el = this.el.querySelector('#flour-' + blocks[i].elementUniqueId);
+
+			if(blocks[i].type === 'list')
+			{
+				var items = this.state.get(blocks[i].stateKey);
+				console.log('list items', items);
+			}
 		}
 
 
@@ -171,6 +178,8 @@ flour.view.base = function()
 				}
 			}
 		}
+
+		window.templateFragment = templateFragment;
 
 
 		console.log(blocks);

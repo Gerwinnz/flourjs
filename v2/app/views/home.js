@@ -3,7 +3,6 @@ flour.view.add('home', function(){
 
 	var view = this;
 
-	view.tag = 'div';
 	view.template = 'home';
 	view.events = {
 
@@ -15,7 +14,20 @@ flour.view.add('home', function(){
 	{
 		view.state.set('user.name', 'Gerwin');
 		view.state.set('count', 0);
-		view.state.set('items', []);
+		view.state.set('items', [
+			{
+				id: 0,
+				name: 'Gerwin'
+			},
+			{
+				id: 1,
+				name: 'Sam'
+			},
+			{
+				id: 2,
+				name: 'Marlia'
+			}
+		]);
 		
 		view.render();
 	};
@@ -25,6 +37,7 @@ flour.view.add('home', function(){
 	view.incrementCount = function(event, el)
 	{
 		view.state.set('count', view.state.get('count') + 1);
+		//view.state.setItem('items', 1, 'name', 'Sam Barton');
 	};
 
 });
