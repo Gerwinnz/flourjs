@@ -116,80 +116,9 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
-		var html = templateHTML;
-		var templateFragment = document.createElement('template');
-		var blocks = [];
-		
-		// parse block tag
-		html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, list, itemHTML) => {
-			
-			flour.view.elementUniqueId ++;
-
-			var elementUniqueId = flour.view.elementUniqueId;
-			blocks.push({
-				type: 'list',
-				elementUniqueId: elementUniqueId,
-				stateKey: list,
-				html: itemHTML,
-				items: []
-			});
-
-			return '<div id="flour-' + elementUniqueId + '"></div>';
-		});
-
-
-		// parse standard output tag
-		html = html.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
-			return this.state.get(tagInside);
-		});
-
-
-		// set our template HTML to our parsed output
-		templateFragment.innerHTML = html;
-
-
-		// empty our view element and append our fragment contents
 		this.el.innerHTML = '';
-		this.el.appendChild(templateFragment.content);
-
-
-		// go through our blocks and fetch their destination element
-		for(var i = 0, n = blocks.length; i < n; i ++)
-		{
-			blocks[i].el = this.el.querySelector('#flour-' + blocks[i].elementUniqueId);
-
-			if(blocks[i].type === 'list')
-			{
-				var items = this.state.get(blocks[i].stateKey);
-				console.log('list items', items);
-			}
-		}
-
-
-		// attach bindings
-		for(var bindingName in flour.binding.defined)
-		{
-			var elements = this.el.querySelectorAll('[' + bindingName + ']');
-			if(elements.length > 0)
-			{
-				for(var i = 0, n = elements.length; i < n; i ++)
-				{
-					flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), this);
-				}
-			}
-		}
-
-		window.templateFragment = templateFragment;
-
-
-		console.log(blocks);
+		this.el.appendChild(flour.template.parse(templateHTML, this.state, this));
 	};
 
-
-
-	this.createState = function()
-	{
-		return {};
-	};
 
 };

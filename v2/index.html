@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
 		<script type="text/javascript" src="src/binding.js"></script>
+		<script type="text/javascript" src="src/template.js"></script>
 
 		<script type="text/javascript" src="src/bindings/click.js"></script>
 		<script type="text/javascript" src="src/bindings/text.js"></script>
@@ -20,12 +21,13 @@
 				<div>
 					{{#list items}}
 						<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-							List item
+							List item: {{name}}
 						</div>
 					{{/list}}
 				</div>
 				<div>
 					<button class="button" on-click="incrementCount">Increment count</button>
+					<button class="button" on-click="render">Re-render</button>
 				</div>
 			</div>
 		</template>

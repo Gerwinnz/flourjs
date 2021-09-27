@@ -10,9 +10,9 @@ var flour = flour || {};
 |
 |
 */
-flour.state = function(name)
+flour.state = function(defaultValues)
 {
-	var values = {};
+	var values = defaultValues ? defaultValues : {};
 	var changeListeners = {};
 
 
