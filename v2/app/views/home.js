@@ -36,7 +36,7 @@ flour.view.add('home', function(){
 
 	view.incrementCount = function(event, el)
 	{
-		view.state.set('count', view.state.get('count') + 1);
+		view.state.set('count', parseInt(view.state.get('count')) + 1);
 		//view.state.setItem('items', 1, 'name', 'Sam Barton');
 	};
 

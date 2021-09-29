@@ -7,12 +7,14 @@ flour.binding.add('flour-text',
 	{
 		element.innerText = view.state.get(attributeValue);
 
-		view.state.onChange(attributeValue, function(val)
+		var remove = view.state.onChange(attributeValue, function(val)
 		{
 			element.innerText = val;
 		});
 
-		// TODO: return a remove callback?
+		return function(){
+			remove();
+		}
 	},
 
 

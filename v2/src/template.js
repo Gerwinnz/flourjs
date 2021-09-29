@@ -27,6 +27,7 @@ flour.template.parse = function(html, state, view)
 {
 	var templateFragment = document.createElement('template');
 	var blocks = [];
+	var bindingCleanupCallbacks = [];
 	
 
 	//
@@ -76,7 +77,7 @@ flour.template.parse = function(html, state, view)
 			items.forEach((item) => 
 			{
 				var itemState = flour.state(item);
-				blocks[i].el.appendChild(flour.template.parse(blocks[i].html, itemState, view));
+				blocks[i].el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
 			});
 		}
 	}
@@ -92,12 +93,27 @@ flour.template.parse = function(html, state, view)
 		{
 			for(var i = 0, n = elements.length; i < n; i ++)
 			{
-				flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
+				var cleanup = flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
+				if(typeof cleanup === 'function')
+				{
+					bindingCleanupCallbacks.push(cleanup);
+				}
 			}
 		}
 	}
 
+	console.log('binding cleanups', bindingCleanupCallbacks);
+
+
 
 	// return the fragment
-	return templateFragment.content;
+	return {
+		fragment: templateFragment.content,
+		cleanup: function(){
+			for(var i = 0, n = bindingCleanupCallbacks.length; i < n; i ++)
+			{
+				bindingCleanupCallbacks[i]();
+			}
+		}
+	};
 };

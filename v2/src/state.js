@@ -131,9 +131,22 @@ flour.state = function(defaultValues)
 			changeListeners[key] = [];
 		}
 
-		changeListeners[key].push(callback);
+		var length = changeListeners[key].push(callback);
+
+		console.log('add change listener: ' + key, changeListeners[key]);
+
+		return function(){
+			changeListeners[key][length - 1] = null;
+			console.log('remove event listener: ' + key, length - 1);
+		};
 	};
 
+
+
+	var offChange = function(key, callback)
+	{
+
+	};
 
 
 
@@ -151,7 +164,10 @@ flour.state = function(defaultValues)
 		var value = get(key);
 		for(var i = 0, n = changeListeners[key].length; i < n; i ++)
 		{
-			changeListeners[key][i](value);
+			if(changeListeners[key][i])
+			{
+				changeListeners[key][i](value);
+			}
 		}
 	};
 

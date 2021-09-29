@@ -63,6 +63,7 @@ flour.view.get = function(name, params)
 flour.view.base = function()
 {
 	var templateHTML = null;
+	var templateInstance = null;
 
 
 
@@ -116,8 +117,15 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
+		if(templateInstance)
+		{
+			templateInstance.cleanup();
+		}
+
+		templateInstance = flour.template.parse(templateHTML, this.state, this);
+
 		this.el.innerHTML = '';
-		this.el.appendChild(flour.template.parse(templateHTML, this.state, this));
+		this.el.appendChild(templateInstance.fragment);
 	};
 
 
