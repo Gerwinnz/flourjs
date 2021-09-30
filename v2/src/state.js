@@ -12,8 +12,9 @@ var flour = flour || {};
 */
 flour.state = function(defaultValues)
 {
-	var values = defaultValues ? defaultValues : {};
-	var changeListeners = {};
+	var mValues = defaultValues ? defaultValues : {};
+	var mChangeListeners = {};
+	var mId = 0;
 
 
 
@@ -29,7 +30,7 @@ flour.state = function(defaultValues)
 	*/
 	var get = function(key)
 	{
-		return getValue(values, key);
+		return getValue(mValues, key);
 	};
 
 	function getValue(obj, key)
@@ -67,14 +68,14 @@ flour.state = function(defaultValues)
 	var set = function(key, value)
 	{
 		var changedKey = false;
-		var setResponse = setValue(values, key, value);
+		var setResponse = setValue(mValues, key, value);
 
 		if(setResponse.changes)
 		{
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
-				if(changeListeners[changedKey])
+				if(mChangeListeners[changedKey])
 				{
 					callChangeListeners(changedKey);
 				}
@@ -126,26 +127,36 @@ flour.state = function(defaultValues)
 	*/
 	var onChange = function(key, callback)
 	{
-		if(changeListeners[key] === undefined)
+		var id = mId;
+		mId ++;
+
+		if(mChangeListeners[key] === undefined)
 		{
-			changeListeners[key] = [];
+			mChangeListeners[key] = [];
 		}
 
-		var length = changeListeners[key].push(callback);
+		var length = mChangeListeners[key].push(
+		{
+			id: id,
+			calls: 0,
+			callback: callback
+		});
 
-		console.log('add change listener: ' + key, changeListeners[key]);
+		console.log('add change listener: ' + key, mChangeListeners[key]);
 
 		return function(){
-			changeListeners[key][length - 1] = null;
-			console.log('remove event listener: ' + key, length - 1);
+			for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
+			{
+				if(mChangeListeners[key][i].id === id)
+				{
+					mChangeListeners[key].splice(i,1);
+					i --;
+					n --;
+				}
+			}
+			
+			console.log('remove event listener: ' + key, id);
 		};
-	};
-
-
-
-	var offChange = function(key, callback)
-	{
-
 	};
 
 
@@ -162,11 +173,12 @@ flour.state = function(defaultValues)
 	function callChangeListeners(key)
 	{
 		var value = get(key);
-		for(var i = 0, n = changeListeners[key].length; i < n; i ++)
+		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{
-			if(changeListeners[key][i])
+			if(mChangeListeners[key][i])
 			{
-				changeListeners[key][i](value);
+				mChangeListeners[key][i].callback(value);
+				mChangeListeners[key][i].calls ++;
 			}
 		}
 	};
@@ -184,7 +196,8 @@ flour.state = function(defaultValues)
 	return {
 		get: get,
 		set: set,
-		values: values,
-		onChange: onChange
+		values: mValues,
+		onChange: onChange,
+		changeListeners: mChangeListeners
 	};
 };

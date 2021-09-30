@@ -20,18 +20,6 @@ flour.binding.add('flour-value',
 		return function(){
 			remove();
 		}
-	},
-
-
-	remove: function()
-	{
-
-	},
-
-
-	update: function()
-	{
-
 	}
 
 });

@@ -27,7 +27,7 @@ flour.template.parse = function(html, state, view)
 {
 	var templateFragment = document.createElement('template');
 	var blocks = [];
-	var bindingCleanupCallbacks = [];
+	var cleanupCallbacks = [];
 	
 
 	//
@@ -69,8 +69,11 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
-		blocks[i].el = templateFragment.content.querySelector('#flour-' + blocks[i].elementUniqueId);
+		var range = document.createRange();
 
+		blocks[i].el = templateFragment.content.querySelector('#flour-' + blocks[i].elementUniqueId);
+		//blocks[i].fragment = document.createDocumentFragment();
+		
 		if(blocks[i].type === 'list')
 		{
 			var items = state.get(blocks[i].stateKey);
@@ -79,6 +82,9 @@ flour.template.parse = function(html, state, view)
 				var itemState = flour.state(item);
 				blocks[i].el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
 			});
+
+			// blocks[i].el.innerHTML = 'DIV';
+			// blocks[i].el.parentNode.replaceChild(blocks[i].fragment, blocks[i].el);			
 		}
 	}
 
@@ -96,13 +102,13 @@ flour.template.parse = function(html, state, view)
 				var cleanup = flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
 				if(typeof cleanup === 'function')
 				{
-					bindingCleanupCallbacks.push(cleanup);
+					cleanupCallbacks.push(cleanup);
 				}
 			}
 		}
 	}
 
-	console.log('binding cleanups', bindingCleanupCallbacks);
+	console.log('binding cleanups', cleanupCallbacks);
 
 
 
@@ -110,9 +116,9 @@ flour.template.parse = function(html, state, view)
 	return {
 		fragment: templateFragment.content,
 		cleanup: function(){
-			for(var i = 0, n = bindingCleanupCallbacks.length; i < n; i ++)
+			for(var i = 0, n = cleanupCallbacks.length; i < n; i ++)
 			{
-				bindingCleanupCallbacks[i]();
+				cleanupCallbacks[i]();
 			}
 		}
 	};

@@ -15,18 +15,6 @@ flour.binding.add('flour-text',
 		return function(){
 			remove();
 		}
-	},
-
-
-	remove: function()
-	{
-
-	},
-
-
-	update: function()
-	{
-
 	}
 
 });

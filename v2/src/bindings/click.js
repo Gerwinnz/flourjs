@@ -12,18 +12,6 @@ flour.binding.add('on-click',
 				view[attributeValue](event, element);
 			});
 		}
-	},
-
-
-	remove: function()
-	{
-
-	},
-
-
-	update: function()
-	{
-
 	}
 
 });
