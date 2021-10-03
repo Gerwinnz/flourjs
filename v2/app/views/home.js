@@ -34,10 +34,17 @@ flour.view.add('home', function(){
 
 
 
-	view.incrementCount = function(event, el)
+	view.handleIncrementCountClick = function(event, el)
 	{
 		view.state.set('count', parseInt(view.state.get('count')) + 1);
 		//view.state.setItem('items', 1, 'name', 'Sam Barton');
+	};
+
+
+
+	view.handleListItemIncrementCountClick = function(event, el)
+	{
+		console.log('oi oi');
 	};
 
 });

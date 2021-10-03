@@ -65,6 +65,27 @@ flour.template.parse = function(html, state, view)
 
 
 	//
+	// attach bindings
+	//
+	for(var bindingName in flour.binding.defined)
+	{
+		var elements = templateFragment.content.querySelectorAll('[' + bindingName + ']');
+		if(elements.length > 0)
+		{
+			for(var i = 0, n = elements.length; i < n; i ++)
+			{
+				var cleanup = flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
+				if(typeof cleanup === 'function')
+				{
+					cleanupCallbacks.push(cleanup);
+				}
+			}
+		}
+	}
+
+
+
+	//
 	// go through our blocks and fetch their destination element
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
@@ -85,26 +106,6 @@ flour.template.parse = function(html, state, view)
 
 			// blocks[i].el.innerHTML = 'DIV';
 			// blocks[i].el.parentNode.replaceChild(blocks[i].fragment, blocks[i].el);			
-		}
-	}
-
-
-	//
-	// attach bindings
-	//
-	for(var bindingName in flour.binding.defined)
-	{
-		var elements = templateFragment.content.querySelectorAll('[' + bindingName + ']');
-		if(elements.length > 0)
-		{
-			for(var i = 0, n = elements.length; i < n; i ++)
-			{
-				var cleanup = flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
-				if(typeof cleanup === 'function')
-				{
-					cleanupCallbacks.push(cleanup);
-				}
-			}
 		}
 	}
 

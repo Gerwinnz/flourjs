@@ -25,12 +25,13 @@
 				<div>
 					{{#list items}}
 						<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-							List item: {{name}}
+							<div>List item: {{name}}</div>
+							<div><button on-click="handleListItemIncrementCountClick">Increment count</button>
 						</div>
 					{{/list}}
 				</div>
 				<div>
-					<button class="button" on-click="incrementCount">Increment count</button>
+					<button class="button" on-click="handleIncrementCountClick">Increment count</button>
 					<button class="button" on-click="render">Re-render</button>
 				</div>
 			</div>
