@@ -11,7 +11,17 @@ var flour = flour || {};
 |
 */
 flour.template = {
-	elementUniqueId: 0
+	elementUniqueId: 0,
+
+	getElementIndex: function(el)
+	{
+		var siblings = el.parentNode.children;
+		for(var i = 0, n = siblings.length; i < n; i ++){
+			if(siblings[i] === el){
+				return i;
+			}
+		}
+	}
 };
 
 
@@ -28,6 +38,7 @@ flour.template.parse = function(html, state, view)
 	var templateFragment = document.createElement('template');
 	var blocks = [];
 	var cleanupCallbacks = [];
+
 	
 
 	//
@@ -90,10 +101,9 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
-		var range = document.createRange();
-
 		blocks[i].el = templateFragment.content.querySelector('#flour-' + blocks[i].elementUniqueId);
-		//blocks[i].fragment = document.createDocumentFragment();
+		blocks[i].el.removeAttribute('id');
+		blocks[i].pos = flour.template.getElementIndex(blocks[i].el);
 		
 		if(blocks[i].type === 'list')
 		{
@@ -102,14 +112,9 @@ flour.template.parse = function(html, state, view)
 			{
 				var itemState = flour.state(item);
 				blocks[i].el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
-			});
-
-			// blocks[i].el.innerHTML = 'DIV';
-			// blocks[i].el.parentNode.replaceChild(blocks[i].fragment, blocks[i].el);			
+			});	
 		}
 	}
-
-	console.log('binding cleanups', cleanupCallbacks);
 
 
 

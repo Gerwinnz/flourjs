@@ -22,14 +22,14 @@
 				<div>
 					<input type="text" flour-value="count" />
 				</div>
-				<div>
-					{{#list items}}
-						<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px; display: flex;">
-							<div style="flex: 1;">List item: {{name}}</div>
-							<div><button on-click="handleListItemIncrementCountClick">Increment count</button>
-						</div>
-					{{/list}}
-				</div>
+				
+				{{#list items}}
+					<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px; display: flex;">
+						<div style="flex: 1;">List item: {{name}}</div>
+						<div><button on-click="handleListItemIncrementCountClick">Increment count</button>
+					</div>
+				{{/list}}
+				
 				<div>
 					<button class="button" on-click="handleIncrementCountClick">Increment count</button>
 					<button class="button" on-click="render">Re-render</button>
