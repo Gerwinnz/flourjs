@@ -11,6 +11,7 @@
 
 	var homeView = flour.view.get('home');
 	document.getElementById('home-view').appendChild(homeView.el);
+	
 	console.log('home view', homeView);
 
 }());

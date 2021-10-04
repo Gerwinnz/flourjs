@@ -7,9 +7,9 @@ flour.binding.add('flour-value',
 	{
 		element.value = view.state.get(attributeValue);
 
-		var remove = view.state.onChange(attributeValue, function(val)
+		var remove = view.state.onChange(attributeValue, function(event)
 		{
-			element.value = val;
+			element.value = event.value;
 		});
 
 		element.addEventListener('input', function()

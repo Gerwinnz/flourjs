@@ -67,6 +67,7 @@ flour.state = function(defaultValues)
 	*/
 	var set = function(key, value)
 	{
+		var changeType = 'change';
 		var changedKey = false;
 		var setResponse = setValue(mValues, key, value);
 
@@ -77,7 +78,7 @@ flour.state = function(defaultValues)
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
 				if(mChangeListeners[changedKey])
 				{
-					callChangeListeners(changedKey);
+					callChangeListeners(changedKey, changeType);
 				}
 			}
 		}
@@ -111,6 +112,20 @@ flour.state = function(defaultValues)
 
 	    return(setValue(obj[currentKey], key, value, changes));
 	}
+
+
+
+	var addItem = function(listKey, newItem, newItemIndex)
+	{
+
+	};
+
+
+
+	var updateItem = function(listKey, id, key, value)
+	{
+
+	};
 
 
 
@@ -166,14 +181,19 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	function callChangeListeners(key)
+	function callChangeListeners(key, eventType)
 	{
 		var value = get(key);
+		var event = {
+			value: value,
+			type: eventType
+		};
+
 		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{
 			if(mChangeListeners[key][i])
 			{
-				mChangeListeners[key][i].callback(value);
+				mChangeListeners[key][i].callback(event);
 				mChangeListeners[key][i].calls ++;
 			}
 		}
@@ -192,6 +212,10 @@ flour.state = function(defaultValues)
 	return {
 		get: get,
 		set: set,
+
+		addItem: addItem,
+		updateItem: updateItem,
+
 		values: mValues,
 		onChange: onChange
 	};
