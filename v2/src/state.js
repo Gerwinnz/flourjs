@@ -142,8 +142,6 @@ flour.state = function(defaultValues)
 			callback: callback
 		});
 
-		console.log('add change listener: ' + key, mChangeListeners[key]);
-
 		return function(){
 			for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 			{
@@ -154,8 +152,6 @@ flour.state = function(defaultValues)
 					n --;
 				}
 			}
-			
-			console.log('remove event listener: ' + key, id);
 		};
 	};
 
@@ -197,7 +193,6 @@ flour.state = function(defaultValues)
 		get: get,
 		set: set,
 		values: mValues,
-		onChange: onChange,
-		changeListeners: mChangeListeners
+		onChange: onChange
 	};
 };
