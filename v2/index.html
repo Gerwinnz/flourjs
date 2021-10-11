@@ -5,6 +5,7 @@
 		<title>Flour JS</title>
 
 		<script type="text/javascript" src="src/app.js"></script>
+		<script type="text/javascript" src="src/util.js"></script>
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
 		<script type="text/javascript" src="src/binding.js"></script>
@@ -32,7 +33,11 @@
 				{{/list}}
 				
 				<div>
+					<input type="text" flour-value="new_item_name" />
 					<button class="button" on-click="handleAddItemClick">Add item</button>
+				</div>
+
+				<div>
 					<button class="button" on-click="render">Re-render</button>
 				</div>
 			</div>

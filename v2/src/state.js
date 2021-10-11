@@ -117,7 +117,12 @@ flour.state = function(defaultValues)
 
 	var addItem = function(listKey, newItem, newItemIndex)
 	{
+		var targetArray = get(listKey);
 
+		if(!flour.util.isArray(targetArray))
+		{
+			flour.util.throw('List must be an array');
+		}
 	};
 
 
