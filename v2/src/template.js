@@ -61,6 +61,7 @@ flour.template.parse = function(html, state, view)
 	});
 
 
+
 	//
 	// parse standard output tag
 	//
@@ -69,10 +70,12 @@ flour.template.parse = function(html, state, view)
 	});
 
 
+
 	//
 	// set our template HTML to our parsed output
 	//
 	templateFragment.innerHTML = html;
+
 
 
 	//
@@ -108,6 +111,12 @@ flour.template.parse = function(html, state, view)
 		if(blocks[i].type === 'list')
 		{
 			var items = state.get(blocks[i].stateKey);
+
+			state.onChange(blocks[i].stateKey, function(event)
+			{
+				console.log(event);
+			});
+
 			items.forEach((item) => 
 			{
 				var itemState = flour.state(item);

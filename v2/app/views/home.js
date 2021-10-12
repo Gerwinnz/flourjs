@@ -41,11 +41,12 @@ flour.view.add('home', function(){
 
 	view.handleAddItemClick = function(event, el)
 	{
-		view.state.set('count', parseInt(view.state.get('count')) + 1);
+		//view.state.set('count', parseInt(view.state.get('count')) + 1);
 		
 		view.state.addItem('items', {
 			id: itemId,
-			name: view.state.get('new_item_name')
+			name: view.state.get('new_item_name'),
+			count: 0
 		});
 
 		view.state.set('new_item_name', '');

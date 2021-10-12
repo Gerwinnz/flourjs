@@ -16,6 +16,12 @@ flour.state = function(defaultValues)
 	var mChangeListeners = {};
 	var mId = 0;
 
+	var changeTypes = {
+		'change': 'change',
+		'add': 'add',
+		'remove': 'remove'
+	};
+
 
 
 
@@ -30,7 +36,18 @@ flour.state = function(defaultValues)
 	*/
 	var get = function(key)
 	{
-		return getValue(mValues, key);
+		var value = getValue(mValues, key);
+
+		if(flour.util.isArray(value))
+		{
+			value = JSON.parse(JSON.stringify(value));
+		}
+		else if(flour.util.isObject(value))
+		{
+			value = JSON.parse(JSON.stringify(value));
+		}
+
+		return value;
 	};
 
 	function getValue(obj, key)
@@ -65,9 +82,9 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	var set = function(key, value)
+	var set = function(key, value, changeType)
 	{
-		var changeType = 'change';
+		var changeType = changeType ? changeType : changeTypes.change;
 		var changedKey = false;
 		var setResponse = setValue(mValues, key, value);
 
@@ -123,6 +140,10 @@ flour.state = function(defaultValues)
 		{
 			flour.util.throw('List must be an array');
 		}
+
+		targetArray.push(newItem);
+
+		set(listKey, targetArray, changeTypes.add);
 	};
 
 
