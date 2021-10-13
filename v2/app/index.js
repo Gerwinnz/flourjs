@@ -14,4 +14,6 @@
 	
 	flour.util.log('home view', homeView);
 
+	window.homeView = homeView;
+
 }());

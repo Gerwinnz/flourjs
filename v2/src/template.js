@@ -44,20 +44,20 @@ flour.template.parse = function(html, state, view)
 	//
 	// parse block tags
 	//
-	html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, list, itemHTML) => {
+	html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, listName, itemHTML) => {
 		
 		flour.template.elementUniqueId ++;
 
-		var elementUniqueId = flour.template.elementUniqueId;
+		var elementId = flour.template.elementUniqueId;
 		blocks.push({
 			type: 'list',
-			elementUniqueId: elementUniqueId,
-			stateKey: list,
+			elementId: elementId,
+			key: listName,
 			html: itemHTML,
 			items: []
 		});
 
-		return '<div id="flour-' + elementUniqueId + '"></div>';
+		return '<div id="flour-' + elementId + '"></div>';
 	});
 
 
@@ -106,15 +106,15 @@ flour.template.parse = function(html, state, view)
 	{
 		(function(block){
 
-			block.el = templateFragment.content.querySelector('#flour-' + block.elementUniqueId);
+			block.el = templateFragment.content.querySelector('#flour-' + block.elementId);
 			block.el.removeAttribute('id');
 			block.pos = flour.template.getElementIndex(block.el);
 			
 			if(block.type === 'list')
 			{
-				var items = state.get(block.stateKey);
+				var items = state.get(block.key);
 
-				var cleanup = state.onChange(block.stateKey, function(event)
+				var cleanup = state.onChange(block.key, function(event)
 				{
 					if(event.type === 'add')
 					{
