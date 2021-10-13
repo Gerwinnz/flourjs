@@ -16,7 +16,7 @@ flour.state = function(defaultValues)
 	var mChangeListeners = {};
 	var mId = 0;
 
-	var changeTypes = {
+	var mChangeTypes = {
 		'change': 'change',
 		'add': 'add',
 		'remove': 'remove'
@@ -82,10 +82,10 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	var set = function(key, value, changeType)
+	var set = function(key, value, changeEvent)
 	{
-		var changeType = changeType ? changeType : changeTypes.change;
 		var changedKey = false;
+		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.change};
 		var setResponse = setValue(mValues, key, value);
 
 		if(setResponse.changes)
@@ -95,7 +95,9 @@ flour.state = function(defaultValues)
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
 				if(mChangeListeners[changedKey])
 				{
-					callChangeListeners(changedKey, changeType);
+					changeEvent.key = changedKey;
+					changeEvent.value = get(changedKey);
+					callChangeListeners(changedKey, changeEvent);
 				}
 			}
 		}
@@ -134,16 +136,48 @@ flour.state = function(defaultValues)
 
 	var addItem = function(listKey, newItem, newItemIndex)
 	{
+		var position = 0;
 		var targetArray = get(listKey);
-
 		if(!flour.util.isArray(targetArray))
 		{
 			flour.util.throw('List must be an array');
 		}
 
-		targetArray.push(newItem);
 
-		set(listKey, targetArray, changeTypes.add);
+		// insert at specified position or at end by default
+		if(newItemIndex !== undefined)
+		{
+			if(newItemIndex < 0)
+			{
+				targetArray.unshift(newItem);
+				position = 0;
+			}
+			else if(newItemIndex > (targetArray.length - 1))
+			{
+				targetArray.push(newItem);
+				position = targetArray.length - 1;
+			}
+			else
+			{	
+				targetArray.splice(newItemIndex, 0, newItem);
+				position = newItemIndex;
+			}
+		}
+		else
+		{
+			targetArray.push(newItem);
+			position = targetArray.length - 1;
+		}
+
+
+		// create event details
+		var eventDetails = {
+			type: mChangeTypes.add,
+			item: newItem,
+			position: position
+		};
+
+		set(listKey, targetArray, eventDetails);
 	};
 
 
@@ -207,13 +241,9 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	function callChangeListeners(key, eventType)
+	function callChangeListeners(key, event)
 	{
-		var value = get(key);
-		var event = {
-			value: value,
-			type: eventType
-		};
+		console.log(event);
 
 		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{

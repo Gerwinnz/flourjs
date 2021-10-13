@@ -104,25 +104,35 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
-		blocks[i].el = templateFragment.content.querySelector('#flour-' + blocks[i].elementUniqueId);
-		blocks[i].el.removeAttribute('id');
-		blocks[i].pos = flour.template.getElementIndex(blocks[i].el);
-		
-		if(blocks[i].type === 'list')
-		{
-			var items = state.get(blocks[i].stateKey);
+		(function(block){
 
-			state.onChange(blocks[i].stateKey, function(event)
+			block.el = templateFragment.content.querySelector('#flour-' + block.elementUniqueId);
+			block.el.removeAttribute('id');
+			block.pos = flour.template.getElementIndex(block.el);
+			
+			if(block.type === 'list')
 			{
-				console.log(event);
-			});
+				var items = state.get(block.stateKey);
 
-			items.forEach((item) => 
-			{
-				var itemState = flour.state(item);
-				blocks[i].el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
-			});	
-		}
+				var cleanup = state.onChange(block.stateKey, function(event)
+				{
+					if(event.type === 'add')
+					{
+						var itemState = flour.state(event.item);
+						block.el.appendChild(flour.template.parse(block.html, itemState, view).fragment);
+					}
+				});
+
+				items.forEach((item) => 
+				{
+					var itemState = flour.state(item);
+					block.el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
+				});
+
+				cleanupCallbacks.push(cleanup);
+			}
+
+		}(blocks[i]));
 	}
 
 
