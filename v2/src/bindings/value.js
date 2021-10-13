@@ -3,18 +3,19 @@
 flour.binding.add('flour-value', 
 {
 
-	attach: function(element, attributeValue, view)
+	attach: function(element, state, view)
 	{
-		element.value = view.state.get(attributeValue);
+		var key = element.getAttribute('flour-value');
+		element.value = state.get(key);
 
-		var remove = view.state.onChange(attributeValue, function(event)
+		var remove = state.onChange(key, function(event)
 		{
 			element.value = event.value;
 		});
 
 		element.addEventListener('input', function()
 		{
-			view.state.set(attributeValue, element.value);
+			state.set(key, element.value);
 		});
 
 		return function(){

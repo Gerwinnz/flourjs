@@ -3,11 +3,12 @@
 flour.binding.add('flour-text', 
 {
 
-	attach: function(element, attributeValue, view)
+	attach: function(element, state, view)
 	{
-		element.innerText = view.state.get(attributeValue);
+		var key = element.getAttribute('flour-text');
+		element.innerText = state.get(key);
 
-		var remove = view.state.onChange(attributeValue, function(event)
+		var remove = state.onChange(key, function(event)
 		{
 			element.innerText = event.value;
 		});

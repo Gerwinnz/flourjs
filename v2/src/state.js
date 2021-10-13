@@ -134,10 +134,21 @@ flour.state = function(defaultValues)
 
 
 
-	var addItem = function(listKey, newItem, newItemIndex)
+	/*
+	|
+	|
+	|	Add item to an array stored at the specified key
+	|
+	|   @key - string - name of the array we wish to add to
+	|   @newItem - anything - what ever we are adding to the array
+	|   @newItemIndex - int - position where we want to add the new item to the array
+	|	
+	|
+	*/
+	var addItem = function(key, newItem, newItemIndex)
 	{
 		var position = 0;
-		var targetArray = get(listKey);
+		var targetArray = get(key);
 		if(!flour.util.isArray(targetArray))
 		{
 			flour.util.throw('List must be an array');
@@ -177,7 +188,7 @@ flour.state = function(defaultValues)
 			position: position
 		};
 
-		set(listKey, targetArray, eventDetails);
+		set(key, targetArray, eventDetails);
 	};
 
 

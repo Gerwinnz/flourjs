@@ -88,7 +88,7 @@ flour.template.parse = function(html, state, view)
 		{
 			for(var i = 0, n = elements.length; i < n; i ++)
 			{
-				var cleanup = flour.binding.defined[bindingName].attach(elements[i], elements[i].getAttribute(bindingName), view);
+				var cleanup = flour.binding.defined[bindingName].attach(elements[i], state, view);
 				if(typeof cleanup === 'function')
 				{
 					cleanupCallbacks.push(cleanup);

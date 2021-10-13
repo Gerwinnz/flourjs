@@ -41,8 +41,6 @@ flour.view.add('home', function(){
 
 	view.handleAddItemClick = function(event, el)
 	{
-		//view.state.set('count', parseInt(view.state.get('count')) + 1);
-		
 		view.state.addItem('items', {
 			id: itemId,
 			name: view.state.get('new_item_name'),
@@ -50,6 +48,8 @@ flour.view.add('home', function(){
 		});
 
 		view.state.set('new_item_name', '');
+		view.state.set('count', view.state.get('items').length);
+		
 		itemId ++;
 	};
 
@@ -57,7 +57,8 @@ flour.view.add('home', function(){
 
 	view.handleListItemIncrementCountClick = function(event, el)
 	{
-		view.state.updateItem('items', )
+		console.log(el);
+		//view.state.updateItem('items', )
 	};
 
 });

@@ -3,13 +3,15 @@
 flour.binding.add('on-click', 
 {
 
-	attach: function(element, attributeValue, view)
+	attach: function(element, state, view)
 	{
-		if(view[attributeValue])
+		var clickHandler = element.getAttribute('on-click');
+		
+		if(view[clickHandler])
 		{
 			element.addEventListener('click', function(event)
 			{
-				view[attributeValue](event, element);
+				view[clickHandler](event, element);
 			});
 		}
 	}
