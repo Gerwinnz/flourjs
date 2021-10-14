@@ -14,12 +14,167 @@ flour.state = function(defaultValues)
 {
 	var mValues = defaultValues ? defaultValues : {};
 	var mChangeListeners = {};
+	var mManagedArrays = {};
 	var mId = 0;
 
 	var mChangeTypes = {
 		'change': 'change',
 		'add': 'add',
 		'remove': 'remove'
+	};
+
+
+
+
+	/*
+	|
+	|
+	|
+	|
+	|
+	*/
+	var managedArray = function(key, itemKey)
+	{
+		console.log('Creating managed array for: "' + key + '"');
+
+		itemKey = itemKey ? itemKey : 'id';
+		var items = get(key);
+		var lookup = false;
+
+
+		onChange(key, function(event)
+		{
+			items = event.value;
+			console.log('managed array src event: "' + event.type + '"');
+			
+			if(event.type === 'add')
+			{
+				updateLookup();
+			}
+		});
+
+
+
+		if(!flour.util.isArray(items))
+		{
+			flour.util.throw('Generating managed array failed as state value at "' + key + '" is not an array.');
+			return;
+		}
+		
+
+
+
+		var updateLookup = function()
+		{
+			var items = get(key);
+			var newLookup = {};
+
+			if(!flour.util.isArray(items))
+			{
+				return;
+			}
+
+
+			for(var i = 0, n = items.length; i < n; i ++)
+			{
+				newLookup[items[i][itemKey]] = i;
+			}
+
+			lookup = newLookup;
+		};
+
+
+
+		var getItem = function(itemUniqueKey)
+		{
+			return items[lookup[itemUniqueKey]];
+		};
+
+
+
+		var addItem = function(newItem, newItemIndex)
+		{
+			var position = 0;
+			var targetArray = get(key);
+			if(!flour.util.isArray(targetArray))
+			{
+				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+
+			// insert at specified position or at end by default
+			if(newItemIndex !== undefined)
+			{
+				if(newItemIndex < 0)
+				{
+					targetArray.unshift(newItem);
+					position = 0;
+				}
+				else if(newItemIndex > (targetArray.length - 1))
+				{
+					targetArray.push(newItem);
+					position = targetArray.length - 1;
+				}
+				else
+				{	
+					targetArray.splice(newItemIndex, 0, newItem);
+					position = newItemIndex;
+				}
+			}
+			else
+			{
+				targetArray.push(newItem);
+				position = targetArray.length - 1;
+			}
+
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.add,
+				item: newItem,
+				position: position
+			};
+
+			set(key, targetArray, eventDetails);
+		};
+
+
+
+		var removeItem = function()
+		{
+
+		};
+
+
+
+		var updateItem = function()
+		{
+
+		};
+
+
+
+		var updateItems = function()
+		{
+
+		};
+
+
+		updateLookup();
+
+
+		return {
+			items: items,
+			lookup: lookup,
+
+			getItem: getItem,
+			addItem: addItem,
+			removeItem: removeItem,
+
+			updateItem: updateItem,
+			updateItems: updateItems
+		};
 	};
 
 
@@ -133,6 +288,28 @@ flour.state = function(defaultValues)
 	}
 
 
+	
+	/*
+	|
+	|
+	|	Get an item from an array 
+	|
+	|   @key - string - name of the array we wish to get our item from
+	|   @id - string || int - id of the item we wish to retrieve
+	|	
+	|
+	*/
+	var getItem = function(key, id)
+	{
+		if(!mManagedArrays[key])
+		{
+			mManagedArrays[key] = managedArray(key);
+		}
+
+		return mManagedArrays[key].getItem(id);
+	};
+
+
 
 	/*
 	|
@@ -147,56 +324,68 @@ flour.state = function(defaultValues)
 	*/
 	var addItem = function(key, newItem, newItemIndex)
 	{
-		var position = 0;
-		var targetArray = get(key);
-		if(!flour.util.isArray(targetArray))
+		if(!mManagedArrays[key])
 		{
-			flour.util.throw('List must be an array');
+			mManagedArrays[key] = managedArray(key);
 		}
 
+		return mManagedArrays[key].addItem(newItem, newItemIndex);
 
-		// insert at specified position or at end by default
-		if(newItemIndex !== undefined)
-		{
-			if(newItemIndex < 0)
-			{
-				targetArray.unshift(newItem);
-				position = 0;
-			}
-			else if(newItemIndex > (targetArray.length - 1))
-			{
-				targetArray.push(newItem);
-				position = targetArray.length - 1;
-			}
-			else
-			{	
-				targetArray.splice(newItemIndex, 0, newItem);
-				position = newItemIndex;
-			}
-		}
-		else
-		{
-			targetArray.push(newItem);
-			position = targetArray.length - 1;
-		}
+		// var position = 0;
+		// var targetArray = get(key);
+		// if(!flour.util.isArray(targetArray))
+		// {
+		// 	flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+		// 	return;
+		// }
 
 
-		// create event details
-		var eventDetails = {
-			type: mChangeTypes.add,
-			item: newItem,
-			position: position
-		};
+		// // insert at specified position or at end by default
+		// if(newItemIndex !== undefined)
+		// {
+		// 	if(newItemIndex < 0)
+		// 	{
+		// 		targetArray.unshift(newItem);
+		// 		position = 0;
+		// 	}
+		// 	else if(newItemIndex > (targetArray.length - 1))
+		// 	{
+		// 		targetArray.push(newItem);
+		// 		position = targetArray.length - 1;
+		// 	}
+		// 	else
+		// 	{	
+		// 		targetArray.splice(newItemIndex, 0, newItem);
+		// 		position = newItemIndex;
+		// 	}
+		// }
+		// else
+		// {
+		// 	targetArray.push(newItem);
+		// 	position = targetArray.length - 1;
+		// }
 
-		set(key, targetArray, eventDetails);
+
+		// // create event details
+		// var eventDetails = {
+		// 	type: mChangeTypes.add,
+		// 	item: newItem,
+		// 	position: position
+		// };
+
+		// set(key, targetArray, eventDetails);
 	};
 
 
 
-	var updateItem = function(listKey, id, key, value)
+	var updateItem = function(key, id, key, value)
 	{
 
 	};
+
+
+
+	
 
 
 
@@ -254,7 +443,7 @@ flour.state = function(defaultValues)
 	*/
 	function callChangeListeners(key, event)
 	{
-		console.log(event);
+		console.log(event.key + '.' + event.type);
 
 		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{
@@ -280,6 +469,7 @@ flour.state = function(defaultValues)
 		get: get,
 		set: set,
 
+		getItem: getItem,
 		addItem: addItem,
 		updateItem: updateItem,
 

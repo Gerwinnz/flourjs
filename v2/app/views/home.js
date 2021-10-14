@@ -59,8 +59,11 @@ flour.view.add('home', function(){
 
 	view.handleListItemIncrementCountClick = function(event, el)
 	{
-		console.log(el);
-		//view.state.updateItem('items', )
+		var id = el.getAttribute('data-id');
+		var item = view.state.getItem('items', id);
+		
+		console.log(item);
+		//view.state.updateItem('items', id, 'count', item.count ++);
 	};
 
 });
