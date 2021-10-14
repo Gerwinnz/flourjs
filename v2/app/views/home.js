@@ -66,4 +66,14 @@ flour.view.add('home', function(){
 		//view.state.updateItem('items', id, 'count', item.count ++);
 	};
 
+
+
+	view.handleListItemRemoveClick = function(event, el)
+	{
+		var id = el.getAttribute('data-id');
+		view.state.removeItem('items', id);
+		
+		console.log('remove', id);
+	};
+
 });

@@ -41,6 +41,13 @@ flour.state = function(defaultValues)
 		var items = get(key);
 		var lookup = false;
 
+		if(!flour.util.isArray(items))
+		{
+			flour.util.throw('Generating managed array failed as state value at "' + key + '" is not an array.');
+			return;
+		}
+
+
 
 		onChange(key, function(event)
 		{
@@ -52,14 +59,6 @@ flour.state = function(defaultValues)
 				updateLookup();
 			}
 		});
-
-
-
-		if(!flour.util.isArray(items))
-		{
-			flour.util.throw('Generating managed array failed as state value at "' + key + '" is not an array.');
-			return;
-		}
 		
 
 
@@ -378,6 +377,18 @@ flour.state = function(defaultValues)
 
 
 
+	var removeItem = function(key, id)
+	{
+		if(!mManagedArrays[key])
+		{
+			mManagedArrays[key] = managedArray(key);
+		}
+
+		return mManagedArrays[key].removeItem(id);
+	};
+
+
+
 	var updateItem = function(key, id, key, value)
 	{
 
@@ -443,7 +454,7 @@ flour.state = function(defaultValues)
 	*/
 	function callChangeListeners(key, event)
 	{
-		console.log(event.key + '.' + event.type);
+		console.log('State event: ' + event.key + '.' + event.type);
 
 		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{
@@ -471,6 +482,7 @@ flour.state = function(defaultValues)
 
 		getItem: getItem,
 		addItem: addItem,
+		removeItem: removeItem,
 		updateItem: updateItem,
 
 		values: mValues,
