@@ -13,9 +13,13 @@ flour.view.add('home', function(){
 
 	view.init = function(params)
 	{
+		view.state.onChange('items', function(event)
+		{
+			view.state.set('count', event.value.length);
+		});
+
 		view.state.set('new_item_name', '');
 		view.state.set('user.name', 'Gerwin');
-		view.state.set('count', 0);
 		view.state.set('items', [
 			{
 				id: 0,
@@ -48,8 +52,6 @@ flour.view.add('home', function(){
 		});
 
 		view.state.set('new_item_name', '');
-		view.state.set('count', view.state.get('items').length);
-		
 		itemId ++;
 	};
 
