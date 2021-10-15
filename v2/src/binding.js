@@ -32,18 +32,3 @@ flour.binding.add = function(bindingName, options)
 		flour.binding.defined[bindingName] = options;
 	}	
 };
-
-
-
-
-/*
-|
-|
-|
-|
-|
-*/
-flour.binding.bindView = function(view)
-{
-
-};
