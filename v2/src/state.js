@@ -18,9 +18,9 @@ flour.state = function(defaultValues)
 	var mId = 0;
 
 	var mChangeTypes = {
-		'change': 'change',
 		'add': 'add',
-		'remove': 'remove'
+		'remove': 'remove',
+		'change': 'change'
 	};
 
 
@@ -55,6 +55,11 @@ flour.state = function(defaultValues)
 			console.log('managed array src event: "' + event.type + '"');
 			
 			if(event.type === 'add')
+			{
+				updateLookup();
+			}
+
+			if(event.type === 'remove')
 			{
 				updateLookup();
 			}
@@ -132,7 +137,7 @@ flour.state = function(defaultValues)
 			var eventDetails = {
 				type: mChangeTypes.add,
 				item: newItem,
-				position: position
+				index: position
 			};
 
 			set(key, targetArray, eventDetails);
@@ -140,9 +145,27 @@ flour.state = function(defaultValues)
 
 
 
-		var removeItem = function()
+		var removeItem = function(itemUniqueKey)
 		{
+			var targetArray = get(key);
+			var index = lookup[itemUniqueKey];
+			var item = items[index];
 
+			if(!item)
+			{
+				return;
+			}
+
+			targetArray.splice(index, 1);
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.remove,
+				item: item,
+				index: index
+			};
+
+			set(key, targetArray, eventDetails);
 		};
 
 

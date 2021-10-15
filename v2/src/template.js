@@ -54,7 +54,7 @@ flour.template.parse = function(html, state, view)
 			elementId: elementId,
 			key: listName,
 			html: itemHTML,
-			items: []
+			items: {}
 		});
 
 		return '<div id="flour-' + elementId + '"></div>';
@@ -119,14 +119,37 @@ flour.template.parse = function(html, state, view)
 					if(event.type === 'add')
 					{
 						var itemState = flour.state(event.item);
-						block.el.appendChild(flour.template.parse(block.html, itemState, view).fragment);
+						var itemTemplate = flour.template.parse(block.html, itemState, view);
+
+						block.items[event.item.id] = {
+							el: itemTemplate.fragment.firstElementChild,
+							state: itemState
+						};
+
+						block.el.appendChild(itemTemplate.fragment);
+					}
+
+					if(event.type === 'remove')
+					{
+						if(block.items[event.item.id])
+						{
+							block.items[event.item.id].el.remove();
+							block.items[event.item.id] = null;
+						}
 					}
 				});
 
 				items.forEach((item) => 
 				{
 					var itemState = flour.state(item);
-					block.el.appendChild(flour.template.parse(blocks[i].html, itemState, view).fragment);
+					var itemTemplate = flour.template.parse(blocks[i].html, itemState, view);
+
+					block.items[item.id] = {
+						el: itemTemplate.fragment.firstElementChild,
+						state: itemState
+					};
+
+					block.el.appendChild(itemTemplate.fragment);
 				});
 
 				cleanupCallbacks.push(cleanup);
