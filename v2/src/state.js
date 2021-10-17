@@ -191,7 +191,7 @@ flour.state = function(defaultValues)
 			}
 
 			var index = lookup[itemId];
-			var item = items[index];
+			var item = targetArray[index];
 
 			if(!item)
 			{
