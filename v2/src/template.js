@@ -90,7 +90,7 @@ flour.template.parse = function(html, state, view)
 			for(var i = 0, n = elements.length; i < n; i ++)
 			{
 				var cleanup = flour.binding.defined[bindingName].attach(elements[i], state, view);
-				if(typeof cleanup === 'function')
+				if(flour.util.isFunction(cleanup))
 				{
 					cleanupCallbacks.push(cleanup);
 				}
@@ -101,7 +101,7 @@ flour.template.parse = function(html, state, view)
 
 
 	//
-	// go through our blocks and fetch their destination element
+	// go through our found blocks and call them
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
@@ -110,58 +110,14 @@ flour.template.parse = function(html, state, view)
 			var el = templateFragment.content.querySelector('#flour-' + block.elementId);
 			el.removeAttribute('id');
 
-			block.el = el; 
+			block.el = el;
 			block.pos = flour.template.getElementIndex(block.el);
 			
-			flour.block.defined[block.type](el, state, view);
-
-			if(block.type === 'list')
+			var cleanup = flour.block.defined[block.type](block, state, view);
+			if(flour.util.isFunction(cleanup))
 			{
-				var items = state.get(block.key);
-
-				block.items = {};
-
-				var cleanup = state.onChange(block.key, function(event)
-				{
-					if(event.type === 'add')
-					{
-						var itemState = flour.state(event.item);
-						var itemTemplate = flour.template.parse(block.html, itemState, view);
-
-						block.items[event.item.id] = {
-							el: itemTemplate.fragment.firstElementChild,
-							state: itemState
-						};
-
-						block.el.appendChild(itemTemplate.fragment);
-					}
-
-					if(event.type === 'remove')
-					{
-						if(block.items[event.item.id])
-						{
-							block.items[event.item.id].el.remove();
-							block.items[event.item.id] = null;
-						}
-					}
-				});
-
-				items.forEach((item) => 
-				{
-					var itemState = flour.state(item);
-					var itemTemplate = flour.template.parse(blocks[i].html, itemState, view);
-
-					block.items[item.id] = {
-						el: itemTemplate.fragment.firstElementChild,
-						state: itemState
-					};
-
-					block.el.appendChild(itemTemplate.fragment);
-				});
-
 				cleanupCallbacks.push(cleanup);
 			}
-
 		}(blocks[i]));
 	}
 

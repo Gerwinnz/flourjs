@@ -18,9 +18,7 @@ flour.view.add('home', function(){
 			view.state.set('count', event.value.length);
 		});
 
-		view.state.set('new_item_name', '');
-		view.state.set('user.name', 'Gerwin');
-		view.state.set('items', [
+		var items = [
 			{
 				id: 0,
 				name: 'Gerwin',
@@ -36,7 +34,11 @@ flour.view.add('home', function(){
 				name: 'Marlia',
 				count: 0
 			}
-		]);
+		];
+
+		view.state.set('new_item_name', '');
+		view.state.set('user.name', 'Gerwin');
+		view.state.set('items', items);
 		
 		view.render();
 	};
@@ -62,8 +64,7 @@ flour.view.add('home', function(){
 		var id = el.getAttribute('data-id');
 		var item = view.state.getItem('items', id);
 		
-		console.log(item);
-		//view.state.updateItem('items', id, 'count', item.count ++);
+		view.state.updateItem('items', id, 'count', item.count + 1);
 	};
 
 
@@ -72,8 +73,6 @@ flour.view.add('home', function(){
 	{
 		var id = el.getAttribute('data-id');
 		view.state.removeItem('items', id);
-		
-		console.log('remove', id);
 	};
 
 });

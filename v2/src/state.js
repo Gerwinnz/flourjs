@@ -20,7 +20,7 @@ flour.state = function(defaultValues)
 	var mChangeTypes = {
 		'add': 'add',
 		'remove': 'remove',
-		'change': 'change'
+		'update': 'update'
 	};
 
 
@@ -145,10 +145,16 @@ flour.state = function(defaultValues)
 
 
 
-		var removeItem = function(itemUniqueKey)
+		var removeItem = function(itemId)
 		{
 			var targetArray = get(key);
-			var index = lookup[itemUniqueKey];
+			if(!flour.util.isArray(targetArray))
+			{
+				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+			var index = lookup[itemId];
 			var item = items[index];
 
 			if(!item)
@@ -156,7 +162,10 @@ flour.state = function(defaultValues)
 				return;
 			}
 
+
+			// remove 
 			targetArray.splice(index, 1);
+
 
 			// create event details
 			var eventDetails = {
@@ -170,9 +179,47 @@ flour.state = function(defaultValues)
 
 
 
-		var updateItem = function()
+		var updateItem = function(itemId, itemKey, itemValue)
 		{
+			console.log('update item at ' + itemId + ' with ' + itemKey + ' to ' + itemValue);
 
+			var targetArray = get(key);
+			if(!flour.util.isArray(targetArray))
+			{
+				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+			var index = lookup[itemId];
+			var item = items[index];
+
+			if(!item)
+			{
+				return;
+			}
+
+
+			// update item value
+			if(flour.util.isObject(item))
+			{
+				item[itemKey] = itemValue;
+			}
+			else
+			{
+				item = itemKey;
+			}
+
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.update,
+				item: item,
+				index: index,
+				key: itemKey,
+				value: itemValue
+			};
+
+			set(key, targetArray, eventDetails);
 		};
 
 
@@ -412,9 +459,14 @@ flour.state = function(defaultValues)
 
 
 
-	var updateItem = function(key, id, key, value)
+	var updateItem = function(key, id, itemKey, itemValue)
 	{
+		if(!mManagedArrays[key])
+		{
+			mManagedArrays[key] = managedArray(key);
+		}
 
+		return mManagedArrays[key].updateItem(id, itemKey, itemValue);
 	};
 
 
