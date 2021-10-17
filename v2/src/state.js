@@ -215,8 +215,8 @@ flour.state = function(defaultValues)
 				type: mChangeTypes.update,
 				item: item,
 				index: index,
-				key: itemKey,
-				value: itemValue
+				itemKey: itemKey,
+				itemValue: itemValue
 			};
 
 			set(key, targetArray, eventDetails);

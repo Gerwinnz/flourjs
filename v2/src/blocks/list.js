@@ -36,7 +36,10 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'update')
 		{
-			console.log('UPDATE ITEM HAPPENED', event);
+			if(items[event.item.id])
+			{
+				items[event.item.id].state.set(event.itemKey, event.itemValue);
+			}
 		}
 	});
 
