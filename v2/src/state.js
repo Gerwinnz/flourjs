@@ -321,8 +321,7 @@ flour.state = function(defaultValues)
 	{
 		var changedKey = false;
 		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.update};
-		var setResponse = setValue(mValues, key, value);
-
+		
 		if(changeEvent.type === mChangeTypes.update && flour.util.isArray(value))
 		{
 			if(flour.util.isArray(get(key)) && mManagedArrays[key])
@@ -332,6 +331,7 @@ flour.state = function(defaultValues)
 	    	}
 		}
 
+		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
 		{
 			console.log('changed ' + key + ' to', value);

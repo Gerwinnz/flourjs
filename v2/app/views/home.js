@@ -106,7 +106,7 @@ flour.view.add('home', function(){
 
 		item.remove();
 
-		console.log(item);
+		console.log(id, item);
 		//view.state.removeItem('items', id);
 	};
 
