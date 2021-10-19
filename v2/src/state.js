@@ -18,9 +18,10 @@ flour.state = function(defaultValues)
 	var mId = 0;
 
 	var mChangeTypes = {
-		'add': 'add',
-		'remove': 'remove',
-		'update': 'update'
+		'update': 'update',
+		'addItem': 'addItem',
+		'removeItem': 'removeItem',
+		'updateItem': 'updateItem'
 	};
 
 
@@ -52,14 +53,13 @@ flour.state = function(defaultValues)
 		onChange(key, function(event)
 		{
 			items = event.value;
-			console.log('managed array src event: "' + event.type + '"');
 			
-			if(event.type === 'add')
+			if(event.type === mChangeTypes.addItem)
 			{
 				updateLookup();
 			}
 
-			if(event.type === 'remove')
+			if(event.type === mChangeTypes.removeItem)
 			{
 				updateLookup();
 			}
@@ -89,9 +89,22 @@ flour.state = function(defaultValues)
 
 
 
-		var getItem = function(itemUniqueKey)
+		var getItem = function(itemId)
 		{
-			return items[lookup[itemUniqueKey]];
+			var itemIndex = lookup[itemId];
+			var value = items[itemIndex];
+
+			return {
+				value: value,
+				update: function(key, value)
+				{
+					updateItem(itemId, key, value);
+				},
+				remove: function()
+				{
+					removeItem(itemId);
+				}
+			};
 		};
 
 
@@ -135,7 +148,7 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.add,
+				type: mChangeTypes.addItem,
 				item: newItem,
 				index: position
 			};
@@ -169,7 +182,7 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.remove,
+				type: mChangeTypes.removeItem,
 				item: item,
 				index: index
 			};
@@ -181,8 +194,6 @@ flour.state = function(defaultValues)
 
 		var updateItem = function(itemId, itemKey, itemValue)
 		{
-			console.log('update item at ' + itemId + ' with ' + itemKey + ' to ' + itemValue);
-
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
 			{
@@ -212,7 +223,7 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.update,
+				type: mChangeTypes.updateItem,
 				item: item,
 				index: index,
 				itemKey: itemKey,
@@ -309,7 +320,7 @@ flour.state = function(defaultValues)
 	var set = function(key, value, changeEvent)
 	{
 		var changedKey = false;
-		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.change};
+		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.update};
 		var setResponse = setValue(mValues, key, value);
 
 		if(setResponse.changes)
@@ -324,6 +335,8 @@ flour.state = function(defaultValues)
 					callChangeListeners(changedKey, changeEvent);
 				}
 			}
+
+			console.log('changed ' + key + ' to', value);
 		}
 	}
 
@@ -399,50 +412,6 @@ flour.state = function(defaultValues)
 		}
 
 		return mManagedArrays[key].addItem(newItem, newItemIndex);
-
-		// var position = 0;
-		// var targetArray = get(key);
-		// if(!flour.util.isArray(targetArray))
-		// {
-		// 	flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
-		// 	return;
-		// }
-
-
-		// // insert at specified position or at end by default
-		// if(newItemIndex !== undefined)
-		// {
-		// 	if(newItemIndex < 0)
-		// 	{
-		// 		targetArray.unshift(newItem);
-		// 		position = 0;
-		// 	}
-		// 	else if(newItemIndex > (targetArray.length - 1))
-		// 	{
-		// 		targetArray.push(newItem);
-		// 		position = targetArray.length - 1;
-		// 	}
-		// 	else
-		// 	{	
-		// 		targetArray.splice(newItemIndex, 0, newItem);
-		// 		position = newItemIndex;
-		// 	}
-		// }
-		// else
-		// {
-		// 	targetArray.push(newItem);
-		// 	position = targetArray.length - 1;
-		// }
-
-
-		// // create event details
-		// var eventDetails = {
-		// 	type: mChangeTypes.add,
-		// 	item: newItem,
-		// 	position: position
-		// };
-
-		// set(key, targetArray, eventDetails);
 	};
 
 
@@ -455,18 +424,6 @@ flour.state = function(defaultValues)
 		}
 
 		return mManagedArrays[key].removeItem(id);
-	};
-
-
-
-	var updateItem = function(key, id, itemKey, itemValue)
-	{
-		if(!mManagedArrays[key])
-		{
-			mManagedArrays[key] = managedArray(key);
-		}
-
-		return mManagedArrays[key].updateItem(id, itemKey, itemValue);
 	};
 
 
@@ -529,8 +486,6 @@ flour.state = function(defaultValues)
 	*/
 	function callChangeListeners(key, event)
 	{
-		console.log('State event: ' + event.key + '.' + event.type);
-
 		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
 		{
 			if(mChangeListeners[key][i])
@@ -558,7 +513,6 @@ flour.state = function(defaultValues)
 		getItem: getItem,
 		addItem: addItem,
 		removeItem: removeItem,
-		updateItem: updateItem,
 
 		values: mValues,
 		onChange: onChange

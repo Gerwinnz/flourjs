@@ -18,27 +18,9 @@ flour.view.add('home', function(){
 			view.state.set('count', event.value.length);
 		});
 
-		var items = [
-			{
-				id: 0,
-				name: 'Gerwin',
-				count: 0
-			},
-			{
-				id: 1,
-				name: 'Sam',
-				count: 0
-			},
-			{
-				id: 2,
-				name: 'Marlia',
-				count: 0
-			}
-		];
-
 		view.state.set('new_item_name', '');
 		view.state.set('user.name', 'Gerwin');
-		view.state.set('items', items);
+		view.state.set('items', []);
 		
 		view.render();
 	};
@@ -50,7 +32,8 @@ flour.view.add('home', function(){
 		view.state.addItem('items', {
 			id: itemId,
 			name: view.state.get('new_item_name'),
-			count: 0
+			count: 0,
+			drinks: []
 		});
 
 		view.state.set('new_item_name', '');
@@ -59,12 +42,59 @@ flour.view.add('home', function(){
 
 
 
+	view.handleSetItemsClick = function(event, el)
+	{
+		var items = [
+			{
+				id: 0,
+				name: 'Gerwin',
+				count: 0,
+				drinks: [
+					{
+						id: 0,
+						name: 'Earl grey'
+					},
+					{
+						id: 1,
+						name: 'Wine'
+					}
+				]
+			},
+			{
+				id: 1,
+				name: 'Sam',
+				count: 0,
+				drinks: [
+					{
+						id: 1,
+						name: 'Wine'
+					}
+				]
+			},
+			{
+				id: 2,
+				name: 'Marlia',
+				count: 0,
+				drinks: [
+					{
+						id: 1,
+						name: 'Wine'
+					}
+				]
+			}
+		];
+
+		view.state.set('items', items);
+	}
+
+
+
 	view.handleListItemIncrementCountClick = function(event, el)
 	{
 		var id = el.getAttribute('data-id');
 		var item = view.state.getItem('items', id);
-		
-		view.state.updateItem('items', id, 'count', item.count + 1);
+
+		item.update('count', item.value.count + 1);
 	};
 
 
@@ -72,7 +102,12 @@ flour.view.add('home', function(){
 	view.handleListItemRemoveClick = function(event, el)
 	{
 		var id = el.getAttribute('data-id');
-		view.state.removeItem('items', id);
+		var item = view.state.getItem('items', id);
+
+		item.remove();
+
+		console.log(item);
+		//view.state.removeItem('items', id);
 	};
 
 });
