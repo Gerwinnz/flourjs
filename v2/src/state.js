@@ -325,6 +325,8 @@ flour.state = function(defaultValues)
 
 		if(setResponse.changes)
 		{
+			console.log('changed ' + key + ' to', value);
+			
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
@@ -335,8 +337,6 @@ flour.state = function(defaultValues)
 					callChangeListeners(changedKey, changeEvent);
 				}
 			}
-
-			console.log('changed ' + key + ' to', value);
 		}
 	}
 
