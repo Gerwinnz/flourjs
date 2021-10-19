@@ -323,10 +323,19 @@ flour.state = function(defaultValues)
 		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.update};
 		var setResponse = setValue(mValues, key, value);
 
+		if(changeEvent.type === mChangeTypes.update && flour.util.isArray(value))
+		{
+			if(flour.util.isArray(get(key)) && mManagedArrays[key])
+	    	{
+	    		console.log('COMPARE ARRAYS');
+	    		return;
+	    	}
+		}
+
 		if(setResponse.changes)
 		{
 			console.log('changed ' + key + ' to', value);
-			
+
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
@@ -354,11 +363,6 @@ flour.state = function(defaultValues)
 
 	    if (key.length === 0)
 	    {
-	    	if(flour.util.isArray(value) && flour.util.isArray(obj[currentKey]) && mManagedArrays[changes.join('.')])
-	    	{
-	    		console.log('COMPARE ARRAYS');
-	    	}
-
 	    	valueChanged = obj[currentKey] !== value;
 	        obj[currentKey] = value;
 	        return {
