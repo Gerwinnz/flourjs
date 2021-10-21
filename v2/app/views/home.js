@@ -29,7 +29,7 @@ flour.view.add('home', function(){
 
 	view.handleAddItemClick = function(event, el)
 	{
-		view.state.addItem('items', {
+		view.state.insertItem('items', {
 			id: itemId,
 			name: view.state.get('new_item_name'),
 			count: 0,

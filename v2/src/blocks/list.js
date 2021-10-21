@@ -12,7 +12,7 @@ flour.block.add('list', function(block, state, view)
 
 	var cleanup = state.onChange(key, function(event)
 	{
-		if(event.type === 'addItem')
+		if(event.type === 'insertItem')
 		{
 			var itemState = flour.state(event.item);
 			var itemTemplate = flour.template.parse(block.html, itemState, view);

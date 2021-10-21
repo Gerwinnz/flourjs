@@ -19,7 +19,7 @@ flour.state = function(defaultValues)
 
 	var mChangeTypes = {
 		'update': 'update',
-		'addItem': 'addItem',
+		'insertItem': 'insertItem',
 		'removeItem': 'removeItem',
 		'updateItem': 'updateItem'
 	};
@@ -54,7 +54,7 @@ flour.state = function(defaultValues)
 		{
 			items = event.value;
 			
-			if(event.type === mChangeTypes.addItem)
+			if(event.type === mChangeTypes.insertItem)
 			{
 				updateLookup();
 			}
@@ -85,10 +85,20 @@ flour.state = function(defaultValues)
 			}
 
 			lookup = newLookup;
+			console.log('lookup', lookup);
 		};
 
 
 
+		/*
+		|
+		|
+		|	Return a specified item and include methods for removing and updating returned item
+		|
+		|   @itemId - the id of the item we want to return
+		|
+		|
+		*/
 		var getItem = function(itemId)
 		{
 			var itemIndex = lookup[itemId];
@@ -109,7 +119,18 @@ flour.state = function(defaultValues)
 
 
 
-		var addItem = function(newItem, newItemIndex)
+		/*
+		|
+		|
+		|	Add an item to our array
+		|
+		|   @itemId - the id of the item we want to update
+		|   @itemKey - the property key we wish to change
+		|   @itemValue - the new value we wish to set
+		|
+		|
+		*/
+		var insertItem = function(newItem, newItemIndex)
 		{
 			var position = 0;
 			var targetArray = get(key);
@@ -148,7 +169,7 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.addItem,
+				type: mChangeTypes.insertItem,
 				item: newItem,
 				index: position
 			};
@@ -158,6 +179,15 @@ flour.state = function(defaultValues)
 
 
 
+		/*
+		|
+		|
+		|	Remove an item from out array
+		|
+		|   @itemId - the id of the item we want to update
+		|
+		|
+		*/
 		var removeItem = function(itemId)
 		{
 			var targetArray = get(key);
@@ -192,6 +222,17 @@ flour.state = function(defaultValues)
 
 
 
+		/*
+		|
+		|
+		|	Update a property with the passed in new value on an item in our array
+		|
+		|   @itemId - the id of the item we want to update
+		|   @itemKey - the property key we wish to change
+		|   @itemValue - the new value we wish to set
+		|
+		|
+		*/
 		var updateItem = function(itemId, itemKey, itemValue)
 		{
 			var targetArray = get(key);
@@ -235,9 +276,61 @@ flour.state = function(defaultValues)
 
 
 
-		var updateItems = function()
+		/*
+		|
+		|
+		|	Update all items in our array
+		|
+		|   @newItems - our new set of items we want to compare to our current set
+		|
+		|
+		*/
+		var updateItems = function(newItems)
 		{
+			var newItemsLookup = {};
+			var itemsToUpdate = [];
+			var itemsToRemove = [];
+			var itemsToAdd = [];
 
+
+			// create local lookup of new items and items we need to add
+			for(var i = 0, n = newItems.length; i < n; i ++)
+			{
+				newItemsLookup[newItems[i].id] = i;
+
+				if(lookup[newItems[i].id] === undefined)
+				{
+					itemsToAdd.push({
+						index: i,
+						value: newItems[i]
+					});
+				}
+				else
+				{
+					itemsToUpdate.push({
+						index: i,
+						value: newItems[i]
+					});
+				}
+			}
+
+
+			// find items to remove first
+			for(var i = 0, n = items.length; i < n; i ++)
+			{
+				if(newItemsLookup[items[i].id] === undefined)
+				{
+					itemsToRemove.push(items[i].id);
+				}
+			}
+
+			console.log('--- Comparing arrays ---')
+			
+			console.log('Add: ', itemsToAdd);
+			console.log('Remove: ', itemsToRemove);
+			console.log('Update: ', itemsToUpdate);
+			
+			console.log('------------------------');
 		};
 
 
@@ -249,7 +342,7 @@ flour.state = function(defaultValues)
 			lookup: lookup,
 
 			getItem: getItem,
-			addItem: addItem,
+			insertItem: insertItem,
 			removeItem: removeItem,
 
 			updateItem: updateItem,
@@ -326,7 +419,7 @@ flour.state = function(defaultValues)
 		{
 			if(flour.util.isArray(get(key)) && mManagedArrays[key])
 	    	{
-	    		console.log('COMPARE ARRAYS');
+	    		mManagedArrays[key].updateItems(value);
 	    		return;
 	    	}
 		}
@@ -413,14 +506,14 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	var addItem = function(key, newItem, newItemIndex)
+	var insertItem = function(key, newItem, newItemIndex)
 	{
 		if(!mManagedArrays[key])
 		{
 			mManagedArrays[key] = managedArray(key);
 		}
 
-		return mManagedArrays[key].addItem(newItem, newItemIndex);
+		return mManagedArrays[key].insertItem(newItem, newItemIndex);
 	};
 
 
@@ -520,7 +613,7 @@ flour.state = function(defaultValues)
 		set: set,
 
 		getItem: getItem,
-		addItem: addItem,
+		insertItem: insertItem,
 		removeItem: removeItem,
 
 		values: mValues,
