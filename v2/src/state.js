@@ -293,7 +293,7 @@ flour.state = function(defaultValues)
 			var itemsToAdd = [];
 
 
-			// create local lookup of new items and items we need to add
+			// create new items lookup and check for items to add or update
 			for(var i = 0, n = newItems.length; i < n; i ++)
 			{
 				newItemsLookup[newItems[i].id] = i;
@@ -329,6 +329,11 @@ flour.state = function(defaultValues)
 			console.log('Add: ', itemsToAdd);
 			console.log('Remove: ', itemsToRemove);
 			console.log('Update: ', itemsToUpdate);
+
+			for(var i = 0, n = itemsToAdd.length; i < n; i ++)
+			{
+				insertItem(itemsToAdd[i].value);
+			}
 			
 			console.log('------------------------');
 		};
