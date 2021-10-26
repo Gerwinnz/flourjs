@@ -2,12 +2,13 @@
 
 flour.block.add('list', function(block, state, view)
 {
-	var el = block.el;
+	var el = block.el.parentElement;
 	var key = block.key;
 	var html = block.html;
 	var items = {};
 	var listItems = state.get(key);
 
+	block.el.remove();
 
 
 	var cleanup = state.onChange(key, function(event)
@@ -22,7 +23,7 @@ flour.block.add('list', function(block, state, view)
 				state: itemState
 			};
 
-			block.el.appendChild(itemTemplate.fragment);
+			el.appendChild(itemTemplate.fragment);
 		}
 
 		if(event.type === 'removeItem')

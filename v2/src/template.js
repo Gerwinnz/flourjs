@@ -46,19 +46,42 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var blockType in flour.block.defined)
 	{
-		html = html.replace(/{{#list (\w*)}}((.|\n)*){{\/list}}/g, (tag, key, html) => {
-			var elementId = flour.template.elementUniqueId;
-			flour.template.elementUniqueId ++;
+		(function(){
 
-			blocks.push({
-				elementId: elementId,
-				type: blockType,
-				key: key,
-				html: html
-			});
+			var regEx = new RegExp('{{#' + blockType + ' (\\w*)}}', 'g');
+			var result;
 
-			return '<div id="flour-' + elementId + '"></div>';
-		});
+			while((result = regEx.exec(html)) !== null)
+			{
+				var key = result[1];
+				var found = result[0];
+				var closeTag = '{{/' + blockType + '}}';
+				var nextOpenIndex = result.index;
+				var nextCloseIndex = result.index;
+				
+				do{
+					nextOpenIndex = html.indexOf('{{#', nextOpenIndex + 1);
+					nextCloseIndex = html.indexOf('{{/', nextCloseIndex + 1);
+				} while(nextOpenIndex !== -1 && nextCloseIndex !== -1 && nextCloseIndex > nextOpenIndex);
+
+				var start = result.index;
+				var end = nextCloseIndex + closeTag.length;
+				var replaceString = html.substr(start, end - start);
+				var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
+
+				var elementId = flour.template.elementUniqueId;
+				flour.template.elementUniqueId ++;
+
+				html = html.replace(replaceString, '<div id="flour-' + elementId + '"></div>');
+				blocks.push({
+					elementId: elementId,
+					type: blockType,
+					key: key,
+					html: innerHTML
+				});
+			}
+
+		}());
 	}
 
 

@@ -29,33 +29,38 @@
 					<input type="text" flour-value="count" />
 				</div>
 				
-				{{#list items}}
-					<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-						<div style="display: flex;">
-							<div style="flex: 1;">List item: <span flour-text="name"></span></div>
-							<div style="flex: 1;">Count: <span flour-text="count"></span></div>
-							<div><button on-click="handleListItemIncrementCountClick" data-id={{id}}>Increment count</button></div>
-							<div><button on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button></div>
-						</div>
-						<div>
-							<strong>Drinks</strong>
-							{{#list drinks}}
+				<div style="padding: 8px 0;">
+					{{#list items}}
+						<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
+							<div style="display: flex;">
+								<div style="flex: 1;">List item: <span flour-text="name"></span></div>
+								<div style="flex: 1;">Count: <span flour-text="count"></span></div>
+								<div><button on-click="handleListItemIncrementCountClick" data-id={{id}}>Increment count</button></div>
+								<div><button on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button></div>
+							</div>
+							<div>
+								<strong>Drinks</strong>
 								<div>
-									{{name}}
+									{{#list drinks}}
+										<div>
+											<div>{{name}}</div>
+										</div>
+									{{/list}}
 								</div>
-							{{/list}}
+							</div>
+							<div>
+								<input type="text" flour-value="name"/>
+								<button on-click="handleAddDrinkToItemClick">Add</button>
+							</div>
 						</div>
-						<div>
-							<input type="text" flour-value="name"/>
-							<button on-click="handleAddDrinkToItemClick">Add</button>
-						</div>
-					</div>
-				{{/list}}
-
-				<div>
-					<div>Basic list</div>
-					
+					{{/list}}
 				</div>
+
+				<ul style="padding: 16px 0 0 0; list-style: none; margin: 0; display: flex;">
+					{{#list items}}
+						<li style="margin: 4px; padding:  4px 8px; border-radius: 4px; background-color: #fff;">{{name}}</li>
+					{{/list}}
+				</ul>
 				
 				<div>
 					<input type="text" flour-value="new_item_name" />
