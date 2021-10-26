@@ -39,10 +39,10 @@ flour.state = function(defaultValues)
 		console.log('Creating managed array for: "' + key + '"');
 
 		itemKey = itemKey ? itemKey : 'id';
-		var items = get(key);
-		var lookup = false;
+		var mItems = get(key);
+		var mLookup = false;
 
-		if(!flour.util.isArray(items))
+		if(!flour.util.isArray(mItems))
 		{
 			flour.util.throw('Generating managed array failed as state value at "' + key + '" is not an array.');
 			return;
@@ -52,7 +52,7 @@ flour.state = function(defaultValues)
 
 		onChange(key, function(event)
 		{
-			items = event.value;
+			mItems = event.value;
 			
 			if(event.type === mChangeTypes.insertItem)
 			{
@@ -84,8 +84,7 @@ flour.state = function(defaultValues)
 				newLookup[items[i][itemKey]] = i;
 			}
 
-			lookup = newLookup;
-			console.log('lookup', lookup);
+			mLookup = newLookup;
 		};
 
 
@@ -101,8 +100,12 @@ flour.state = function(defaultValues)
 		*/
 		var getItem = function(itemId)
 		{
-			var itemIndex = lookup[itemId];
-			var value = items[itemIndex];
+			var itemIndex = mLookup[itemId];
+			if(itemIndex === undefined)
+			{
+				return false;
+			}
+			var value = mItems[itemIndex];
 
 			return {
 				value: value,
@@ -137,6 +140,12 @@ flour.state = function(defaultValues)
 			if(!flour.util.isArray(targetArray))
 			{
 				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+
+			if(mLookup[newItem[itemKey]] !== undefined)
+			{
 				return;
 			}
 
@@ -197,8 +206,8 @@ flour.state = function(defaultValues)
 				return;
 			}
 
-			var index = lookup[itemId];
-			var item = items[index];
+			var index = mLookup[itemId];
+			var item = mItems[index];
 
 			if(!item)
 			{
@@ -233,16 +242,16 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var updateItem = function(itemId, itemKey, itemValue)
+		var updateItem = function(itemId, keys, values)
 		{
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
 			{
-				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				flour.util.throw('Updating item failed as state value at "' + key + '" is not an array.');
 				return;
 			}
 
-			var index = lookup[itemId];
+			var index = mLookup[itemId];
 			var item = targetArray[index];
 
 			if(!item)
@@ -250,7 +259,18 @@ flour.state = function(defaultValues)
 				return;
 			}
 
+			if(flour.util.isArray(keys))
+			{
 
+			}
+			else
+			{
+				updateItemValue(targetArray, item, index, keys, values);
+			}
+		}
+
+		var updateItemValue = function(targetArray, item, index, itemKey, itemValue)
+		{
 			// update item value
 			if(flour.util.isObject(item))
 			{
@@ -293,12 +313,12 @@ flour.state = function(defaultValues)
 			var itemsToAdd = [];
 
 
-			// create new items lookup and check for items to add or update
+			// create new items mLookup and check for items to add or update
 			for(var i = 0, n = newItems.length; i < n; i ++)
 			{
 				newItemsLookup[newItems[i].id] = i;
 
-				if(lookup[newItems[i].id] === undefined)
+				if(mLookup[newItems[i].id] === undefined)
 				{
 					itemsToAdd.push({
 						index: i,
@@ -316,26 +336,28 @@ flour.state = function(defaultValues)
 
 
 			// find items to remove first
-			for(var i = 0, n = items.length; i < n; i ++)
+			for(var i = 0, n = mItems.length; i < n; i ++)
 			{
-				if(newItemsLookup[items[i].id] === undefined)
+				if(newItemsLookup[mItems[i].id] === undefined)
 				{
-					itemsToRemove.push(items[i].id);
+					itemsToRemove.push(mItems[i].id);
 				}
 			}
 
-			console.log('--- Comparing arrays ---')
-			
-			console.log('Add: ', itemsToAdd);
-			console.log('Remove: ', itemsToRemove);
-			console.log('Update: ', itemsToUpdate);
+			for(var i = 0, n = itemsToRemove.length; i < n; i ++)
+			{
+				removeItem(itemsToRemove[i]);
+			}
 
 			for(var i = 0, n = itemsToAdd.length; i < n; i ++)
 			{
 				insertItem(itemsToAdd[i].value);
 			}
-			
-			console.log('------------------------');
+
+			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)
+			{
+				updateItem(itemsToUpdate[i][itemKey], itemsToUpdate[i])
+			}
 		};
 
 
@@ -343,8 +365,8 @@ flour.state = function(defaultValues)
 
 
 		return {
-			items: items,
-			lookup: lookup,
+			items: mItems,
+			lookup: mLookup,
 
 			getItem: getItem,
 			insertItem: insertItem,

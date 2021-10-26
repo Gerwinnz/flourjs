@@ -34,9 +34,13 @@
 						<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
 							<div style="display: flex;">
 								<div style="flex: 1;">List item: <span flour-text="name"></span></div>
-								<div style="flex: 1;">Count: <span flour-text="count"></span></div>
-								<div><button on-click="handleListItemIncrementCountClick" data-id={{id}}>Increment count</button></div>
-								<div><button on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button></div>
+								<div style="flex: 1;">
+									Count: <span flour-text="count"></span>
+									<button on-click="handleListItemIncrementCountClick" data-id={{id}}>Increment count</button>
+								</div>
+								<div>
+									<button on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
+								</div>
 							</div>
 							<div>
 								<strong>Drinks</strong>
@@ -58,7 +62,9 @@
 
 				<ul style="padding: 16px 0 0 0; list-style: none; margin: 0; display: flex;">
 					{{#list items}}
-						<li style="margin: 4px; padding:  4px 8px; border-radius: 4px; background-color: #fff;">{{name}}</li>
+						<li style="margin: 4px; padding:  4px 8px; border-radius: 4px; background-color: #fff;">
+							<span flour-text="name"></span>: <span flour-text="count"></span>
+						</li>
 					{{/list}}
 				</ul>
 				

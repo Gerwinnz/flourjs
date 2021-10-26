@@ -58,11 +58,13 @@ flour.template.parse = function(html, state, view)
 				var closeTag = '{{/' + blockType + '}}';
 				var nextOpenIndex = result.index;
 				var nextCloseIndex = result.index;
-				
-				do{
+
+				do
+				{
 					nextOpenIndex = html.indexOf('{{#', nextOpenIndex + 1);
 					nextCloseIndex = html.indexOf('{{/', nextCloseIndex + 1);
-				} while(nextOpenIndex !== -1 && nextCloseIndex !== -1 && nextCloseIndex > nextOpenIndex);
+				} 
+				while(nextOpenIndex !== -1 && nextCloseIndex !== -1 && nextCloseIndex > nextOpenIndex);
 
 				var start = result.index;
 				var end = nextCloseIndex + closeTag.length;
