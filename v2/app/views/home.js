@@ -3,6 +3,7 @@ flour.view.add('home', function(){
 
 	var view = this;
 	var itemId = 3;
+	var updatesCount = 0;
 
 
 	view.template = 'home';
@@ -44,11 +45,13 @@ flour.view.add('home', function(){
 
 	view.handleSetItemsClick = function(event, el)
 	{
+		updatesCount ++;
+
 		var items = [
 			{
 				id: 0,
 				name: 'Gerwin',
-				count: 0,
+				count: updatesCount,
 				drinks: [
 					{
 						id: 0,
@@ -63,7 +66,7 @@ flour.view.add('home', function(){
 			{
 				id: 1,
 				name: 'Sam',
-				count: 0,
+				count: updatesCount,
 				drinks: [
 					{
 						id: 1,
@@ -74,7 +77,7 @@ flour.view.add('home', function(){
 			{
 				id: 2,
 				name: 'Marlia',
-				count: 0,
+				count: updatesCount,
 				drinks: [
 					{
 						id: 1,

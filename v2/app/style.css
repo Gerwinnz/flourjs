@@ -1,3 +1,19 @@
 body{
 	font-family: sans-serif;
 }
+
+button{
+	padding: 0 16px;
+	background-color: #1A6AE2;
+	border-radius: 4px;
+	height: 32px;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+}
+
+input{
+	height: 32px;
+	padding: 0;
+	box-sizing: border-box;
+}

@@ -253,15 +253,14 @@ flour.state = function(defaultValues)
 
 			var index = mLookup[itemId];
 			var item = targetArray[index];
+			if(!item){ return; }
 
-			if(!item)
+			if(flour.util.isObject(keys))
 			{
-				return;
-			}
-
-			if(flour.util.isArray(keys))
-			{
-
+				for(var itemKey in keys)
+				{
+					updateItemValue(targetArray, item, index, itemKey, keys[itemKey]);
+				}
 			}
 			else
 			{
@@ -274,6 +273,7 @@ flour.state = function(defaultValues)
 			// update item value
 			if(flour.util.isObject(item))
 			{
+				if(item[itemKey] === itemValue){ return; }
 				item[itemKey] = itemValue;
 			}
 			else
@@ -356,7 +356,7 @@ flour.state = function(defaultValues)
 
 			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)
 			{
-				updateItem(itemsToUpdate[i][itemKey], itemsToUpdate[i])
+				updateItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].value)
 			}
 		};
 
