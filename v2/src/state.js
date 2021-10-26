@@ -143,9 +143,9 @@ flour.state = function(defaultValues)
 				return;
 			}
 
-
 			if(mLookup[newItem[itemKey]] !== undefined)
 			{
+				flour.util.throw('Adding item already exists');
 				return;
 			}
 
@@ -576,6 +576,12 @@ flour.state = function(defaultValues)
 	{
 		var id = mId;
 		mId ++;
+
+		if(flour.util.isFunction(key))
+		{
+			console.log('Adding change listener for all changes');
+			return;
+		}
 
 		if(mChangeListeners[key] === undefined)
 		{

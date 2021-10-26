@@ -11,8 +11,6 @@
 
 	var homeView = flour.view.get('home');
 	document.getElementById('home-view').appendChild(homeView.el);
-	
-	flour.util.log('home view', homeView);
 
 	window.homeView = homeView;
 

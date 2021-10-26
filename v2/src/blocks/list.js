@@ -23,6 +23,11 @@ flour.block.add('list', function(block, state, view)
 				state: itemState
 			};
 
+			itemState.onChange(function(event)
+			{
+				console.log('item state change', event);
+			});
+
 			el.appendChild(itemTemplate.fragment);
 		}
 
