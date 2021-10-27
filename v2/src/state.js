@@ -274,13 +274,17 @@ flour.state = function(defaultValues)
 			// update item value
 			if(flour.util.isObject(item))
 			{
-				if(item[itemKey] === itemValue){ 
-					return; 
-				}
-				else
+				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
 				{
-					console.log('updating item ' + itemKey + ' to ' + itemValue);
+					return;
 				}
+
+				if(item[itemKey] === itemValue){ 
+					return;
+				}
+				
+				
+				console.log('updating item ' + itemKey + ' to ' + itemValue);
 				item[itemKey] = itemValue;
 			}
 			else
