@@ -12,8 +12,9 @@ var flour = flour || {};
 */
 flour.state = function(defaultValues)
 {
-	var mValues = defaultValues ? defaultValues : {};
-	var mChangeListeners = {};
+	var mValues = defaultValues ? JSON.parse(JSON.stringify(defaultValues)) : {};
+	var mKeyChangeListeners = {};
+	var mAllChangeListeners = [];
 	var mManagedArrays = {};
 	var mId = 0;
 
@@ -273,7 +274,7 @@ flour.state = function(defaultValues)
 			// update item value
 			if(flour.util.isObject(item))
 			{
-				if(item[itemKey] === itemValue){ return; }
+				if(item[itemKey] === itemValue){ console.log('no change: ' + itemKey); return; }
 				item[itemKey] = itemValue;
 			}
 			else
@@ -454,16 +455,24 @@ flour.state = function(defaultValues)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
 		{
-			console.log(changeEvent.type + ': changed ' + key + ' to', value);
+			//console.log(changeEvent.type + ': changed ' + key + ' to', value);
 
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
-				if(mChangeListeners[changedKey])
+
+				if(mKeyChangeListeners[changedKey])
 				{
 					changeEvent.key = changedKey;
 					changeEvent.value = get(changedKey);
-					callChangeListeners(changedKey, changeEvent);
+					callKeyChangeListeners(changedKey, changeEvent);
+				}
+
+				if(mAllChangeListeners.length > 0)
+				{
+					changeEvent.key = changedKey;
+					changeEvent.value = get(changedKey);
+					callAllChangeListeners(changeEvent);
 				}
 			}
 		}
@@ -577,18 +586,38 @@ flour.state = function(defaultValues)
 		var id = mId;
 		mId ++;
 
+
+		// Add listener for all changes
 		if(flour.util.isFunction(key))
 		{
-			console.log('Adding change listener for all changes');
-			return;
+			mAllChangeListeners.push(
+			{
+				id: id,
+				calls: 0,
+				callback: key
+			});
+
+			return function(){
+				for(var i = 0, n = mAllChangeListeners.length; i < n; i ++)
+				{
+					if(mAllChangeListeners[i].id === id)
+					{
+						mAllChangeListeners.splice(i,1);
+						i --;
+						n --;
+					}
+				}
+			};
 		}
 
-		if(mChangeListeners[key] === undefined)
+
+		// Add listener for a specific change to a key value
+		if(mKeyChangeListeners[key] === undefined)
 		{
-			mChangeListeners[key] = [];
+			mKeyChangeListeners[key] = [];
 		}
 
-		var length = mChangeListeners[key].push(
+		var length = mKeyChangeListeners[key].push(
 		{
 			id: id,
 			calls: 0,
@@ -596,11 +625,11 @@ flour.state = function(defaultValues)
 		});
 
 		return function(){
-			for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
+			for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
 			{
-				if(mChangeListeners[key][i].id === id)
+				if(mKeyChangeListeners[key][i].id === id)
 				{
-					mChangeListeners[key].splice(i,1);
+					mKeyChangeListeners[key].splice(i,1);
 					i --;
 					n --;
 				}
@@ -619,17 +648,33 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	function callChangeListeners(key, event)
+	function callKeyChangeListeners(key, event)
 	{
-		for(var i = 0, n = mChangeListeners[key].length; i < n; i ++)
+		for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
 		{
-			if(mChangeListeners[key][i])
+			if(mKeyChangeListeners[key][i])
 			{
-				mChangeListeners[key][i].callback(event);
-				mChangeListeners[key][i].calls ++;
+				mKeyChangeListeners[key][i].callback(event);
+				mKeyChangeListeners[key][i].calls ++;
 			}
 		}
 	};
+
+	function callAllChangeListeners(event)
+	{
+		for(var i = 0, n = mAllChangeListeners.length; i < n; i ++)
+		{
+			if(mAllChangeListeners[i])
+			{
+				mAllChangeListeners[i].callback(event);
+				mAllChangeListeners[i].calls ++;
+			}
+		}
+	};
+
+
+
+
 
 
 

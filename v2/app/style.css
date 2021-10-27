@@ -12,8 +12,25 @@ button{
 	cursor: pointer;
 }
 
+button.secondary{
+	background-color: #ddd;
+	color: #333;
+}
+
 input{
 	height: 32px;
 	padding: 0;
 	box-sizing: border-box;
+}
+
+.flex-row{
+	display: flex;
+}
+
+.flex-row > *{
+	margin-right: 8px;
+}
+
+.flex-row > *:last-child{
+	margin-right: 0;
 }
