@@ -13,10 +13,10 @@ flour.block.add('list', function(block, state, view)
 
 	var cleanup = state.onChange(key, function(event)
 	{
-		var itemId = event.item.id;
-
+		
 		if(event.type === 'insertItem')
 		{
+			var itemId = event.item.id;
 			var itemState = flour.state(event.item);
 			var itemTemplate = flour.template.parse(block.html, itemState, view);
 
@@ -27,7 +27,7 @@ flour.block.add('list', function(block, state, view)
 
 			itemState.onChange(function(event)
 			{
-				console.log(event);
+				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
 			el.appendChild(itemTemplate.fragment);
@@ -35,6 +35,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'removeItem')
 		{
+			var itemId = event.item.id;
 			if(items[itemId])
 			{
 				items[itemId].el.remove();
@@ -44,6 +45,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'updateItem')
 		{
+			var itemId = event.item.id;
 			if(items[itemId])
 			{
 				items[itemId].state.set(event.itemKey, event.itemValue);
@@ -66,13 +68,14 @@ flour.block.add('list', function(block, state, view)
 
 		listItems.forEach((item) => 
 		{
+			var itemId = item.id;
 			var itemState = flour.state(item);
 			var itemTemplate = flour.template.parse(html, itemState, view);
 
-			// itemState.onChange(function(event)
-			// {
-			// 	console.log('item state change', event);
-			// });
+			itemState.onChange(function(event)
+			{
+				state.getItem(key, itemId).update(event.key, event.value);
+			});
 
 			items[item.id] = {
 				el: itemTemplate.fragment.firstElementChild,
