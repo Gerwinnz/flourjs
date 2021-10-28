@@ -16,6 +16,7 @@ flour.block.add('list', function(block, state, view)
 		
 		if(event.type === 'insertItem')
 		{
+			console.log('list::insert_item');
 			var itemId = event.item.id;
 			var itemState = flour.state(event.item);
 			var itemTemplate = flour.template.parse(block.html, itemState, view);
@@ -35,6 +36,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'removeItem')
 		{
+			console.log('list::remove_item');
 			var itemId = event.item.id;
 			if(items[itemId])
 			{
@@ -45,6 +47,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'updateItem')
 		{
+			console.log('list::update_item', event.itemKey + ' to ' + event.itemValue);
 			var itemId = event.item.id;
 			if(items[itemId])
 			{
@@ -54,6 +57,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'update')
 		{
+			console.log('list::update');
 			listItems = event.value;
 			renderListItems();
 		}

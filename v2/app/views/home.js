@@ -16,7 +16,7 @@ flour.view.add('home', function(){
 	{
 		view.state.onChange('items', function(event)
 		{
-			view.state.set('count', event.value.length);
+			view.state.set('items_count', event.value.length);
 		});
 
 		view.state.set('new_item_name', '');
