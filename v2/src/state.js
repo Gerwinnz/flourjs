@@ -402,6 +402,8 @@ flour.state = function(defaultValues)
 	*/
 	var get = function(key)
 	{
+		console.log('state::get', key);
+
 		var value = getValue(mValues, key);
 
 		if(flour.util.isArray(value))
@@ -461,6 +463,8 @@ flour.state = function(defaultValues)
 	    		return;
 	    	}
 		}
+
+		console.log('state::set', key, value);
 
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
