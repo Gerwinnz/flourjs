@@ -293,6 +293,7 @@ flour.state = function(defaultValues)
 			}
 			else
 			{
+				console.log('managed_array::update_value', 'whole item', itemValue)
 				item = itemKey;
 			}
 
@@ -474,7 +475,7 @@ flour.state = function(defaultValues)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
 		{
-			console.log('state::set', changeEvent.type, key, value);
+			console.log('state::set::' + changeEvent.type, key, value);
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
