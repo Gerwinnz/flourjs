@@ -37,7 +37,7 @@ flour.state = function(defaultValues)
 	*/
 	var managedArray = function(key, itemKey)
 	{
-		console.log('Creating managed array for: "' + key + '"');
+		flour.util.log('Creating managed array for: "' + key + '"');
 
 		itemKey = itemKey ? itemKey : 'id';
 		var mItems = get(key);
@@ -259,8 +259,8 @@ flour.state = function(defaultValues)
 			var updatedKeys = [];
 			var updatedKeyValues = [];
 
-			console.log(' ');
-			console.log('managed_array::update_item', item);
+			flour.util.log(' ');
+			flour.util.log('managed_array::update_item', item);
 
 			if(flour.util.isObject(keys))
 			{
@@ -287,16 +287,18 @@ flour.state = function(defaultValues)
 				}
 			}
 
-			// create event details
-			var eventDetails = {
-				type: mChangeTypes.updateItem,
-				item: item,
-				index: index,
-				keys: updatedKeys,
-				values: updatedKeyValues
-			};
+			if(updatedKeys.length > 0)
+			{
+				var eventDetails = {
+					type: mChangeTypes.updateItem,
+					item: item,
+					index: index,
+					keys: updatedKeys,
+					values: updatedKeyValues
+				};
 
-			set(key, targetArray, eventDetails);
+				set(key, targetArray, eventDetails);
+			}
 		}
 
 		var updateItemValue = function(item, itemKey, itemValue)
@@ -306,21 +308,21 @@ flour.state = function(defaultValues)
 			{
 				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
 				{
-					console.log('managed_array::no_change', itemKey);
+					flour.util.log('managed_array::no_change', itemKey);
 					return null;
 				}
 
 				if(item[itemKey] === itemValue){ 
-					console.log('managed_array::no_change', itemKey);
+					flour.util.log('managed_array::no_change', itemKey);
 					return null;
 				}
 				
-				console.log('managed_array::update_value', itemKey + ' to ' + itemValue);
+				flour.util.log('managed_array::update_value', itemKey + ' to ' + itemValue);
 				item[itemKey] = itemValue;
 			}
 			else
 			{
-				console.log('managed_array::update_value', 'whole item', itemValue)
+				flour.util.log('managed_array::update_value', 'whole item', itemValue)
 				item = itemKey;
 			}
 
@@ -428,7 +430,7 @@ flour.state = function(defaultValues)
 	*/
 	var get = function(key)
 	{
-		// console.log('state::get', key);
+		// flour.util.log('state::get', key);
 
 		var value = getValue(mValues, key);
 
@@ -496,7 +498,7 @@ flour.state = function(defaultValues)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
 		{
-			console.log('state::set::' + changeEvent.type, key, value);
+			flour.util.log('state::set::' + changeEvent.type, key, value);
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];

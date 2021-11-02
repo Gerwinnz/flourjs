@@ -3,7 +3,9 @@ var flour = flour || {};
 
 
 
-flour.util = {};
+flour.util = {
+	logSteps: 0
+};
 
 
 
@@ -27,7 +29,31 @@ flour.util.throw = function(error)
 */
 flour.util.log = function()
 {
-	console.log.apply(console, arguments);
+	var args = Array.prototype.slice.call(arguments);
+	
+	if(flour.util.logSteps > 0)
+	{
+		var step = '- - -';
+		var steps = '';
+		for(var i = 0, n = flour.util.logSteps; i < n; i ++)
+		{
+			steps = steps + ' ' + step;
+		}
+
+		args.unshift(steps);
+	}
+
+	console.log.apply(console, args);
+};
+
+flour.util.logStepIn = function()
+{
+	flour.util.logSteps ++;
+};
+
+flour.util.logStepOut = function()
+{
+	flour.util.logSteps --;
 };
 
 
