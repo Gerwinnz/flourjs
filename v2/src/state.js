@@ -256,6 +256,9 @@ flour.state = function(defaultValues)
 			var item = targetArray[index];
 			if(!item){ return; }
 
+			var updatedKeys = [];
+			var updatedKeyValues = [];
+
 			console.log(' ');
 			console.log('managed_array::update_item', item);
 
@@ -263,16 +266,40 @@ flour.state = function(defaultValues)
 			{
 				for(var itemKey in keys)
 				{
-					updateItemValue(targetArray, item, index, itemKey, keys[itemKey]);
+					var updated = updateItemValue(item, itemKey, keys[itemKey]);
+					if(updated !== null)
+					{
+						item = updated.item;
+						updatedKeys.push(updated.key);
+						updatedKeyValues.push(updated.value);
+					}
 				}
 			}
 			else
 			{
-				updateItemValue(targetArray, item, index, keys, values);
+				var updated = updateItemValue(item, keys, values);
+				
+				if(updated !== null)
+				{
+					item = updated.item;
+					updatedKeys.push(updated.key);
+					updatedKeyValues.push(updated.value);
+				}
 			}
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.updateItem,
+				item: item,
+				index: index,
+				keys: updatedKeys,
+				values: updatedKeyValues
+			};
+
+			set(key, targetArray, eventDetails);
 		}
 
-		var updateItemValue = function(targetArray, item, index, itemKey, itemValue)
+		var updateItemValue = function(item, itemKey, itemValue)
 		{
 			// update item value
 			if(flour.util.isObject(item))
@@ -280,12 +307,12 @@ flour.state = function(defaultValues)
 				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
 				{
 					console.log('managed_array::no_change', itemKey);
-					return;
+					return null;
 				}
 
 				if(item[itemKey] === itemValue){ 
 					console.log('managed_array::no_change', itemKey);
-					return;
+					return null;
 				}
 				
 				console.log('managed_array::update_value', itemKey + ' to ' + itemValue);
@@ -297,17 +324,11 @@ flour.state = function(defaultValues)
 				item = itemKey;
 			}
 
-
-			// create event details
-			var eventDetails = {
-				type: mChangeTypes.updateItem,
+			return {
 				item: item,
-				index: index,
-				itemKey: itemKey,
-				itemValue: itemValue
+				key: itemKey,
+				value: itemValue
 			};
-
-			set(key, targetArray, eventDetails);
 		};
 
 
@@ -461,7 +482,7 @@ flour.state = function(defaultValues)
 		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.update};
 		
 
-		// handle updating an array
+		// handle updating a managed array
 		if(changeEvent.type === mChangeTypes.update && flour.util.isArray(value))
 		{
 			if(flour.util.isArray(get(key)) && mManagedArrays[key])

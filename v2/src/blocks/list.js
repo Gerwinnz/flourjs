@@ -28,7 +28,7 @@ flour.block.add('list', function(block, state, view)
 
 			itemState.onChange(function(event)
 			{
-				console.log('item state said to update item');
+				console.log('list::item_state_changed');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
@@ -48,11 +48,14 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'updateItem')
 		{
-			console.log('list::update_item', event.itemKey + ' to ' + event.itemValue);
 			var itemId = event.item.id;
 			if(items[itemId])
 			{
-				items[itemId].state.set(event.itemKey, event.itemValue);
+				for(var i = 0, n = event.keys.length; i < n; i ++)
+				{
+					console.log('list::update_item', event.keys[i] + ' to ' + event.values[i]);
+					items[itemId].state.set(event.keys[i], event.values[i]);
+				}
 			}
 		}
 
@@ -79,7 +82,7 @@ flour.block.add('list', function(block, state, view)
 
 			itemState.onChange(function(event)
 			{
-				console.log('item state said to update item');
+				console.log('list::item_state_changed');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
