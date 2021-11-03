@@ -37,7 +37,7 @@ flour.state = function(defaultValues)
 	*/
 	var managedArray = function(key, itemKey)
 	{
-		flour.util.log('Creating managed array for: "' + key + '"');
+		console.log('Creating managed array for: "' + key + '"');
 
 		itemKey = itemKey ? itemKey : 'id';
 		var mItems = get(key);
@@ -259,8 +259,8 @@ flour.state = function(defaultValues)
 			var updatedKeys = [];
 			var updatedKeyValues = [];
 
-			flour.util.log(' ');
-			flour.util.log('managed_array::update_item', item);
+			// console.log(' ');
+			// console.log('managed_array::update_item', item);
 
 			if(flour.util.isObject(keys))
 			{
@@ -289,6 +289,9 @@ flour.state = function(defaultValues)
 
 			if(updatedKeys.length > 0)
 			{
+				console.log(' ');
+				console.log('managed_array::update_item', updatedKeys, updatedKeyValues);
+
 				var eventDetails = {
 					type: mChangeTypes.updateItem,
 					item: item,
@@ -308,21 +311,17 @@ flour.state = function(defaultValues)
 			{
 				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
 				{
-					flour.util.log('managed_array::no_change', itemKey);
 					return null;
 				}
 
 				if(item[itemKey] === itemValue){ 
-					flour.util.log('managed_array::no_change', itemKey);
 					return null;
 				}
 				
-				flour.util.log('managed_array::update_value', itemKey + ' to ' + itemValue);
 				item[itemKey] = itemValue;
 			}
 			else
 			{
-				flour.util.log('managed_array::update_value', 'whole item', itemValue)
 				item = itemKey;
 			}
 
@@ -430,7 +429,7 @@ flour.state = function(defaultValues)
 	*/
 	var get = function(key)
 	{
-		// flour.util.log('state::get', key);
+		// console.log('state::get', key);
 
 		var value = getValue(mValues, key);
 
@@ -498,7 +497,7 @@ flour.state = function(defaultValues)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changes)
 		{
-			flour.util.log('state::set::' + changeEvent.type, key, value);
+			console.log('state::set::' + changeEvent.type, key, value);
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
 				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
