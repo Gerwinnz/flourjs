@@ -34,7 +34,7 @@ flour.view.add('home', function(){
 			id: itemId,
 			name: view.state.get('new_item_name'),
 			count: 0,
-			drinks: []
+			tags: []
 		});
 
 		view.state.set('new_item_name', '');
@@ -50,38 +50,38 @@ flour.view.add('home', function(){
 		var items = [
 			{
 				id: 0,
-				name: 'Gerwin',
+				name: 'Frodo Baggins',
 				count: updatesCount,
-				drinks: [
+				tags: [
 					{
 						id: 0,
-						name: 'Earl grey'
+						name: 'Ring'
 					},
 					{
 						id: 1,
-						name: 'Wine'
+						name: 'Complaining'
 					}
 				]
 			},
 			{
 				id: 1,
-				name: 'Sam',
+				name: 'Sam Wise',
 				count: updatesCount,
-				drinks: [
+				tags: [
 					{
 						id: 1,
-						name: 'Wine'
+						name: 'Potatoes'
 					}
 				]
 			},
 			{
 				id: 2,
-				name: 'Marlia',
+				name: 'Gandalf',
 				count: updatesCount,
-				drinks: [
+				tags: [
 					{
 						id: 1,
-						name: 'Wine'
+						name: 'Magic'
 					}
 				]
 			}
@@ -98,6 +98,26 @@ flour.view.add('home', function(){
 		var item = view.state.getItem('items', id);
 
 		item.update('count', item.value.count + 1);
+	};
+
+
+
+	view.handleAddItemTagClick = function(event, el)
+	{
+		var id = el.getAttribute('data-id');
+		var item = view.state.getItem('items', id);
+		
+		var newTagName = item.value.new_tag_name;
+		var tags = item.value.tags;
+		var lastTag = tags.length > 0 ? tags[tags.length - 1] : null;
+		var tagId = lastTag ? lastTag.id + 1 : 0;
+
+		tags.push({
+			id: tagId,
+			name: newTagName
+		});
+
+		item.update('tags', tags);
 	};
 
 

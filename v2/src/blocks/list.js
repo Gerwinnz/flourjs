@@ -29,6 +29,7 @@ flour.block.add('list', function(block, state, view)
 			itemState.onChange(function(event)
 			{
 				console.log('list::item_state_changed');
+				console.log(' ');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
@@ -83,6 +84,7 @@ flour.block.add('list', function(block, state, view)
 			itemState.onChange(function(event)
 			{
 				console.log('list::item_state_changed');
+				console.log(' ');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 

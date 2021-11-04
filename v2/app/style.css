@@ -19,7 +19,9 @@ button.secondary{
 
 input{
 	height: 32px;
-	padding: 0;
+	padding: 0 4px;
+	border-radius: 4px;
+	border:  solid 1px #bbb;
 	box-sizing: border-box;
 }
 

@@ -28,29 +28,32 @@
 				<div style="padding: 8px 0;">
 					{{#list items}}
 						<div style="padding: 16px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-							<div style="display: flex;">
-								<div style="flex: 1; font-size: 18px;">Name: <span flour-text="name"></span></div>
+							<div style="display: flex; align-items: center;">
+								<div style="flex: 1; font-size: 18px;"><span flour-text="name"></span></div>
 								<div style="flex: 1;">
 									Count: <span flour-text="count"></span>
 									<button class="secondary" on-click="handleListItemIncrementCountClick" data-id={{id}}>+</button>
 								</div>
 								<div>
-									<button class="secondary" on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
+									<button class="secondary" style="font-size: 22px; background-color: transparent;" on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
 								</div>
 							</div>
-							<div>
-								<strong>Drinks</strong>
+
+							<div style="padding: 4px; margin-top: 4px; background-color: #f5f5f5; border-radius: 4px;">
 								<div>
-									{{#list drinks}}
-										<div>
-											<div>{{name}}</div>
-										</div>
-									{{/list}}
+									<div style="border-radius: 4px; background-color: #fff;">
+										{{#list tags}}
+											<div style="padding: 8px 4px; font-size: 14px;">
+												<div>{{name}}</div>
+											</div>
+										{{/list}}
+									</div>
 								</div>
-							</div>
-							<div>
-								<input type="text" flour-value="name"/>
-								<button class="secondary" on-click="handleAddDrinkToItemClick">Add</button>
+
+								<div style="display: flex; margin-top: 4px;">
+									<input type="text" placeholder="New item name..." flour-value="new_tag_name" style="padding: 0 4px; flex: 1; border: none; margin-right: 4px;" />
+									<button class="secondary" on-click="handleAddItemTagClick" data-id="{{id}}">Add</button>
+								</div>
 							</div>
 						</div>
 					{{/list}}

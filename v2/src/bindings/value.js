@@ -6,7 +6,14 @@ flour.binding.add('flour-value',
 	attach: function(element, state, view)
 	{
 		var key = element.getAttribute('flour-value');
-		element.value = state.get(key);
+		var value = state.get(key);
+
+		if(value === undefined)
+		{
+			value = '';
+		}
+
+		element.value = value;
 
 		var remove = state.onChange(key, function(event)
 		{

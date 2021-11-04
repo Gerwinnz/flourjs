@@ -289,7 +289,6 @@ flour.state = function(defaultValues)
 
 			if(updatedKeys.length > 0)
 			{
-				console.log(' ');
 				console.log('managed_array::update_item', updatedKeys, updatedKeyValues);
 
 				var eventDetails = {
@@ -309,7 +308,7 @@ flour.state = function(defaultValues)
 			// update item value
 			if(flour.util.isObject(item))
 			{
-				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
+				if((flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey])) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
 				{
 					return null;
 				}
