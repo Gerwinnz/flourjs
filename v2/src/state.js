@@ -308,12 +308,17 @@ flour.state = function(defaultValues)
 			// update item value
 			if(flour.util.isObject(item))
 			{
-				if((flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey])) && JSON.parse(JSON.stringify(item[itemKey])) === JSON.parse(JSON.stringify(itemValue)))
+				var currentValue = item[itemKey];
+
+				if(flour.util.isObject(item[itemKey]) || flour.util.isArray(item[itemKey]))
 				{
-					return null;
+					if(JSON.stringify(item[itemKey]) === JSON.stringify(itemValue))
+					{
+						return null;
+					}
 				}
 
-				if(item[itemKey] === itemValue){ 
+				if(currentValue === itemValue){ 
 					return null;
 				}
 				
@@ -321,6 +326,11 @@ flour.state = function(defaultValues)
 			}
 			else
 			{
+				if(item === itemKey)
+				{
+					return null;
+				}
+
 				item = itemKey;
 			}
 
