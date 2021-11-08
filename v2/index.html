@@ -27,15 +27,12 @@
 				
 				<div style="padding: 8px 0;">
 					{{#list items}}
-						<div style="padding: 16px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
+						<div style="position: relative; padding: 16px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
 							<div style="display: flex; align-items: center;">
 								<div style="flex: 1; font-size: 18px;"><span flour-text="name"></span></div>
 								<div style="flex: 1;">
 									Count: <span flour-text="count"></span>
 									<button class="secondary" on-click="handleListItemIncrementCountClick" data-id={{id}}>+</button>
-								</div>
-								<div>
-									<button class="secondary" style="font-size: 22px; background-color: transparent;" on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
 								</div>
 							</div>
 
@@ -55,6 +52,8 @@
 									<button class="secondary" on-click="handleAddItemTagClick" data-id="{{id}}">Add</button>
 								</div>
 							</div>
+
+							<button class="secondary" style="position: absolute; top: 4px; right: 4px; padding: 0 8px;  font-size: 22px; background-color: transparent;" on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
 						</div>
 					{{/list}}
 				</div>

@@ -128,9 +128,6 @@ flour.view.add('home', function(){
 		var item = view.state.getItem('items', id);
 
 		item.remove();
-
-		console.log(id, item);
-		//view.state.removeItem('items', id);
 	};
 
 });

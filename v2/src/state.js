@@ -398,7 +398,7 @@ flour.state = function(defaultValues)
 
 			for(var i = 0, n = itemsToAdd.length; i < n; i ++)
 			{
-				insertItem(itemsToAdd[i].value);
+				insertItem(itemsToAdd[i].value, itemsToAdd[i].index);
 			}
 
 			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)

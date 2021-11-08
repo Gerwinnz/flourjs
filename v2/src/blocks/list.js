@@ -16,7 +16,7 @@ flour.block.add('list', function(block, state, view)
 		
 		if(event.type === 'insertItem')
 		{
-			console.log('list::insert_item');
+			console.log('list::insert_item', event);
 			var itemId = event.item.id;
 			var itemState = flour.state(event.item);
 			var itemTemplate = flour.template.parse(block.html, itemState, view);
@@ -33,7 +33,18 @@ flour.block.add('list', function(block, state, view)
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
-			el.appendChild(itemTemplate.fragment);
+			if(event.index === 0)
+			{
+				el.prepend(itemTemplate.fragment);
+			}
+			else if(event.index <= listItems.length - 1)
+			{
+				el.insertBefore(itemTemplate.fragment, items[listItems[event.index].id].el);
+			}
+			else
+			{
+				el.append(itemTemplate.fragment);
+			}
 		}
 
 		if(event.type === 'removeItem')
@@ -60,10 +71,11 @@ flour.block.add('list', function(block, state, view)
 			}
 		}
 
+		listItems = event.value;
+
 		if(event.type === 'update')
 		{
 			console.log('list::update');
-			listItems = event.value;
 			renderListItems();
 		}
 	});
