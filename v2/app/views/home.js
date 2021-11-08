@@ -117,7 +117,10 @@ flour.view.add('home', function(){
 			name: newTagName
 		});
 
-		item.update('tags', tags);
+		item.update({
+			'tags': tags,
+			'new_tag_name': ''
+		});
 	};
 
 
