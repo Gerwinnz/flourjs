@@ -5,6 +5,7 @@
 		<title>Flour JS</title>
 
 		<link rel="stylesheet" type="text/css" href="app/style.css">
+		<script src="https://kit.fontawesome.com/6d564ceef0.js" crossorigin="anonymous"></script>
 
 		<script type="text/javascript" src="src/app.js"></script>
 		<script type="text/javascript" src="src/util.js"></script>
@@ -34,6 +35,17 @@
 									Count: <span flour-text="count"></span>
 									<button class="secondary" on-click="handleListItemIncrementCountClick" data-id={{id}}>+</button>
 								</div>
+								<div>
+									<button class="secondary" on-click="handleMoveItemUpClick" data-id={{id}}>
+										<i class="fas fa-chevron-up"></i>
+									</button>
+									<button class="secondary" on-click="handleMoveItemDownClick" data-id={{id}}>
+										<i class="fas fa-chevron-down"></i>
+									</button>
+									<button class="secondary" on-click="handleListItemRemoveClick" data-id={{id}}>
+										<i class="fas fa-trash"></i>
+									</button>
+								</div>
 							</div>
 
 							<div style="padding: 4px; margin-top: 4px; background-color: #f5f5f5; border-radius: 4px;">
@@ -52,8 +64,6 @@
 									<button class="secondary" on-click="handleAddItemTagClick" data-id="{{id}}">Add</button>
 								</div>
 							</div>
-
-							<button class="secondary" style="position: absolute; top: 4px; right: 4px; padding: 0 8px;  font-size: 22px; background-color: transparent;" on-click="handleListItemRemoveClick" data-id={{id}}>&times;</button>
 						</div>
 					{{/list}}
 				</div>

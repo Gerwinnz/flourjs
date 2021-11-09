@@ -133,4 +133,24 @@ flour.view.add('home', function(){
 		item.remove();
 	};
 
+
+
+	view.handleMoveItemUpClick = function(event, el)
+	{
+		var id = el.getAttribute('data-id');
+		var item = view.state.getItem('items', id);
+
+		item.move();
+	};
+
+
+
+	view.handleMoveItemDownClick = function(event, el)
+	{
+		var id = el.getAttribute('data-id');
+		var item = view.state.getItem('items', id);
+
+		item.move();
+	};
+
 });

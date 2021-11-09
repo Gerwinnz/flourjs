@@ -110,6 +110,11 @@ flour.state = function(defaultValues)
 
 			return {
 				value: value,
+				index: itemIndex,
+				move: function(index)
+				{
+					console.log('move item');
+				},
 				update: function(key, value)
 				{
 					updateItem(itemId, key, value);
