@@ -92,7 +92,6 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'update')
 		{
-			console.log('list::update');
 			renderListItems();
 		}
 	});
