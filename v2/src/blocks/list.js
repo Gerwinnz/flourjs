@@ -16,7 +16,6 @@ flour.block.add('list', function(block, state, view)
 		
 		if(event.type === 'insertItem')
 		{
-			console.log('list::insert_item', event);
 			var itemId = event.item.id;
 			var itemState = flour.state(event.item);
 			var itemTemplate = flour.template.parse(block.html, itemState, view);
@@ -29,7 +28,6 @@ flour.block.add('list', function(block, state, view)
 			itemState.onChange(function(event)
 			{
 				console.log('list::item_state_changed');
-				console.log(' ');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
@@ -49,7 +47,6 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'removeItem')
 		{
-			console.log('list::remove_item');
 			var itemId = event.item.id;
 			if(items[itemId])
 			{
@@ -67,6 +64,26 @@ flour.block.add('list', function(block, state, view)
 				{
 					console.log('list::update_item', event.keys[i] + ' to ' + event.values[i]);
 					items[itemId].state.set(event.keys[i], event.values[i]); // TODO store some sort of change ID and ignore the state change if it's the same?
+				}
+			}
+		}
+
+		if(event.type === 'moveItem')
+		{
+			var itemId = event.item.id;
+			if(items[itemId])
+			{
+				if(event.index === 0)
+				{
+					el.prepend(items[itemId].el);
+				}
+				else if(event.index < event.value.length - 1)
+				{
+					el.insertBefore(items[itemId].el, items[event.value[event.index + 1].id].el);
+				}
+				else
+				{
+					el.append(items[itemId].el);
 				}
 			}
 		}
@@ -95,8 +112,6 @@ flour.block.add('list', function(block, state, view)
 
 			itemState.onChange(function(event)
 			{
-				console.log('list::item_state_changed');
-				console.log(' ');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 

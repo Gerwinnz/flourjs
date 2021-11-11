@@ -140,7 +140,7 @@ flour.view.add('home', function(){
 		var id = el.getAttribute('data-id');
 		var item = view.state.getItem('items', id);
 
-		item.move();
+		item.move(item.index - 1);
 	};
 
 
@@ -150,7 +150,7 @@ flour.view.add('home', function(){
 		var id = el.getAttribute('data-id');
 		var item = view.state.getItem('items', id);
 
-		item.move();
+		item.move(item.index + 1);
 	};
 
 });

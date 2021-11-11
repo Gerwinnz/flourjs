@@ -22,7 +22,8 @@ flour.state = function(defaultValues)
 		'update': 'update',
 		'insertItem': 'insertItem',
 		'removeItem': 'removeItem',
-		'updateItem': 'updateItem'
+		'updateItem': 'updateItem',
+		'moveItem': 'moveItem'
 	};
 
 
@@ -61,6 +62,11 @@ flour.state = function(defaultValues)
 			}
 
 			if(event.type === mChangeTypes.removeItem)
+			{
+				updateLookup();
+			}
+
+			if(event.type === mChangeTypes.moveItem)
 			{
 				updateLookup();
 			}
@@ -111,13 +117,13 @@ flour.state = function(defaultValues)
 			return {
 				value: value,
 				index: itemIndex,
-				move: function(index)
+				move: function(newIndex)
 				{
-					console.log('move item');
+					moveItem(itemId, newIndex);
 				},
-				update: function(key, value)
+				update: function(keys, values)
 				{
-					updateItem(itemId, key, value);
+					updateItem(itemId, keys, values);
 				},
 				remove: function()
 				{
@@ -133,9 +139,8 @@ flour.state = function(defaultValues)
 		|
 		|	Add an item to our array
 		|
-		|   @itemId - the id of the item we want to update
-		|   @itemKey - the property key we wish to change
-		|   @itemValue - the new value we wish to set
+		|   @newItem - the object we wish to insert
+		|   @newItemIndex - the index we wish to insert the new object
 		|
 		|
 		*/
@@ -197,6 +202,66 @@ flour.state = function(defaultValues)
 		/*
 		|
 		|
+		|	Move an item to a new index
+		|
+		|	@itemId - the id of the item we want to move
+		| 	@newIndex - the new index we want to move the item to
+		|
+		|
+		|
+		*/
+		var moveItem = function(itemId, newIndex)
+		{
+			var targetArray = get(key);
+			if(!flour.util.isArray(targetArray))
+			{
+				flour.util.throw('Removing item failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+			var index = mLookup[itemId];
+			var item = mItems[index];
+
+			if(!item)
+			{
+				return;
+			}
+
+			if(newIndex < 0)
+			{
+				newIndex = 0;
+			}
+
+			if(newIndex > mItems.length - 1)
+			{
+				newIndex = mItems.length - 1;
+			}
+
+			if(newIndex === index)
+			{
+				return;
+			}
+
+
+			// shift position in our array
+			targetArray.splice(newIndex, 0, targetArray.splice(index, 1)[0]);
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.moveItem,
+				item: item,
+				index: newIndex,
+				oldIndex: index
+			};
+
+			set(key, targetArray, eventDetails);
+		};
+
+
+
+		/*
+		|
+		|
 		|	Remove an item from out array
 		|
 		|   @itemId - the id of the item we want to update
@@ -208,7 +273,7 @@ flour.state = function(defaultValues)
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
 			{
-				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
+				flour.util.throw('Removing item failed as state value at "' + key + '" is not an array.');
 				return;
 			}
 
