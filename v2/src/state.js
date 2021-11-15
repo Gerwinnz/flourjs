@@ -473,6 +473,10 @@ flour.state = function(defaultValues)
 
 			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)
 			{
+				if(mLookup[itemsToUpdate[i].value[itemKey]] !== itemsToUpdate[i].index)
+				{
+					moveItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].index);
+				}
 				updateItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].value)
 			}
 		};

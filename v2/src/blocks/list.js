@@ -27,7 +27,6 @@ flour.block.add('list', function(block, state, view)
 
 			itemState.onChange(function(event)
 			{
-				console.log('list::item_state_changed');
 				state.getItem(key, itemId).update(event.key, event.value);
 			});
 
