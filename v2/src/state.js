@@ -556,7 +556,7 @@ flour.state = function(defaultValues)
 	|	Store the value passed in at the location specified by the key
 	|
 	|   @key - string - name of stored value to be returned, can be 'foo.bar'
-	|   @value - anything - the value to be stored in the key's location
+	|   @value - any - the value to be stored in the key's location
 	|	
 	|
 	*/
@@ -661,7 +661,7 @@ flour.state = function(defaultValues)
 	|	Add item to an array stored at the specified key
 	|
 	|   @key - string - name of the array we wish to add to
-	|   @newItem - anything - what ever we are adding to the array
+	|   @newItem - any - what ever we are adding to the array
 	|   @newItemIndex - int - position where we want to add the new item to the array
 	|	
 	|
@@ -678,6 +678,16 @@ flour.state = function(defaultValues)
 
 
 
+	/*
+	|
+	|
+	|	Remove item to from an array with a specified id
+	|
+	|   @key - string - name of the array we wish to remove the item from
+	|   @id - any - unique identifier of the item we wish to remove
+	|	
+	|
+	*/
 	var removeItem = function(key, id)
 	{
 		if(!mManagedArrays[key])

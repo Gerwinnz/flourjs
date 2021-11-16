@@ -61,8 +61,7 @@ flour.block.add('list', function(block, state, view)
 			{
 				for(var i = 0, n = event.keys.length; i < n; i ++)
 				{
-					console.log('list::update_item', event.keys[i] + ' to ' + event.values[i]);
-					items[itemId].state.set(event.keys[i], event.values[i]); // TODO store some sort of change ID and ignore the state change if it's the same?
+					items[itemId].state.set(event.keys[i], event.values[i]);
 				}
 			}
 		}
@@ -118,7 +117,7 @@ flour.block.add('list', function(block, state, view)
 				state: itemState
 			};
 
-			el.appendChild(itemTemplate.fragment);
+			el.append(itemTemplate.fragment);
 		});
 	}
 

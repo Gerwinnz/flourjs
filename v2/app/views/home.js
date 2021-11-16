@@ -30,9 +30,17 @@ flour.view.add('home', function(){
 
 	view.handleAddItemClick = function(event, el)
 	{
+		var name = view.state.get('new_item_name');
+
+		if(name === '')
+		{
+			view.refs.name_field.focus();
+			return;
+		}
+
 		view.state.insertItem('items', {
 			id: itemId,
-			name: view.state.get('new_item_name'),
+			name: name,
 			count: 0,
 			tags: []
 		});

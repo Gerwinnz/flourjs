@@ -10,7 +10,7 @@
 	});
 
 	var homeView = flour.view.get('home');
-	document.getElementById('home-view').appendChild(homeView.el);
+	document.getElementById('home-view').append(homeView.el);
 
 	window.homeView = homeView;
 

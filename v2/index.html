@@ -17,6 +17,7 @@
 
 		<script type="text/javascript" src="src/blocks/list.js"></script>
 
+		<script type="text/javascript" src="src/bindings/ref.js"></script>
 		<script type="text/javascript" src="src/bindings/text.js"></script>
 		<script type="text/javascript" src="src/bindings/click.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
@@ -69,7 +70,7 @@
 				</div>
 
 				<div class="flex-row">
-					<input type="text" flour-value="new_item_name" />
+					<input type="text" flour-value="new_item_name" flour-ref="name_field" />
 					<button class="button" on-click="handleAddItemClick">Add item</button>
 					<button class="button" on-click="handleSetItemsClick">Set items</button>
 					<div style="flex: 1;"></div>
