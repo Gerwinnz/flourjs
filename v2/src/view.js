@@ -129,4 +129,73 @@ flour.view.base = function()
 	};
 
 
+
+	/*
+	|
+	|
+	|	Add an event listener for this view
+	|
+	|	@event - string - event name
+	| 	@callback - function - to be called when the view triggers an event with the matching name
+	|
+	|
+	*/
+	this.on = function(event, callback)
+	{
+		if(this.events[event] === undefined)
+	    {
+	      	this.events[event] = [];
+	    }
+	    
+	    this.events[event].push(callback);
+	};
+
+
+	this.off = function(event, callback)
+	{
+		var eventListeners = this.events[event];
+
+	    if(eventListeners === undefined)
+	    {
+	      	return;
+	    }
+
+	    if(callback !== undefined)
+	    {
+			for(var i = 0, n = eventListeners.length; i < n; i ++)
+			{
+				if(callback === eventListeners[i])
+				{
+					eventListeners[i] = null;
+					break;
+				}
+			}
+	    }
+	    else
+	    {
+	      	eventListeners.length = 0;
+	    }
+	};
+
+
+	this.trigger = function(event, eventDetails)
+	{
+		var eventListeners = this.events[event];
+
+	    if(eventListeners === undefined || eventListeners === null)
+	    {
+	      return;
+	    }
+
+	    for(var i = 0, n = eventListeners.length; i < n; i ++)
+	    {
+	      	var listenerCallback = eventListeners[i];
+	      	if(flour.util.isFunction(listenerCallback))
+	      	{
+	        	listenerCallback(data);
+	      	}
+	    }
+	};
+
+
 };
