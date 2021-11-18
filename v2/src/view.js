@@ -192,7 +192,7 @@ flour.view.base = function()
 	      	var listenerCallback = eventListeners[i];
 	      	if(flour.util.isFunction(listenerCallback))
 	      	{
-	        	listenerCallback(data);
+	        	listenerCallback(eventDetails);
 	      	}
 	    }
 	};
