@@ -1,12 +1,12 @@
 
-flour.view.add('home', function(){
+flour.view.add('list', function(){
 
 	var view = this;
 	var itemId = 3;
 	var updatesCount = 0;
 
 
-	view.template = 'home';
+	view.template = 'list';
 
 
 	

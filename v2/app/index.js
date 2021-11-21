@@ -9,9 +9,14 @@
 		}
 	});
 
-	var homeView = flour.view.get('home');
-	document.getElementById('home-view').append(homeView.el);
+	
+	// var listView = flour.view.get('list');
+	// document.getElementById('list-view').append(listView.el);
+	// window.listView = listView;
 
-	window.homeView = homeView;
+
+	var formView = flour.view.get('form');
+	document.getElementById('form-view').append(formView.el);
+	window.formView = formView;
 
 }());

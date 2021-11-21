@@ -20,10 +20,11 @@
 		<script type="text/javascript" src="src/bindings/ref.js"></script>
 		<script type="text/javascript" src="src/bindings/text.js"></script>
 		<script type="text/javascript" src="src/bindings/click.js"></script>
+		<script type="text/javascript" src="src/bindings/submit.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
 	</head>
 	<body>
-		<template id="flour-template.home">
+		<template id="flour-template.list">
 			<div>
 				<p>Hello <span flour-text="user.name"></span>. There are <span flour-text="items_count"></span> items.</p>
 				
@@ -80,10 +81,43 @@
 			</div>
 		</template>
 
-		<div id="app"></div>
-		<div id="home-view"></div>
+		<template id="flour-template.form">
+			<div>
+				<form on-submit="handleFormSubmit">
+					<div class="form__line">
+						<label>Name</label>
+						<input type="text" flour-value="name" />
+					</div>
 
-		<script type="text/javascript" src="app/views/home.js"></script>
+					<div class="form__line">
+						<label>Email</label>
+						<input type="text" flour-value="email" />
+					</div>
+
+					<div class="form__line">
+						<label>Type</label>
+						<select flour-value="type">
+							{{#list types}}
+								<option value="{{id}}">{{label}}</option>
+							{{/list}}
+						</select>
+					</div>
+
+					<div class="form__line">
+						<button type="submit">Save</button>
+					</div>
+				</form>
+			</div>
+		</template>
+
+		<div id="app"></div>
+
+		<div id="list-view" class="view-wrapper"></div>
+
+		<div id="form-view" class="view-wrapper"></div>
+
+		<script type="text/javascript" src="app/views/list.js"></script>
+		<script type="text/javascript" src="app/views/form.js"></script>
 		<script type="text/javascript" src="app/index.js"></script>
 	</body>
 </html>

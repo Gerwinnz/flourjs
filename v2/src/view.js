@@ -88,9 +88,7 @@ flour.view.base = function()
 		if(!this.refs){ this.refs = {}; }
 
 		this.el = document.createElement(this.tag);
-		this.el.style.backgroundColor = '#eee';
-		this.el.style.padding = '8px';
-
+		
 		if(this.template)
 		{
 			templateHTML = document.getElementById('flour-template.' + this.template).innerHTML;

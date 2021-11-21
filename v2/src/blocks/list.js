@@ -79,11 +79,11 @@ flour.block.add('list', function(block, state, view)
 			state.getItem(mKey, itemId).update(event.key, event.value);
 		});
 
-		if(event.index === 0)
+		if(index === 0)
 		{
 			mListEl.prepend(itemTemplate.fragment);
 		}
-		else if(event.index <= mState.length - 1)
+		else if(index <= mState.length - 1)
 		{
 			mListEl.insertBefore(itemTemplate.fragment, mListItems[mState[event.index].id].el);
 		}

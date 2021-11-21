@@ -74,7 +74,7 @@ flour.template.parse = function(html, state, view)
 				var elementId = flour.template.elementUniqueId;
 				flour.template.elementUniqueId ++;
 
-				html = html.replace(replaceString, '<div id="flour-' + elementId + '"></div>');
+				html = html.replace(replaceString, '<option id="flour-' + elementId + '"></option>');
 				blocks.push({
 					elementId: elementId,
 					type: blockType,
@@ -91,7 +91,7 @@ flour.template.parse = function(html, state, view)
 	//
 	// parse standard output tag
 	//
-	html = html.replace(/{{\s?(\S*)\s?}}/g, (tag, tagInside) => {
+	html = html.replace(/{{\s?(\w*)\s?}}/g, (tag, tagInside) => {
 		return state.get(tagInside);
 	});
 
@@ -101,6 +101,7 @@ flour.template.parse = function(html, state, view)
 	// set our template HTML to our parsed output
 	//
 	templateFragment.innerHTML = html;
+	console.log(templateFragment.innerHTML);
 
 
 
@@ -130,8 +131,8 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
-		(function(block){
-
+		(function(block)
+		{
 			var el = templateFragment.content.querySelector('#flour-' + block.elementId);
 			el.removeAttribute('id');
 
