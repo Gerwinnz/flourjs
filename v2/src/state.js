@@ -32,15 +32,17 @@ flour.state = function(defaultValues)
 	/*
 	|
 	|
+	|	Managed array - factory that returns a handleful of methods for updating arrays in our state
 	|
+	|   @key - string - the key of the array we wish to manage in our state
+	|   @itemKey - string - the unique identifier we use to identify items inside of each array - defaults to 'id'
 	|
 	|
 	*/
 	var managedArray = function(key, itemKey)
 	{
-		console.log('Creating managed array for: "' + key + '"');
-
 		itemKey = itemKey ? itemKey : 'id';
+
 		var mItems = get(key);
 		var mLookup = false;
 
@@ -52,6 +54,11 @@ flour.state = function(defaultValues)
 
 
 
+		/*
+		|
+		|	Update our lookup anytime an item is added, removed or moved
+		|
+		*/
 		onChange(key, function(event)
 		{
 			mItems = event.value;
@@ -74,7 +81,11 @@ flour.state = function(defaultValues)
 		
 
 
-
+		/*
+		|
+		|	Update lookup function
+		|
+		*/
 		var updateLookup = function()
 		{
 			var items = get(key);
@@ -84,7 +95,6 @@ flour.state = function(defaultValues)
 			{
 				return;
 			}
-
 
 			for(var i = 0, n = items.length; i < n; i ++)
 			{
@@ -345,7 +355,6 @@ flour.state = function(defaultValues)
 			else
 			{
 				var updated = updateItemValue(item, keys, values);
-				
 				if(updated !== null)
 				{
 					item = updated.item;
@@ -474,6 +483,7 @@ flour.state = function(defaultValues)
 				{
 					moveItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].index);
 				}
+
 				updateItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].value)
 			}
 		};
