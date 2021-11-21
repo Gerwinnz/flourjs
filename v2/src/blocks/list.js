@@ -2,91 +2,44 @@
 
 flour.block.add('list', function(block, state, view)
 {
-	var el = block.el.parentElement;
-	var key = block.key;
-	var html = block.html;
-	var items = {};
-	var listItems = state.get(key);
+	var mKey = block.key;
+	var mListEl = block.el.parentElement;
+	var mBlockHtml = block.html;
+	
+	var mListItems = {};
+	var mState = state.get(mKey);
 
 	block.el.remove();
 
 
-	var cleanup = state.onChange(key, function(event)
+	/*
+	|
+	|	Sub to change events 
+	|
+	*/
+	var cleanup = state.onChange(mKey, function(event)
 	{
-		
 		if(event.type === 'insertItem')
 		{
-			var itemId = event.item.id;
-			var itemState = flour.state(event.item);
-			var itemTemplate = flour.template.parse(block.html, itemState, view);
-
-			items[event.item.id] = {
-				el: itemTemplate.fragment.firstElementChild,
-				state: itemState
-			};
-
-			itemState.onChange(function(event)
-			{
-				state.getItem(key, itemId).update(event.key, event.value);
-			});
-
-			if(event.index === 0)
-			{
-				el.prepend(itemTemplate.fragment);
-			}
-			else if(event.index <= listItems.length - 1)
-			{
-				el.insertBefore(itemTemplate.fragment, items[listItems[event.index].id].el);
-			}
-			else
-			{
-				el.append(itemTemplate.fragment);
-			}
+			handleInsertItem(event);
 		}
 
 		if(event.type === 'removeItem')
 		{
-			var itemId = event.item.id;
-			if(items[itemId])
-			{
-				items[itemId].el.remove();
-				items[itemId] = null;
-			}
+			handleRemoveItem(event);
 		}
 
 		if(event.type === 'updateItem')
 		{
-			var itemId = event.item.id;
-			if(items[itemId])
-			{
-				for(var i = 0, n = event.keys.length; i < n; i ++)
-				{
-					items[itemId].state.set(event.keys[i], event.values[i]);
-				}
-			}
+			handleUpdateItem(event);
 		}
 
 		if(event.type === 'moveItem')
 		{
-			var itemId = event.item.id;
-			if(items[itemId])
-			{
-				if(event.index === 0)
-				{
-					el.prepend(items[itemId].el);
-				}
-				else if(event.index < event.value.length - 1)
-				{
-					el.insertBefore(items[itemId].el, items[event.value[event.index + 1].id].el);
-				}
-				else
-				{
-					el.append(items[itemId].el);
-				}
-			}
+			handleMoveItem(event);
 		}
 
-		listItems = event.value;
+		mState = event.value;
 
 		if(event.type === 'update')
 		{
@@ -96,33 +49,141 @@ flour.block.add('list', function(block, state, view)
 
 
 
+
+
+	/*
+	|
+	|	Insert item handler
+	|
+	|	@event - changeEvent - event details containing the item and its index
+	|
+	*/
+	var handleInsertItem = function(event)
+	{
+		insertItem(event.item, event.index);
+	};
+
+	var insertItem = function(item, index)
+	{
+		var itemId = item.id;
+		var itemState = flour.state(item);
+		var itemTemplate = flour.template.parse(mBlockHtml, itemState, view);
+
+		mListItems[item.id] = {
+			el: itemTemplate.fragment.firstElementChild,
+			state: itemState
+		};
+
+		itemState.onChange(function(event)
+		{
+			state.getItem(mKey, itemId).update(event.key, event.value);
+		});
+
+		if(event.index === 0)
+		{
+			mListEl.prepend(itemTemplate.fragment);
+		}
+		else if(event.index <= mState.length - 1)
+		{
+			mListEl.insertBefore(itemTemplate.fragment, mListItems[mState[event.index].id].el);
+		}
+		else
+		{
+			mListEl.append(itemTemplate.fragment);
+		}
+	}
+
+
+
+	/*
+	|
+	|	Remove item handler
+	|
+	|	@event - changeEvent - event details containing the item to be removed
+	|
+	*/
+	var handleRemoveItem = function(event)
+	{
+		var itemId = event.item.id;
+		if(mListItems[itemId])
+		{
+			mListItems[itemId].el.remove();
+			mListItems[itemId] = null;
+		}
+	};
+
+
+
+	/*
+	|
+	|	Update item handler
+	|
+	|	@event - changeEvent - event details containing the item and the keys + values that were changed
+	|
+	*/
+	var handleUpdateItem = function(event)
+	{
+		var itemId = event.item.id;
+		if(mListItems[itemId])
+		{
+			for(var i = 0, n = event.keys.length; i < n; i ++)
+			{
+				mListItems[itemId].state.set(event.keys[i], event.values[i]);
+			}
+		}
+	};
+
+
+
+	/*
+	|
+	|	Move item handler
+	|
+	|	@event - changeEvent - event details containing the item and its new index
+	|
+	*/
+	var handleMoveItem = function(event)
+	{
+		var itemId = event.item.id;
+		if(mListItems[itemId])
+		{
+			if(event.index === 0)
+			{
+				mListEl.prepend(mListItems[itemId].el);
+			}
+			else if(event.index < event.value.length - 1)
+			{
+				mListEl.insertBefore(mListItems[itemId].el, mListItems[event.value[event.index + 1].id].el);
+			}
+			else
+			{
+				mListEl.append(mListItems[itemId].el);
+			}
+		}
+	};
+
+
+
+
+
+	/*
+	|
+	|	Basic render
+	|
+	*/
 	var renderListItems = function()
 	{
-		items = {};
-		el.innerHTML = '';
+		mListItems = {};
+		mListEl.innerHTML = '';
 
-		listItems.forEach((item) => 
+		mState.forEach((item) => 
 		{
-			var itemId = item.id;
-			var itemState = flour.state(item);
-			var itemTemplate = flour.template.parse(html, itemState, view);
-
-			itemState.onChange(function(event)
-			{
-				state.getItem(key, itemId).update(event.key, event.value);
-			});
-
-			items[item.id] = {
-				el: itemTemplate.fragment.firstElementChild,
-				state: itemState
-			};
-
-			el.append(itemTemplate.fragment);
+			insertItem(item);
 		});
 	}
 
 
-	if(listItems && listItems.length > 0)
+	if(mState && mState.length > 0)
 	{
 		renderListItems();
 	}

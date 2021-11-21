@@ -329,9 +329,6 @@ flour.state = function(defaultValues)
 			var updatedKeys = [];
 			var updatedKeyValues = [];
 
-			// console.log(' ');
-			// console.log('managed_array::update_item', item);
-
 			if(flour.util.isObject(keys))
 			{
 				for(var itemKey in keys)
