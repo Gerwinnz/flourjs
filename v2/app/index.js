@@ -10,9 +10,9 @@
 	});
 
 	
-	// var listView = flour.view.get('list');
-	// document.getElementById('list-view').append(listView.el);
-	// window.listView = listView;
+	var listView = flour.view.get('list');
+	document.getElementById('list-view').append(listView.el);
+	window.listView = listView;
 
 
 	var formView = flour.view.get('form');
