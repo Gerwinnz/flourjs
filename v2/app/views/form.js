@@ -11,20 +11,24 @@ flour.view.add('form', function(){
 		view.state.set('types', 
 		[
 			{
-				id: 0,
+				value: 0,
 				label: 'Hobbit'
 			},
 			{
-				id: 1,
+				value: 1,
 				label: 'Man'
 			},
 			{
-				id: 2,
+				value: 2,
 				label: 'Goblin'
 			},
 			{
-				id: 3,
+				value: 3,
 				label: 'Elf'
+			},
+			{
+				value: 4, 
+				label: 'Dwarf'
 			}
 		]);
 
@@ -40,8 +44,7 @@ flour.view.add('form', function(){
 	view.handleFormSubmit = function(event, el)
 	{
 		event.preventDefault();
-
-		console.log({
+		view.trigger('submit', {
 			name: view.state.get('name'),
 			email: view.state.get('email'),
 			type: view.state.get('type')

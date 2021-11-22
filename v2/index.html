@@ -22,6 +22,7 @@
 		<script type="text/javascript" src="src/bindings/click.js"></script>
 		<script type="text/javascript" src="src/bindings/submit.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
+		<script type="text/javascript" src="src/bindings/options.js"></script>
 	</head>
 	<body>
 		<template id="flour-template.list">
@@ -96,11 +97,7 @@
 
 					<div class="form__line">
 						<label>Type</label>
-						<select flour-value="type">
-							{{#list types}}
-								<option value="{{id}}">{{label}}</option>
-							{{/list}}
-						</select>
+						<select flour-value="type" flour-options="types"></select>
 					</div>
 
 					<div class="form__line">

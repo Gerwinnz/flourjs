@@ -74,7 +74,7 @@ flour.template.parse = function(html, state, view)
 				var elementId = flour.template.elementUniqueId;
 				flour.template.elementUniqueId ++;
 
-				html = html.replace(replaceString, '<option id="flour-' + elementId + '"></option>');
+				html = html.replace(replaceString, '<span id="flour-' + elementId + '"></span>');
 				blocks.push({
 					elementId: elementId,
 					type: blockType,
@@ -101,7 +101,6 @@ flour.template.parse = function(html, state, view)
 	// set our template HTML to our parsed output
 	//
 	templateFragment.innerHTML = html;
-	console.log(templateFragment.innerHTML);
 
 
 
@@ -152,7 +151,8 @@ flour.template.parse = function(html, state, view)
 	// return the fragment
 	return {
 		fragment: templateFragment.content,
-		cleanup: function(){
+		cleanup: function()
+		{
 			for(var i = 0, n = cleanupCallbacks.length; i < n; i ++)
 			{
 				cleanupCallbacks[i]();

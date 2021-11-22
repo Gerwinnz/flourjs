@@ -31,6 +31,10 @@ form input, form select{
 	width: 100%;
 }
 
+select option{
+	line-height: 32px;
+}
+
 .form__line{
 	margin-top: 8px;
 }
