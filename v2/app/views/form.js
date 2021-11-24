@@ -1,11 +1,15 @@
 
-flour.view.add('form', function(){
-
+flour.view.add('form', function()
+{
 	var view = this;
 	view.template = 'form';
 
 
-	
+	/*
+	|
+	|	Init
+	|
+	*/
 	view.init = function(params)
 	{
 		view.state.set('types', 

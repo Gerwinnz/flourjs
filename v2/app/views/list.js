@@ -1,17 +1,19 @@
 
-flour.view.add('list', function(){
-
+flour.view.add('list', function()
+{
 	var view = this;
 	var itemId = 3;
 	var updatesCount = 0;
 
-
 	view.template = 'list';
 
 
-	
 
-
+	/*
+	|
+	|	Init
+	|
+	*/
 	view.init = function(params)
 	{
 		view.state.onChange('items', function(event)
