@@ -55,4 +55,11 @@ flour.view.add('form', function()
 		});
 	};
 
+
+
+	view.handleHelloWorldClick = function(event, el)
+	{
+		console.log(el);
+	};
+
 });

@@ -126,6 +126,44 @@ flour.template.parse = function(html, state, view)
 
 
 	//
+	var stateVariablePattern = /\${([\w.]+)}/;
+	var customElements = templateFragment.content.querySelectorAll('hello-world');
+	for(var i = 0, n = customElements.length; i < n; i ++)
+	{
+		(function(customElement){
+
+			var attributes = customElement.attributes;
+
+			for(var i = 0, n = attributes.length; i < n; i ++)
+			{
+				var attributeName = attributes[i].nodeName;
+				var attributeValue = customElement.getAttribute(attributeName);
+				var match = false;
+
+				if(!flour.binding.defined[attributeName])
+				{
+					if(match = attributeValue.match(stateVariablePattern))
+					{
+						var key = match[1];
+						var value = state.get(key);
+						customElement.setAttribute(attributeName, value);
+
+						var cleanup = state.onChange(key, function(event)
+						{
+							customElement.setAttribute(attributeName, event.value);
+						});
+
+						cleanupCallbacks.push(cleanup);
+					}
+				}
+			}
+
+		}(customElements[i]));
+	}
+
+
+
+	//
 	// go through our found blocks and call them
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
