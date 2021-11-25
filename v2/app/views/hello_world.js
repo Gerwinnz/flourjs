@@ -13,11 +13,11 @@ class HelloWorld extends HTMLElement {
 	attributeChangedCallback(property, oldValue, newValue) {
 	  if (oldValue === newValue) return;
 	  this[property] = newValue;
-	  this.textContent = 'Hello ' + this.name;
+	  this.innerHTML = '<p>Hello ' + this.name + '</p>';
 	}
 
 	connectedCallback() {
-		this.textContent = 'Hello ' + this.name;
+		this.innerHTML = '<p>Hello ' + this.name + '</p>';
 	}
 
 }
