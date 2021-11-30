@@ -4,6 +4,9 @@ flour.view.add('form', function()
 	var view = this;
 	view.template = 'form';
 
+	var helloOne = false;
+	var helloTwo = false;
+
 
 	/*
 	|
@@ -36,11 +39,29 @@ flour.view.add('form', function()
 			}
 		]);
 
+		helloOne = flour.view.get('hello_world');
+		helloTwo = flour.view.get('hello_world');
+
+		window.hello1 = helloOne;
+		window.hello2 = helloTwo;
+		
+		console.log('hello', helloOne);
+		console.log('hello', helloTwo);
+
+		view.state.onChange('name', function(event)
+		{
+			helloOne.state.set('name', event.value);
+			helloTwo.state.set('name', event.value);
+		});
+
 		view.state.set('name', 'Gerwin');
 		view.state.set('email', 'gvanroyen@gmail.com');
-		view.state.set('type', 3); // this isn't working yet
+		view.state.set('type', 3);
 
 		view.render();
+
+		view.refs.hello_one.append(helloOne.el);
+		view.refs.hello_two.append(helloTwo.el);
 	};
 
 
@@ -53,6 +74,15 @@ flour.view.add('form', function()
 			email: view.state.get('email'),
 			type: view.state.get('type')
 		});
+
+		view.render();
+	};
+
+
+
+	view.handleResetClick = function(event, el)
+	{
+		view.state.set('name', 'Reset name');
 	};
 
 

@@ -87,6 +87,7 @@ flour.view.base = function()
 		if(!this.events){ this.events = {}; }
 		if(!this.refs){ this.refs = {}; }
 
+		this.id = id;
 		this.el = document.createElement(this.tag);
 		
 		if(this.template)

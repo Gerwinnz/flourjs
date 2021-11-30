@@ -126,6 +126,8 @@ flour.template.parse = function(html, state, view)
 
 
 	//
+	// Find custom elements/components and update attributes mapped to a state value
+	//
 	var stateVariablePattern = /\${([\w.]+)}/;
 	var customElements = templateFragment.content.querySelectorAll('hello-world');
 	for(var i = 0, n = customElements.length; i < n; i ++)
