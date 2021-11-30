@@ -105,19 +105,16 @@
 						<button type="button" on-click="handleResetClick">Reset</button>
 					</div>
 
-					<div flour-ref="hello_one"></div>
-					<div flour-ref="hello_two"></div>
-
-					<!-- <hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
 					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
-					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world> -->
+					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
+					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
 				</form>
 			</div>
 		</template>
 
 		<template id="flour-template.hello_world">
 			<p>
-				{{id}} - Hello, my name is <span flour-text="name" on-click="handleNameClick"></span>
+				{{id}} - Hello, my name is <span flour-text="name" on-click="handleNameClick"></span> - <span on-click="render">Re-render</span>
 			</p>
 		</template>
 

@@ -63,7 +63,7 @@ flour.view.get = function(name, params)
 flour.view.base = function()
 {
 	var templateHTML = null;
-	var templateInstance = null;
+	this.templateInstance = null;
 
 
 
@@ -116,15 +116,16 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
-		if(templateInstance)
+		if(this.templateInstance)
 		{
-			templateInstance.cleanup();
+			console.log('hello clean up');
+			this.templateInstance.cleanup();
 		}
 
-		templateInstance = flour.template.parse(templateHTML, this.state, this);
+		this.templateInstance = flour.template.parse(templateHTML, this.state, this);
 
 		this.el.innerHTML = '';
-		this.el.appendChild(templateInstance.fragment);
+		this.el.appendChild(this.templateInstance.fragment);
 	};
 
 

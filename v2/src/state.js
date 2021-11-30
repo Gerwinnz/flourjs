@@ -1,6 +1,6 @@
 var flour = flour || {};
 
-
+flour.stateId = 0;
 
 
 /*
@@ -827,7 +827,10 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
+	flour.stateId ++;
+
 	return {
+		id: flour.stateId,
 		get: get,
 		set: set,
 

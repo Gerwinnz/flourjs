@@ -17,12 +17,6 @@ flour.view.add('hello_world', function()
 		view.state.set('name', params.name);
 		view.state.set('id', this.id);
 
-		var id = this.id;
-		view.state.onChange('name', function(event)
-		{
-			console.log('hello name changed on view:' + id, event.value);
-		});
-
 		view.render();
 	};
 
