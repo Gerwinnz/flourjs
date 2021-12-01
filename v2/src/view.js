@@ -118,7 +118,6 @@ flour.view.base = function()
 	{
 		if(this.templateInstance)
 		{
-			console.log('hello clean up');
 			this.templateInstance.cleanup();
 		}
 
