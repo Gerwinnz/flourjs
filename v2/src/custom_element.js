@@ -51,7 +51,14 @@ flour.customElement.add = function(tagName, details)
 
 			connectedCallback() 
 			{
-				this.attachShadow({mode: 'open'}).append(this.view.el);
+				if(details.shadow === true)
+				{
+					this.attachShadow({mode: 'open'}).append(this.view.el);
+				}
+				else
+				{
+					this.append(this.view.el);
+				}
 			}
 		}
 	);

@@ -107,7 +107,10 @@
 					</div>
 
 					<id-card name="${name}">
-						<div slot="extra">Test slot extra details</div>
+						<ul slot="extra">
+							<li>Extra deets line one <span flour-text="name"></span></li>
+							<li>Second line details</li>
+						</ul>
 					</id-card>
 					<id-card on-click="handleHelloWorldClick" name="${email}"></id-card>
 					<id-card on-click="handleHelloWorldClick" name="${type}"></id-card>

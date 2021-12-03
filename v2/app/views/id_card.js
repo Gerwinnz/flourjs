@@ -19,9 +19,10 @@ flour.view.add('id_card', function()
 				font-size:  12px;
 			}
 		</style>
+
 		<div class="id-card">
 			<div>
-				{{id}} - Hello, my name is <span flour-text="name" on-click="handleNameClick"></span>
+				{{id}} - <span flour-text="name" on-click="handleNameClick"></span>
 			</div>
 			<div class="id-card__extra">
 				<slot name="extra">No extra details</slot>
@@ -64,5 +65,6 @@ flour.view.add('id_card', function()
 
 flour.customElement.add('id-card', {
 	view: 'id_card',
+	shadow: true,
 	props: ['name']
 });
