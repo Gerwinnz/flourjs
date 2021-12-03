@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="src/block.js"></script>
 		<script type="text/javascript" src="src/binding.js"></script>
 		<script type="text/javascript" src="src/template.js"></script>
+		<script type="text/javascript" src="src/custom_element.js"></script>
 
 		<script type="text/javascript" src="src/blocks/list.js"></script>
 
@@ -105,30 +106,25 @@
 						<button type="button" on-click="handleResetClick">Reset</button>
 					</div>
 
-					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
-					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
-					<hello-world on-click="handleHelloWorldClick" name="${name}"></hello-world>
+					<id-card name="${name}">
+						<div slot="extra">Test slot extra details</div>
+					</id-card>
+					<id-card on-click="handleHelloWorldClick" name="${email}"></id-card>
+					<id-card on-click="handleHelloWorldClick" name="${type}"></id-card>
 				</form>
 			</div>
-		</template>
-
-		<template id="flour-template.hello_world">
-			<p>
-				{{id}} - Hello, my name is <span flour-text="name" on-click="handleNameClick"></span> - <span on-click="render">Re-render</span>
-			</p>
 		</template>
 
 
 		<div id="app"></div>
 
 		<div id="list-view" class="view-wrapper"></div>
-
 		<div id="form-view" class="view-wrapper"></div>
 
 		
 		<script type="text/javascript" src="app/views/list.js"></script>
 		<script type="text/javascript" src="app/views/form.js"></script>
-		<script type="text/javascript" src="app/views/hello_world.js"></script>
+		<script type="text/javascript" src="app/views/id_card.js"></script>
 		
 		<script type="text/javascript" src="app/index.js"></script>
 	</body>

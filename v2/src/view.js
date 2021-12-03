@@ -33,7 +33,6 @@ flour.view.add = function(name, view)
 	flour.view.defined[name] = view;
 };
 
-
 flour.view.get = function(name, params)
 {
 	var viewInstance = false;
@@ -90,13 +89,21 @@ flour.view.base = function()
 		this.id = id;
 		this.el = document.createElement(this.tag);
 		
-		if(this.template)
+		if(this.templateHTML)
 		{
-			templateHTML = document.getElementById('flour-template.' + this.template).innerHTML;
+			templateHTML = this.templateHTML;
 		}
-		else
+		else if(this.template)
 		{
-			templateHTML = '<p>No template found.</p>';
+			var templateEl = document.getElementById('flour-template.' + this.template);
+			if(!templateEl)
+			{
+				templateHTML = '<p>No template found.</p>';
+			}
+			else
+			{
+				templateHTML = document.getElementById('flour-template.' + this.template).innerHTML;
+			}
 		}
 
 		if(this.init)

@@ -68,7 +68,7 @@ flour.view.add('form', function()
 
 	view.handleHelloWorldClick = function(event, el)
 	{
-		
+		console.log('hello world click');
 	};
 
 });
