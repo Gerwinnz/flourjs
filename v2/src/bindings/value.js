@@ -8,7 +8,7 @@ flour.binding.add('f-value',
 		var key = element.getAttribute('f-value');
 		var type = element.type ? element.type.toLowerCase() : 'text';
 		var value = state.get(key);
-
+		var elementValue = element.getAttribute('value');
 
 		if(value === undefined)
 		{
@@ -18,11 +18,19 @@ flour.binding.add('f-value',
 
 		var remove = state.onChange(key, function(event)
 		{
-			if(type === 'radio' || type === 'checkbox')
+			if(type === 'radio')
 			{
-				if(element.getAttribute('value') === event.value)
+				element.checked = elementValue === event.value;
+			}
+			else if (type === 'checkbox')
+			{
+				if(flour.util.isArray(event.value))
 				{
-					element.checked = 'checked';
+					element.checked = event.value.includes(elementValue);
+				}
+				else
+				{
+					element.checked = elementValue === event.value;
 				}
 			}
 			else
@@ -32,17 +40,55 @@ flour.binding.add('f-value',
 		});
 
 
-		if(type === 'radio' || type === 'checkbox')
+		if(type === 'radio')
 		{
-			if(element.getAttribute('value') === value)
+			if(elementValue === value)
 			{
 				element.checked = 'checked';
 			}
 
 			element.addEventListener('change', function()
 			{
-				state.set(key, element.getAttribute('value'));
+				state.set(key, elementValue);
 			});
+		}
+		else if(type === 'checkbox')
+		{
+			if(flour.util.isArray(value))
+			{
+				element.checked = value.includes(elementValue);
+
+				element.addEventListener('change', function()
+				{
+					var checkedItems = state.get(key);
+					var itemPosition = checkedItems.indexOf(elementValue);
+					
+					if(element.checked)
+					{
+						if(itemPosition === -1)
+						{
+							checkedItems.push(elementValue);
+						}
+					}
+					else
+					{
+						if(itemPosition !== -1)
+						{
+							checkedItems.splice(itemPosition, 1);
+						}
+					}
+
+					state.set(key, checkedItems);
+				});
+			}
+			else
+			{
+				element.checked = elementValue === value;
+				element.addEventListener('change', function()
+				{
+					state.set(key, elementValue);
+				});
+			}
 		}
 		else
 		{
