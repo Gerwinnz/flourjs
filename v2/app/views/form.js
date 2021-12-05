@@ -39,6 +39,7 @@ flour.view.add('form', function()
 		view.state.set('name', 'Gerwin');
 		view.state.set('email', 'gvanroyen@gmail.com');
 		view.state.set('type', 3);
+		view.state.set('pet', 'none');
 
 		view.render();
 	};

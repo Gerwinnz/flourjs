@@ -1,11 +1,11 @@
 
 
-flour.binding.add('flour-text', 
+flour.binding.add('f-text', 
 {
 
 	attach: function(element, state, view)
 	{
-		var key = element.getAttribute('flour-text');
+		var key = element.getAttribute('f-text');
 		var value = state.get(key)
 		element.innerText = value;
 

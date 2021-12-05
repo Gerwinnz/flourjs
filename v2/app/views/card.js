@@ -1,12 +1,11 @@
 
 
-flour.view.add('id_card', function()
+flour.view.add('card', function()
 {
 	var view = this;
-	view.templateHTML = 
-	`
+	view.templateHTML = `
 		<style>
-			.id-card{
+			.card{
 				background-color: #fff;
 				padding: 16px;
 				margin: 16px 0;
@@ -14,17 +13,17 @@ flour.view.add('id_card', function()
 				box-shadow: 0 4px 8px rgba(0,0,0,.05);
 			}
 
-			.id-card__extra{
+			.card__extra{
 				margin-top:  8px;
 				font-size:  12px;
 			}
 		</style>
 
-		<div class="id-card">
+		<div class="card">
 			<div>
-				{{id}} - <span flour-text="name" on-click="handleNameClick"></span>
+				{{id}} - <span f-text="name" on-click="handleNameClick"></span>
 			</div>
-			<div class="id-card__extra">
+			<div class="card__extra">
 				<slot name="extra">No extra details</slot>
 			</div>
 		</div>
@@ -63,8 +62,8 @@ flour.view.add('id_card', function()
 
 
 
-flour.customElement.add('id-card', {
-	view: 'id_card',
+flour.customElement.add('card-box', {
+	view: 'card',
 	shadow: true,
 	props: ['name']
 });

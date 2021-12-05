@@ -1,12 +1,12 @@
 
 
-flour.binding.add('flour-options', 
+flour.binding.add('f-options', 
 {
 
 	attach: function(element, state, view)
 	{
-		var key = element.getAttribute('flour-options');
-		var value = element.getAttribute('flour-value');
+		var key = element.getAttribute('f-options');
+		var value = element.getAttribute('f-value');
 		var options = state.get(key) || [];
 
 		var remove = state.onChange(key, function(event)

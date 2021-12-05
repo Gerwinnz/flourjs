@@ -95,14 +95,14 @@ flour.view.base = function()
 		}
 		else if(this.template)
 		{
-			var templateEl = document.getElementById('flour-template.' + this.template);
+			var templateEl = document.getElementById('f-template.' + this.template);
 			if(!templateEl)
 			{
 				templateHTML = '<p>No template found.</p>';
 			}
 			else
 			{
-				templateHTML = document.getElementById('flour-template.' + this.template).innerHTML;
+				templateHTML = document.getElementById('f-template.' + this.template).innerHTML;
 			}
 		}
 

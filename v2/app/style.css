@@ -19,7 +19,10 @@ button.secondary{
 	color: #333;
 }
 
-input, select{
+select,
+input[type=text], 
+input[type=password], 
+input[type=search]{
 	height: 32px;
 	padding: 0 4px;
 	border-radius: 4px;
@@ -27,7 +30,10 @@ input, select{
 	box-sizing: border-box;
 }
 
-form input, form select{
+form input[type=text], 
+form input[type=password], 
+form input[type=search], 
+form select{
 	width: 100%;
 }
 
@@ -43,7 +49,7 @@ select option{
 	margin-top: 0;
 }
 
-.form__line label{
+.form__line > label{
 	display: block;
 }
 

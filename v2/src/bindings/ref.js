@@ -1,11 +1,11 @@
 
 
-flour.binding.add('flour-ref', 
+flour.binding.add('f-ref', 
 {
 
 	attach: function(element, state, view)
 	{
-		var ref = element.getAttribute('flour-ref');
+		var ref = element.getAttribute('f-ref');
 		
 		if(view.refs === undefined)
 		{
