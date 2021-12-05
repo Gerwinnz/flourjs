@@ -41,6 +41,7 @@ flour.view.add('form', function()
 		view.state.set('type', 3);
 		view.state.set('pet', 'none');
 		view.state.set('extra', ['hat','scarf']);
+		view.state.set('subscribed', true);
 
 		view.render();
 	};

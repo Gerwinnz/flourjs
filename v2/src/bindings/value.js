@@ -30,7 +30,7 @@ flour.binding.add('f-value',
 				}
 				else
 				{
-					element.checked = elementValue === event.value;
+					element.checked = event.value ? true : false;
 				}
 			}
 			else
@@ -83,10 +83,10 @@ flour.binding.add('f-value',
 			}
 			else
 			{
-				element.checked = elementValue === value;
+				element.checked = value ? true : false;
 				element.addEventListener('change', function()
 				{
-					state.set(key, elementValue);
+					state.set(key, element.checked ? true : false);
 				});
 			}
 		}
