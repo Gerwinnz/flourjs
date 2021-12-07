@@ -20,6 +20,7 @@ button.secondary{
 }
 
 select,
+textarea,
 input[type=text], 
 input[type=password], 
 input[type=search]{
@@ -33,8 +34,16 @@ input[type=search]{
 form input[type=text], 
 form input[type=password], 
 form input[type=search], 
+form textarea,
 form select{
 	width: 100%;
+}
+
+textarea{
+	height: auto;
+	padding:  4px;
+	font-size:  14px;
+	font-family: sans-serif;
 }
 
 select option{

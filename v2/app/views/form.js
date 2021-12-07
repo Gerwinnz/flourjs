@@ -12,7 +12,7 @@ flour.view.add('form', function()
 	*/
 	view.init = function(params)
 	{
-		view.state.set('types', 
+		view.state.set('type_options', 
 		[
 			{
 				value: 0,
@@ -39,6 +39,7 @@ flour.view.add('form', function()
 		view.state.set('name', 'Gerwin');
 		view.state.set('email', 'gvanroyen@gmail.com');
 		view.state.set('type', 3);
+		view.state.set('description', 'A human from New Zealand...')
 		view.state.set('pet', 'none');
 		view.state.set('extra', ['hat','scarf']);
 		view.state.set('subscribed', true);

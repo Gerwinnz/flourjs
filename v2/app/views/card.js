@@ -21,7 +21,7 @@ flour.view.add('card', function()
 
 		<div class="card">
 			<div>
-				{{id}} - <span f-text="name" on-click="handleNameClick"></span>
+				<span f-text="name" on-click="handleNameClick"></span>
 			</div>
 			<div class="card__extra">
 				<slot name="extra">No extra details</slot>

@@ -98,7 +98,12 @@
 
 					<div class="form__line">
 						<label>Type</label>
-						<select f-value="type" f-options="types"></select>
+						<select f-value="type" f-options="type_options"></select>
+					</div>
+
+					<div class="form__line">
+						<label>Description</label>
+						<textarea f-value="description" placeholder="Enter a description..."></textarea>
 					</div>
 
 					<div class="form__line">
@@ -165,6 +170,12 @@
 
 		<div id="list-view" class="view-wrapper"></div>
 		<div id="form-view" class="view-wrapper"></div>
+
+		<div class="view-wrapper">
+			<card-box name="Barry Burton">
+				<p slot="extra">This component exists in plain html.</p>
+			</card-box>
+		</div>
 
 		
 		<script type="text/javascript" src="app/views/list.js"></script>

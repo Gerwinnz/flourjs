@@ -16,37 +16,53 @@ flour.binding.add('f-value',
 		}
 
 
-		var remove = state.onChange(key, function(event)
+
+		//
+		// Function to Set the element's value depending on the element type and input type
+		//
+		function setElementValue(val)
 		{
 			if(type === 'radio')
 			{
-				element.checked = elementValue === event.value;
+				element.checked = elementValue === val;
+				return;
 			}
-			else if (type === 'checkbox')
+			
+			if(type === 'checkbox')
 			{
-				if(flour.util.isArray(event.value))
+				if(flour.util.isArray(val))
 				{
-					element.checked = event.value.includes(elementValue);
+					element.checked = val.includes(elementValue);
 				}
 				else
 				{
-					element.checked = event.value ? true : false;
+					element.checked = val ? true : false;
 				}
+
+				return;
 			}
-			else
-			{
-				element.value = event.value;
-			}
+			
+			element.value = val;
+		}
+
+
+
+		//
+		// Sub to state change so we update the element to match
+		//
+		var remove = state.onChange(key, function(event)
+		{
+			setElementValue(event.value);
 		});
 
 
+
+
+		//		
+		// Attach appropriate change/input listeners on our element so we can update the state
+		//
 		if(type === 'radio')
 		{
-			if(elementValue === value)
-			{
-				element.checked = 'checked';
-			}
-
 			element.addEventListener('change', function()
 			{
 				state.set(key, elementValue);
@@ -56,8 +72,6 @@ flour.binding.add('f-value',
 		{
 			if(flour.util.isArray(value))
 			{
-				element.checked = value.includes(elementValue);
-
 				element.addEventListener('change', function()
 				{
 					var checkedItems = state.get(key);
@@ -83,7 +97,6 @@ flour.binding.add('f-value',
 			}
 			else
 			{
-				element.checked = value ? true : false;
 				element.addEventListener('change', function()
 				{
 					state.set(key, element.checked ? true : false);
@@ -92,12 +105,15 @@ flour.binding.add('f-value',
 		}
 		else
 		{
-			element.value = value;
 			element.addEventListener('input', function()
 			{
 				state.set(key, element.value);
 			});
 		}
+
+
+		setElementValue(value);
+
 
 		return function(){
 			remove();
