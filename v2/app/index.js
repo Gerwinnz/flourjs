@@ -5,7 +5,8 @@
 		base_url: 'http://localhost/flourjs/v2/',
 		element: document.getElementById('app'),
 		routes: {
-			'': 'home'
+			'home': { view: 'home' },
+			'page/:page': { view: 'page' }
 		}
 	});
 

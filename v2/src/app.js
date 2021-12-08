@@ -20,15 +20,24 @@ flour.app = function(params)
 
 class flour_app
 {
+	element = false;
+	routes = {};
+
+
 
 	constructor(params)
+	{				
+		this.element = params.element || document.createElement('div');
+		this.routes = params.routes || {};
+
+		this.matchRoute();
+	}
+
+
+
+	matchRoute()
 	{
-		this.el = document.createDocumentFragment();
-				
-		if(params.element)
-		{
-			params.element.appendChild(this.el);
-		}
+		console.log('matching request for ' + document.URL);
 	}
 
 }
