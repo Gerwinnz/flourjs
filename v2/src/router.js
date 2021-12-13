@@ -36,6 +36,8 @@ flour.router = function(routes, baseURL)
 	    var requestURL = request.url === undefined ? document.URL : request.url;
 	    var originalRequestURL = requestURL;
 
+	    console.log('matching', requestURL);
+
 
 	    // Pull out hash variables from the url
 	    if(requestURL.indexOf('#') !== -1) 
