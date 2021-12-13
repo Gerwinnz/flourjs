@@ -2,13 +2,22 @@
 (function(){
 
 	var app = flour.app({
-		base_url: 'http://localhost/flourjs/v2/',
+		base_url: 'http://localhost/flourjs/v2',
 		element: document.getElementById('app'),
 		routes: {
-			'home': { view: 'home' },
-			'page/:page': { view: 'page' }
+			'/binders/:binder': { view: 'binders' },
+			'/blocks/:block': { view: 'blocks' },
+			'/components/:component': { view: 'components' },
+			'/': { view: 'home'}
 		}
 	});
+
+	// [
+	// 		['/binders/:binder', { view: 'binders'}],
+	// 		['/blocks/:block', { view: 'blocks'}],
+	// 		['/components/:component', { view: 'components'}],
+	// 		['/', { view: 'home'}]
+	// ]
 
 
 	var sharedState = flour.state({

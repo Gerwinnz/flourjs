@@ -21,15 +21,19 @@ flour.app = function(params)
 class flour_app
 {
 	element = false;
-	routes = {};
+	router = false;
 
 
 
 	constructor(params)
-	{				
+	{
 		this.element = params.element || document.createElement('div');
-		this.routes = params.routes || {};
+		this.router = flour.router(params.routes, params.base_url);
 
+		window.appRouter = this.router;
+
+		window.addEventListener('popstate', () => { this.matchRoute(); });
+		
 		this.matchRoute();
 	}
 
@@ -37,7 +41,8 @@ class flour_app
 
 	matchRoute()
 	{
-		console.log('matching request for ' + document.URL);
+		var route = this.router.match({url: document.URL});
+		console.log(route);
 	}
 
 }
