@@ -83,7 +83,7 @@ class flour_app
 		if(isDifferentView || isDifferentRoute || isDifferentParams)
 		{
 			var nextView;
-        	var currentView = this.mViews[mCurrentViewIndex];
+        	var currentView = this.mViews[this.mCurrentViewIndex];
 			this.mElement.innerHTML = 'Is different - render "' + route.view + '"!';
 
 
@@ -119,7 +119,7 @@ class flour_app
 			}
 			else
 			{
-				
+
 			}
 		}
 	}
