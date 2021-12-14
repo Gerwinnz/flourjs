@@ -26,19 +26,19 @@
 	});
 	
 
-	var listView = flour.view.get('list');
-	document.getElementById('list-view').append(listView.el);
-	window.listView = listView;
+	// var listView = flour.view.get('list');
+	// document.getElementById('list-view').append(listView.el);
+	// window.listView = listView;
 
 
-	var formView = flour.view.get('form');
-	document.getElementById('form-view').append(formView.el);
-	window.formView = formView;
+	// var formView = flour.view.get('form');
+	// document.getElementById('form-view').append(formView.el);
+	// window.formView = formView;
 
 
-	formView.on('submit', function(data)
-	{
-		console.log('form_view_submit', data);
-	});
+	// formView.on('submit', function(data)
+	// {
+	// 	console.log('form_view_submit', data);
+	// });
 
 }());
