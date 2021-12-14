@@ -115,7 +115,18 @@ class flour_app
 			//
 			if(route.direction === 'back')
 			{
+				currentView = this.mViews.pop();
+				currentView.destroy();
+				this.mCurrentViewIndex --;
 
+				if(this.mViews[this.mCurrentViewIndex] !== undefined)
+				{
+					nextView = this.mViews[this.mCurrentViewIndex];
+				}
+				else
+				{
+					
+				}
 			}
 			else
 			{

@@ -139,6 +139,20 @@ flour.view.base = function()
 	/*
 	|
 	|
+	|	Tear down of view when it's being removed
+	|
+	|
+	*/
+	this.destroy = function()
+	{
+		
+	};
+
+
+
+	/*
+	|
+	|
 	|	Add an event listener for this view
 	|
 	|	@event - string - event name
