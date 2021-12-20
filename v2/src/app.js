@@ -29,6 +29,8 @@ class flour_app
 	mCurrentViewIndex = 0;
 	mCurrentRoute = {};
 
+	mBaseURL = '';
+
 
 
 
@@ -36,6 +38,7 @@ class flour_app
 	{
 		this.mElement = params.element || document.createElement('div');
 		this.mRouter = flour.router(params.routes, params.base_url);
+		this.mBaseURL = params.base_url || document.location.origin;
 		//this.state = flour.state();
 
 		window.appRouter = this.router;
@@ -58,15 +61,27 @@ class flour_app
 
 
 
+	/*
+	|
+	|
+	|
+	|
+	|
+	*/
 	matchRoute(data)
 	{
 		var route = this.mRouter.match(data);
 		var extra = undefined;
 
-		console.log('route', route);
+		if(!route)
+		{
+			flour.util.throw('No matching route found');
+			return;
+		}
 		
 		if(route.view === undefined)
 		{ 
+			flour.util.throw('Route has no view parameter.'); 
 			return; 
 		}
 		
@@ -84,7 +99,6 @@ class flour_app
 		{
 			var nextView;
         	var currentView = this.mViews[this.mCurrentViewIndex];
-			this.mElement.innerHTML = 'Is different - render "' + route.view + '"!';
 
 
 			//
@@ -125,21 +139,142 @@ class flour_app
 				}
 				else
 				{
-					
+					nextView = flour.view.get(route.view, route.params);
 				}
 			}
 			else
 			{
+				nextView = flour.view.get(route.view, route.params);
+			}
 
+
+			//
+			//	Push new view on view stack
+			//
+			this.mCurrentRoute = route;
+			this.mViews.push(nextView);
+			this.mCurrentViewIndex = this.mViews.length - 1;
+
+			this.displayView(nextView, currentView);
+
+
+			//
+			//	Check if route has an action and attempt to call a method on the new view of same action
+			//
+			if(route.action && flour.util.isFunction(nextView[route.action]))
+			{
+				nextView[route.action](route.params);
 			}
 		}
 	}
 
 
 
+	/*
+	|
+	|
+	|
+	|
+	|
+	*/
+	displayView(nextView, currentView)
+	{
+		if(nextView.ready === false)
+		{
+			var onReady = function()
+			{
+				self.transitionViews(nextView, currentView);
+				nextView.ready = true;
+				nextView.off('ready', onReady);
+			};
+
+			nextView.on('ready', onReady);
+		}
+		else
+		{
+			this.transitionViews(nextView, currentView);
+		}
+	}
+
+
+
+	/*
+	|
+	|
+	|
+	|
+	|
+	*/
+	transitionViews(nextView, currentView)
+	{
+		console.log('transition views');
+
+		if(flour.util.isFunction(nextView.willShow))
+		{
+			nextView.willShow();
+		}
+
+		this.mElement.append(nextView.el);
+		this.cleanUp(currentView);	
+	}
+
+
+
+	/*
+	|
+	|
+	|
+	|
+	|
+	*/
+	cleanUp(view)
+	{
+		if(view)
+		{
+			view.el.parentNode.removeChild(view.el);
+		}
+
+		if(this.mViews.length > this.mCacheViewsCount)
+		{
+			view = this.mViews.shift();
+			view.destroy();
+			view = false;
+			this.mCurrentViewIndex = this.mViews.length;
+		}
+	}
+
+
+
+
 	attachLinkClicks()
 	{
+		this.mElement.onclick = (e) => 
+		{				
+			if(e.target.nodeName === 'A')
+			{
+				e.preventDefault();
+				e.stopPropagation();
 
+				var el = e.target;
+				var href = el.getAttribute('href');
+				var handledURL = false;
+				
+				if(href[0] === '/')
+				{
+					handledURL = this.mBaseURL + href;
+				}
+				else if(this.mBaseURL !== '' && href.indexOf(this.mBaseURL) === 0)
+				{
+					handledURL = href;
+				}
+
+				if(handledURL)
+				{
+					flour.publish('history:state_change', {url: handledURL});
+					history.pushState({}, null, handledURL);
+				}
+			}
+		}
 	}
 
 }

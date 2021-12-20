@@ -5,9 +5,15 @@
 		base_url: 'http://localhost/flourjs/v2',
 		element: document.getElementById('app'),
 		routes: {
+			'/binders': { view: 'form' },
 			'/binders/:binder': { view: 'binders' },
+			
+			'/blocks': { view: 'list' },
 			'/blocks/:block': { view: 'blocks' },
+
+			'/components': { view: 'components' },
 			'/components/:component': { view: 'components' },
+
 			'/': { view: 'home'}
 		}
 	});

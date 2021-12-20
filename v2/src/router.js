@@ -22,6 +22,8 @@ flour.router = function(routes, baseURL)
 	|
 	|	Checks for a route that matches the requestURL passed in
 	|
+	|	@request - object - {url: string}
+	|
 	*/
 	var match = function(request)
 	{
@@ -62,6 +64,10 @@ flour.router = function(routes, baseURL)
 
 	    // Strip base from our url and match against routes
 	    var matchedRoute = matchRoute(requestURL.replace(baseURL, ''));
+	    if(!matchedRoute)
+	    {
+	    	return false;
+	    }
 
 	    
 	    // Add request info such as original url and hash value
@@ -107,7 +113,7 @@ flour.router = function(routes, baseURL)
 			}
 		}
 
-		return {};
+		return false;
 	};
 
 	var extractRouteDetails = function(route, requestURL)
