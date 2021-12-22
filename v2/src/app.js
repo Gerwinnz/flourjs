@@ -22,14 +22,14 @@ class flour_app
 {
 	mView = false;
 	mElement = false;
-	mDestElement = false;
+	mHostElement = false;
 	mRouter = false;
-	//state = false;
 
 	mViews = [];
 	mCacheViewsCount = 5;
 	mCurrentViewIndex = 0;
 	mCurrentRoute = {};
+	mTransitionHandler = false;
 
 	mBaseURL = '';
 
@@ -41,6 +41,11 @@ class flour_app
 		this.mElement = params.element || document.createElement('div');
 		this.mRouter = flour.router(params.routes, params.base_url);
 		this.mBaseURL = params.base_url || document.location.origin;
+
+		if(flour.util.isFunction(params.transitionHandler))
+		{
+			this.mTransitionHandler = params.transitionHandler;
+		}
 		//this.state = flour.state();
 
 		if(params.view && flour.view.defined[params.view] !== undefined)
@@ -50,12 +55,12 @@ class flour_app
 
 			if(this.mView.refs.app)
 			{
-				this.mDestElement = this.mView.refs.app;
+				this.mHostElement = this.mView.refs.app;
 			}
 		}
 		else
 		{
-			this.mDestElement = this.mElement;
+			this.mHostElement = this.mElement;
 		}
 
 		window.appRouter = this.router;
@@ -219,7 +224,7 @@ class flour_app
 	|
 	*/
 	transitionViews(nextView, currentView)
-	{
+	{	
 		if(flour.util.isFunction(nextView.willShow))
 		{
 			nextView.willShow();
@@ -230,8 +235,25 @@ class flour_app
 			currentView.willHide();
 		}
 
-		this.mDestElement.append(nextView.el);
-		this.cleanUp(currentView);
+		if(this.mTransitionHandler)
+		{
+			var details = {
+				hostElement: this.mHostElement,
+				nextView: nextView,
+				currentView: currentView,
+				route: this.mCurrentRoute
+			};
+
+			this.mTransitionHandler(details, () => 
+			{
+				this.cleanUp(currentView);
+			});
+		}
+		else
+		{
+			this.mHostElement.append(nextView.el);
+			this.cleanUp(currentView);
+		}
 	}
 
 

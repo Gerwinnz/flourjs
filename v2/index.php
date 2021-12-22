@@ -30,7 +30,7 @@
 	<body>
 		<template id="f-template.list">
 			<div>
-				<p>Hello <span f-text="user.name"></span>. There are <span f-text="items_count"></span> items.</p>
+				<p>There are <span f-text="items_count"></span> items.</p>
 				
 				<div style="padding: 8px 0;">
 					{{#list items}}
@@ -79,7 +79,6 @@
 					<button class="button" on-click="handleAddItemClick">Add item</button>
 					<button class="button" on-click="handleSetItemsClick">Set items</button>
 					<div style="flex: 1;"></div>
-					<input type="text" f-value="user.name" />
 					<button class="button" on-click="render">Re-render</button>
 				</div>
 			</div>

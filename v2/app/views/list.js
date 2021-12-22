@@ -22,7 +22,6 @@ flour.view.add('list', function()
 		});
 
 		view.state.set('new_item_name', '');
-		view.state.set('user.name', 'Gerwin');
 		view.state.set('items', []);
 		
 		view.render();

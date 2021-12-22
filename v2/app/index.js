@@ -1,10 +1,21 @@
 
 (function(){
 
+
+	//
+	var transitionHandler = function(e, callback)
+	{
+		e.hostElement.append(e.nextView.el);
+		callback();
+	};
+
+
+	//
 	var app = flour.app({
 		view: 'app',
 		base_url: 'http://localhost/flourjs/v2',
 		element: document.getElementById('app'),
+		transitionHandler: transitionHandler,
 		routes: {
 			'/binders': { view: 'form' },
 			'/binders/:binder': { view: 'binders' },
@@ -19,8 +30,13 @@
 		}
 	});
 
+	
+
 	window.app = app;
 
+	//
+	// Possibly should be an array so the order is respected 🤔
+	//
 	// [
 	// 		['/binders/:binder', { view: 'binders'}],
 	// 		['/blocks/:block', { view: 'blocks'}],
@@ -33,21 +49,6 @@
 		name: 'Gerwin',
 		email: 'gvanroyen@gmail.com'
 	});
-	
 
-	// var listView = flour.view.get('list');
-	// document.getElementById('list-view').append(listView.el);
-	// window.listView = listView;
-
-
-	// var formView = flour.view.get('form');
-	// document.getElementById('form-view').append(formView.el);
-	// window.formView = formView;
-
-
-	// formView.on('submit', function(data)
-	// {
-	// 	console.log('form_view_submit', data);
-	// });
 
 }());
