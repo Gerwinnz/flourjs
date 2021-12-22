@@ -65,7 +65,6 @@ flour.block.add('list', function(block, state, view)
 
 	var insertItem = function(item, index)
 	{
-		//var startTime = performance.now();
 		var itemId = item.id;
 		var itemState = flour.state(item);
 		var itemTemplate = flour.template.parse(mBlockHtml, itemState, view);
@@ -86,14 +85,12 @@ flour.block.add('list', function(block, state, view)
 		}
 		else if(index <= mState.length - 1)
 		{
-			mListEl.insertBefore(itemTemplate.fragment, mListItems[mState[event.index].id].el);
+			mListEl.insertBefore(itemTemplate.fragment, mListItems[mState[index].id].el);
 		}
 		else
 		{
 			mListEl.append(itemTemplate.fragment);
 		}
-
-		//console.log('list::item added in ' + (performance.now() - startTime) + ' milliseconds.', item);
 	}
 
 

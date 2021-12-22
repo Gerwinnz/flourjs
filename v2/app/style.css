@@ -30,6 +30,7 @@ body{
 	font-size:  18px;
 	font-family: serif;
 	font-style: italic;
+	text-decoration: none;
 }
 
 .nav ul{
@@ -52,7 +53,9 @@ body{
 .footer{
 	padding: 16px;
 
-	font-size: 14px;
+	color: #888;
+
+	font-size: 12px;
 	text-align: center;
 }
 

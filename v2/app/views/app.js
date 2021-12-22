@@ -5,7 +5,7 @@ flour.view.add('app', function()
 	var view = this;
 	view.templateHTML = `
 		<div class="nav">
-			<div class="logo">f</div>
+			<a href="/" class="logo">f</a>
 			<ul>
 				<li><a href="/binders">Binders</a></li>
 				<li><a href="/blocks">Blocks</a></li>
