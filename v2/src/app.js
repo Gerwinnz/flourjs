@@ -20,7 +20,9 @@ flour.app = function(params)
 
 class flour_app
 {
+	mView = false;
 	mElement = false;
+	mDestElement = false;
 	mRouter = false;
 	//state = false;
 
@@ -40,6 +42,21 @@ class flour_app
 		this.mRouter = flour.router(params.routes, params.base_url);
 		this.mBaseURL = params.base_url || document.location.origin;
 		//this.state = flour.state();
+
+		if(params.view && flour.view.defined[params.view] !== undefined)
+		{
+			this.mView = flour.view.get(params.view);
+			this.mElement.append(this.mView.el);
+
+			if(this.mView.refs.app)
+			{
+				this.mDestElement = this.mView.refs.app;
+			}
+		}
+		else
+		{
+			this.mDestElement = this.mElement;
+		}
 
 		window.appRouter = this.router;
 
@@ -97,7 +114,7 @@ class flour_app
 
 		if(isDifferentView || isDifferentRoute || isDifferentParams)
 		{
-			var nextView;
+			var nextView = false;
         	var currentView = this.mViews[this.mCurrentViewIndex];
 
 
@@ -137,14 +154,12 @@ class flour_app
 				{
 					nextView = this.mViews[this.mCurrentViewIndex];
 				}
-				else
-				{
-					nextView = flour.view.get(route.view, route.params);
-				}
 			}
-			else
+
+			if(!nextView)
 			{
 				nextView = flour.view.get(route.view, route.params);
+				this.mViews.push(nextView);
 			}
 
 
@@ -152,9 +167,7 @@ class flour_app
 			//	Push new view on view stack
 			//
 			this.mCurrentRoute = route;
-			this.mViews.push(nextView);
 			this.mCurrentViewIndex = this.mViews.length - 1;
-
 			this.displayView(nextView, currentView);
 
 
@@ -201,21 +214,24 @@ class flour_app
 	/*
 	|
 	|
-	|
+	|	Default transition view basically appends our new view and cleans up the old
 	|
 	|
 	*/
 	transitionViews(nextView, currentView)
 	{
-		console.log('transition views');
-
 		if(flour.util.isFunction(nextView.willShow))
 		{
 			nextView.willShow();
 		}
 
-		this.mElement.append(nextView.el);
-		this.cleanUp(currentView);	
+		if(currentView && flour.util.isFunction(currentView.willHide))
+		{
+			currentView.willHide();
+		}
+
+		this.mDestElement.append(nextView.el);
+		this.cleanUp(currentView);
 	}
 
 
@@ -223,7 +239,7 @@ class flour_app
 	/*
 	|
 	|
-	|
+	|	Remove passed in view and destroy views past our cache count
 	|
 	|
 	*/
@@ -239,7 +255,8 @@ class flour_app
 			view = this.mViews.shift();
 			view.destroy();
 			view = false;
-			this.mCurrentViewIndex = this.mViews.length;
+
+			this.mCurrentViewIndex = this.mViews.length - 1;
 		}
 	}
 

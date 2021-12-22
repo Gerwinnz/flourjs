@@ -150,31 +150,32 @@ flour.template.parse = function(html, state, view)
 	for(var i = 0, n = customElements.length; i < n; i ++)
 	{
 		(function(customElement){
-
 			var attributes = customElement.attributes;
 
 			for(var i = 0, n = attributes.length; i < n; i ++)
 			{
-				var attributeName = attributes[i].nodeName;
-				var attributeValue = customElement.getAttribute(attributeName);
-				var match = false;
+				(function(attribute){
+					var attributeName = attribute.nodeName;
+					var attributeValue = customElement.getAttribute(attributeName);
+					var match = false;
 
-				if(!flour.binding.defined[attributeName])
-				{
-					if(match = attributeValue.match(stateVariablePattern))
+					if(!flour.binding.defined[attributeName])
 					{
-						var key = match[1];
-						var value = state.get(key);
-						customElement.setAttribute(attributeName, value);
-
-						var cleanup = state.onChange(key, function(event)
+						if(match = attributeValue.match(stateVariablePattern))
 						{
-							customElement.setAttribute(attributeName, event.value);
-						});
+							var key = match[1];
+							var value = state.get(key);
+							customElement.setAttribute(attributeName, value);
 
-						cleanupCallbacks.push(cleanup);
+							var cleanup = state.onChange(key, function(event)
+							{
+								customElement.setAttribute(attributeName, event.value);
+							});
+
+							cleanupCallbacks.push(cleanup);
+						}
 					}
-				}
+				}(attributes[i]));
 			}
 
 		}(customElements[i]));

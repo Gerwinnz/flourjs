@@ -2,6 +2,7 @@
 (function(){
 
 	var app = flour.app({
+		view: 'app',
 		base_url: 'http://localhost/flourjs/v2',
 		element: document.getElementById('app'),
 		routes: {
@@ -17,6 +18,8 @@
 			'/': { view: 'home'}
 		}
 	});
+
+	window.app = app;
 
 	// [
 	// 		['/binders/:binder', { view: 'binders'}],

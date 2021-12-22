@@ -86,8 +86,8 @@
 		</template>
 
 		<template id="f-template.form">
-			<div>
-				<form on-submit="handleFormSubmit">
+			<div style="display: flex;">
+				<form on-submit="handleFormSubmit" style="flex: 1; margin-right: 16px;">
 					<div class="form__line">
 						<label>Name</label>
 						<input type="search" f-value="name" autocomplete="off" />
@@ -156,30 +156,32 @@
 						<button type="submit">Save</button>
 						<button type="button" on-click="handleResetClick">Reset</button>
 					</div>
-
-					<card-box name="${name}">
-						<ul slot="extra">
-							<li>Extra deets line one <span f-text="pet"></span></li>
-							<li>Second line details</li>
-						</ul>
-					</card-box>
 				</form>
+
+				<card-box name="${name}" style="flex: 1; margin-left: 16px;">
+					<ul slot="extra">
+						<li>Type: <span f-text="type"></span></li>
+						<li>Email: <span f-text="email"></span></li>
+						<li>Pet: <span f-text="pet"></span></li>
+					</ul>
+				</card-box>
 			</div>
 		</template>
 
 
-		<div id="app" class="view-wrapper"></div>
+		<div id="app"></div>
 
 		<!-- <div id="list-view" class="view-wrapper"></div>
 		<div id="form-view" class="view-wrapper"></div> -->
 
-		<div class="view-wrapper">
+		<!-- <div class="view-wrapper">
 			<card-box name="Barry Burton">
 				<p slot="extra">This component exists in plain html.</p>
 			</card-box>
-		</div>
+		</div> -->
 
 		
+		<script type="text/javascript" src="app/views/app.js"></script>
 		<script type="text/javascript" src="app/views/list.js"></script>
 		<script type="text/javascript" src="app/views/form.js"></script>
 		<script type="text/javascript" src="app/views/home.js"></script>

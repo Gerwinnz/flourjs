@@ -48,6 +48,7 @@ flour.view.add('card', function()
 
 	view.attributeChanged = function(name, value)
 	{
+		console.log(name, value);
 		view.state.set(name, value);
 	};
 
@@ -55,7 +56,7 @@ flour.view.add('card', function()
 
 	view.handleNameClick = function()
 	{
-		view.state.set('name', 'clicked!!');
+		view.state.set('name', view.state.get('name') + ' - clicked!!');
 	};
 
 });
