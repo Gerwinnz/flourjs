@@ -117,6 +117,11 @@ class flour_app
 		var isDifferentRoute = route.requestURL !== this.mCurrentRoute.requestURL;
 		var isDifferentParams = JSON.stringify(route.params) !== JSON.stringify(this.mCurrentRoute.params);
 
+		// console.log(this.mCurrentRoute.requestURL + ' -> ' + JSON.parse(JSON.stringify(route)).requestURL)
+		// console.log('different view', isDifferentView);
+		// console.log('different route', isDifferentRoute);
+		// console.log('different params', isDifferentParams);
+
 		if(isDifferentView || isDifferentRoute || isDifferentParams)
 		{
 			var nextView = false;
@@ -129,9 +134,9 @@ class flour_app
 			if(!isDifferentView && flour.util.isFunction(currentView.routeUpdate))
 			{
 				var handled = currentView.routeUpdate(route);
-				currentRoute = route.route;
 
 				if(handled !== false){
+					this.mCurrentRoute = JSON.parse(JSON.stringify(route));
 					return;
 				}
 			}
@@ -171,19 +176,24 @@ class flour_app
 			//
 			//	Push new view on view stack
 			//
-			this.mCurrentRoute = route;
 			this.mCurrentViewIndex = this.mViews.length - 1;
 			this.displayView(nextView, currentView);
-
-
-			//
-			//	Check if route has an action and attempt to call a method on the new view of same action
-			//
-			if(route.action && flour.util.isFunction(nextView[route.action]))
-			{
-				nextView[route.action](route.params);
-			}
 		}
+
+
+		//
+		//	Check if route has an action and attempt to call a method on the new view of same action
+		//
+		if(route.action && flour.util.isFunction(nextView[route.action]))
+		{
+			nextView[route.action](route.params);
+		}
+
+
+		//
+		//	Store our route for comparisons
+		//
+		this.mCurrentRoute = JSON.parse(JSON.stringify(route));
 	}
 
 

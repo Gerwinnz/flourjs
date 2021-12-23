@@ -5,8 +5,40 @@
 	//
 	var transitionHandler = function(e, callback)
 	{
+		// First load no current view
+		if(!e.currentView)
+		{
+			e.hostElement.append(e.nextView.el);
+			callback();
+			return;
+		}
+
+		//
+		var animationIn = 'view__in-forward';
+		var animationOut = 'view__out-forward';
+
+		if(e.route.direction === 'back')
+		{
+			animationIn = 'view__in-back';
+			animationOut = 'view__out-back';
+		}
+
+		nextViewEl = e.nextView.el;
+		currentViewEl = e.currentView.el;
+
+		nextViewEl.classList.add('view--animating', animationIn);
+		currentViewEl.classList.add('view--animating', animationOut);
+
 		e.hostElement.append(e.nextView.el);
-		callback();
+
+		nextViewEl.addEventListener('animationend', function()
+		{
+			nextViewEl.classList.remove('view--animating', animationIn);
+			currentViewEl.classList.remove('view--animating', animationOut);
+			callback();
+		}, {once: true});
+
+		
 	};
 
 
@@ -17,7 +49,7 @@
 		element: document.getElementById('app'),
 		transitionHandler: transitionHandler,
 		routes: {
-			'/binders': { view: 'form' },
+			'/binders': { view: 'binders' },
 			'/binders/:binder': { view: 'binders' },
 			
 			'/blocks': { view: 'list' },
@@ -29,7 +61,7 @@
 			'/': { view: 'home'}
 		}
 	});
-	
+
 
 	//
 	// Possibly should be an array so the order is respected 🤔

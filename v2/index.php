@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Flour JS</title>
+		<base href="http://localhost/flourjs/v2/" />
 
 		<link rel="stylesheet" type="text/css" href="app/style.css">
 		
@@ -185,6 +186,9 @@
 		<script type="text/javascript" src="app/views/form.js"></script>
 		<script type="text/javascript" src="app/views/home.js"></script>
 		<script type="text/javascript" src="app/views/card.js"></script>
+
+		<script type="text/javascript" src="app/views/binders.js"></script>
+		<script type="text/javascript" src="app/views/blocks.js"></script>
 		
 		<script type="text/javascript" src="app/index.js"></script>
 

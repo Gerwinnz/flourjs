@@ -48,7 +48,6 @@ flour.view.add('card', function()
 
 	view.attributeChanged = function(name, value)
 	{
-		console.log(name, value);
 		view.state.set(name, value);
 	};
 

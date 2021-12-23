@@ -126,10 +126,10 @@ flour.router = function(routes, baseURL)
 
 		for(var i = 0; i < sections.length; i ++)
         {
-          if(paramName = sections[i].match(/:([\w-]+)/))
-          {
-            params[paramName[1]] = values[i];
-          }
+			if(paramName = sections[i].match(/:([\w-]+)/))
+			{
+				params[paramName[1]] = values[i];
+			}
         }
 
         options.params = params;
