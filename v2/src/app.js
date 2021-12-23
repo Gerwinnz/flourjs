@@ -117,10 +117,6 @@ class flour_app
 		var isDifferentRoute = route.requestURL !== this.mCurrentRoute.requestURL;
 		var isDifferentParams = JSON.stringify(route.params) !== JSON.stringify(this.mCurrentRoute.params);
 
-		// console.log(this.mCurrentRoute.requestURL + ' -> ' + JSON.parse(JSON.stringify(route)).requestURL)
-		// console.log('different view', isDifferentView);
-		// console.log('different route', isDifferentRoute);
-		// console.log('different params', isDifferentParams);
 
 		if(isDifferentView || isDifferentRoute || isDifferentParams)
 		{
