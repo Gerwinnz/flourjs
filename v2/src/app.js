@@ -136,7 +136,7 @@ class flour_app
 				var handled = currentView.routeUpdate(route);
 
 				if(handled !== false){
-					this.mCurrentRoute = JSON.parse(JSON.stringify(route));
+					this.mCurrentRoute = route;
 					return;
 				}
 			}
@@ -193,7 +193,7 @@ class flour_app
 		//
 		//	Store our route for comparisons
 		//
-		this.mCurrentRoute = JSON.parse(JSON.stringify(route));
+		this.mCurrentRoute = route;
 	}
 
 

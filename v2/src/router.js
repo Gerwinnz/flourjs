@@ -109,7 +109,7 @@ flour.router = function(routes, baseURL)
 			var route = mRoutes[i];
 			if(route.regEx.test(requestURL))
 			{
-				return extractRouteDetails(route, requestURL);
+				return extractRouteDetails(JSON.parse(JSON.stringify(route)), requestURL);
 			}
 		}
 
