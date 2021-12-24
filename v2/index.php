@@ -20,6 +20,7 @@
 
 		<script type="text/javascript" src="src/blocks/list.js"></script>
 
+		<script type="text/javascript" src="src/bindings/on.js"></script>
 		<script type="text/javascript" src="src/bindings/ref.js"></script>
 		<script type="text/javascript" src="src/bindings/text.js"></script>
 		<script type="text/javascript" src="src/bindings/view.js"></script>
@@ -40,16 +41,16 @@
 								<div style="flex: 1; font-size: 18px;"><span f-text="name"></span></div>
 								<div style="flex: 1;">
 									Count: <span f-text="count"></span>
-									<button class="secondary" on-click="handleListItemIncrementCountClick" data-id={{id}}>+</button>
+									<button class="secondary" f-on="click handleListItemIncrementCountClick" data-id={{id}}>+</button>
 								</div>
 								<div>
-									<button class="secondary" on-click="handleMoveItemUpClick" data-id={{id}}>
+									<button class="secondary" f-on="click handleMoveItemUpClick" data-id={{id}}>
 										<i class="fas fa-chevron-up"></i>
 									</button>
-									<button class="secondary" on-click="handleMoveItemDownClick" data-id={{id}}>
+									<button class="secondary" f-on="click handleMoveItemDownClick" data-id={{id}}>
 										<i class="fas fa-chevron-down"></i>
 									</button>
-									<button class="secondary" on-click="handleListItemRemoveClick" data-id={{id}}>
+									<button class="secondary" f-on="click handleListItemRemoveClick" data-id={{id}}>
 										<i class="fas fa-trash"></i>
 									</button>
 								</div>
@@ -68,7 +69,7 @@
 
 								<div style="display: flex; margin-top: 4px;">
 									<input type="text" placeholder="New item name..." f-value="new_tag_name" style="padding: 0 4px; flex: 1; border: none; margin-right: 4px;" />
-									<button class="secondary" on-click="handleAddItemTagClick" data-id="{{id}}">Add</button>
+									<button class="secondary" f-on="click handleAddItemTagClick" data-id="{{id}}">Add</button>
 								</div>
 							</div>
 						</div>
@@ -76,18 +77,18 @@
 				</div>
 
 				<div class="flex-row">
-					<input type="text" f-value="new_item_name" f-ref="name_field" />
-					<button class="button" on-click="handleAddItemClick">Add item</button>
-					<button class="button" on-click="handleSetItemsClick">Set items</button>
+					<input type="text" f-value="new_item_name" f-on="keydown handleNameFieldKeypress,focus handleNameFieldFocus" f-ref="name_field" />
+					<button class="button" f-on="click handleAddItemClick">Add item</button>
+					<button class="button" f-on="click handleSetItemsClick">Set items</button>
 					<div style="flex: 1;"></div>
-					<button class="button" on-click="render">Re-render</button>
+					<button class="button" f-on="click render">Re-render</button>
 				</div>
 			</div>
 		</template>
 
 		<template id="f-template.form">
 			<div style="display: flex;">
-				<form on-submit="handleFormSubmit" style="flex: 1; margin-right: 16px;">
+				<form f-on="submit handleFormSubmit" style="flex: 1; margin-right: 16px;">
 					<div class="form__line">
 						<label>Name</label>
 						<input type="search" f-value="name" autocomplete="off" />
@@ -154,7 +155,7 @@
 
 					<div class="form__line">
 						<button type="submit">Save</button>
-						<button type="button" on-click="handleResetClick">Reset</button>
+						<button type="button" f-on="click handleResetClick">Reset</button>
 					</div>
 				</form>
 

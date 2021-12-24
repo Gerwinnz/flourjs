@@ -29,7 +29,7 @@ flour.view.add('list', function()
 
 
 
-	view.handleAddItemClick = function(event, el)
+	view.handleAddItemClick = function()
 	{
 		var name = view.state.get('new_item_name');
 
@@ -49,6 +49,20 @@ flour.view.add('list', function()
 		view.state.set('new_item_name', '');
 		itemId ++;
 	};
+
+
+	view.handleNameFieldKeypress = function(event, el)
+	{
+		if(event.key === 'Enter')
+		{
+			view.handleAddItemClick();
+		}
+	};
+
+	view.handleNameFieldFocus = function()
+	{
+		console.log('FOCUSED!!!');
+	}
 
 
 

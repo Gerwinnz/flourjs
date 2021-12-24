@@ -16,8 +16,15 @@ flour.util = {
 */
 flour.util.throw = function(error)
 {
-	console.warn('Flour error: ' + error);
+	console.error('Flour error: ' + error);
 };
+
+flour.util.warn = function(error)
+{
+	console.warn('Flour warn: ' + error);
+};
+
+
 
 
 

@@ -2,6 +2,7 @@
 flour.view.add('binders', function()
 {
 	var view = this;
+	var binderView = false;
 
 	view.templateHTML = `
 		<div class="info-layout">
@@ -15,7 +16,7 @@ flour.view.add('binders', function()
 					<li><a href="/binders/value">Value</a></li>
 				</ul>
 			</div>
-			<div>
+			<div f-ref="dest">
 
 			</div>
 		</div>
@@ -24,10 +25,32 @@ flour.view.add('binders', function()
 	view.init = function(params)
 	{
 		view.render();
+		displayBinderView(params);
 	};
 
 	view.routeUpdate = function(route)
 	{
-		console.log('UPDATE', route.params);
+		displayBinderView(route.params);
 	};
+
+
+
+	var displayBinderView = function(params)
+	{
+		if(!params.binder)
+		{
+			return;
+		}
+
+		if(binderView)
+		{
+			binderView.destroy();
+		}
+
+		if(params.binder === 'submit')
+		{
+			binderView = flour.view.get('form');
+			view.refs.dest.append(binderView.el);
+		} 
+	}
 });
