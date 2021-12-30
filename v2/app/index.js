@@ -37,8 +37,6 @@
 			currentViewEl.classList.remove('view--animating', animationOut);
 			callback();
 		}, {once: true});
-
-		
 	};
 
 
@@ -52,7 +50,7 @@
 			'/binders': { view: 'binders' },
 			'/binders/:binder': { view: 'binders' },
 			
-			'/blocks': { view: 'list' },
+			'/blocks': { view: 'blocks' },
 			'/blocks/:block': { view: 'blocks' },
 
 			'/components': { view: 'components' },

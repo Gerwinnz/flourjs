@@ -78,6 +78,17 @@ body{
 	max-width: 240px;
 }
 
+.info-layout .sub-nav ul{
+	list-style: none;
+}
+
+.info-layout .sub-nav--code ul li{
+	font-family: courier;
+}
+
+.info-layout .sub-nav--code ul li a{
+	color: #222;
+}
 
 
 button{

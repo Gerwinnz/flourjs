@@ -1,5 +1,5 @@
 
-flour.view.add('list', function()
+flour.view.add('block-list', function()
 {
 	var view = this;
 	var itemId = 3;

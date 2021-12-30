@@ -1,5 +1,15 @@
 
 
+/*
+|
+|	Generic event attaching binder that allows adding multiple events separated by commas
+|
+|	Attribute format:
+|	[javascriptEvent] [handlerName]
+| 	eg. "click myClickHandler" or "click myClickHandler,submit mySubmitHandler"
+|
+|
+*/
 flour.binding.add('f-on', 
 {
 
@@ -13,7 +23,7 @@ flour.binding.add('f-on',
 			(function(eventString){
 
 				var parts = eventString.split(' ');
-				var type = parts[0];
+				var type = parts[0].trim();
 				var handler = false;
 				
 				if(!parts[1])
@@ -22,7 +32,7 @@ flour.binding.add('f-on',
 					return;
 				}
 
-				handler = parts[1];
+				handler = parts[1].trim();
 				
 				if(view[handler])
 				{

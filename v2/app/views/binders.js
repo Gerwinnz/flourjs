@@ -6,14 +6,13 @@ flour.view.add('binders', function()
 
 	view.templateHTML = `
 		<div class="info-layout">
-			<div class="sub-nav">
+			<div class="sub-nav sub-nav--code">
 				<ul>
-					<li><a href="/binders/click">Click</a></li>
-					<li><a href="/binders/options">Options</a></li>
-					<li><a href="/binders/ref">Ref</a></li>
-					<li><a href="/binders/submit">Submit</a></li>
-					<li><a href="/binders/text">Text</a></li>
-					<li><a href="/binders/value">Value</a></li>
+					<li><a href="/binders/on">f-on</a></li>
+					<li><a href="/binders/options">f-options</a></li>
+					<li><a href="/binders/ref">f-ref</a></li>
+					<li><a href="/binders/text">f-text</a></li>
+					<li><a href="/binders/value">f-value</a></li>
 				</ul>
 			</div>
 			<div f-ref="dest">
@@ -21,6 +20,8 @@ flour.view.add('binders', function()
 			</div>
 		</div>
 	`;
+
+
 
 	view.init = function(params)
 	{
@@ -37,20 +38,20 @@ flour.view.add('binders', function()
 
 	var displayBinderView = function(params)
 	{
-		if(!params.binder)
-		{
-			return;
-		}
-
 		if(binderView)
 		{
-			binderView.destroy();
+			binderView.remove();
 		}
 
-		if(params.binder === 'submit')
+		if(params.binder === undefined)
 		{
-			binderView = flour.view.get('form');
-			view.refs.dest.append(binderView.el);
-		} 
+			binderView = flour.view.get('f-on');
+		}
+		else
+		{
+			binderView = flour.view.get('f-' + params.binder);
+		}
+
+		view.refs.dest.append(binderView.el);
 	}
 });

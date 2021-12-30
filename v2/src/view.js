@@ -110,6 +110,10 @@ flour.view.base = function()
 		{
 			this.init(params);
 		}
+		else
+		{
+			this.render();
+		}
 	};
 
 
@@ -146,6 +150,14 @@ flour.view.base = function()
 	this.destroy = function()
 	{
 		
+	};
+
+
+
+	this.remove = function()
+	{
+		this.destroy();
+		this.el.parentNode.removeChild(this.el);
 	};
 
 

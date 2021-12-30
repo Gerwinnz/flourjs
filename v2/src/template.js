@@ -58,7 +58,7 @@ flour.template.parse = function(html, state, view)
 	
 
 	//
-	// parse block tags
+	// parse block tags {{#block}}{{/block}}
 	//
 	for(var blockType in flour.block.defined)
 	{
@@ -105,10 +105,10 @@ flour.template.parse = function(html, state, view)
 
 
 	//
-	// parse standard output tag
+	// parse standard output tag {{tag_output}}
 	//
-	html = html.replace(/{{\s?(\w*)\s?}}/g, (tag, tagInside) => {
-		return state.get(tagInside);
+	html = html.replace(/{{\s?(\w*)\s?}}/g, (tag, stateName) => {
+		return state.get(stateName);
 	});
 
 
