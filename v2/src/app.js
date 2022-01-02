@@ -173,7 +173,7 @@ class flour_app
 			//	Push new view on view stack
 			//
 			this.mCurrentViewIndex = this.mViews.length - 1;
-			this.displayView(nextView, currentView);
+			this.displayView(nextView, currentView, route);
 		}
 
 
@@ -201,7 +201,7 @@ class flour_app
 	|
 	|
 	*/
-	displayView(nextView, currentView)
+	displayView(nextView, currentView, route)
 	{
 		if(nextView.ready === false)
 		{
@@ -216,7 +216,7 @@ class flour_app
 		}
 		else
 		{
-			this.transitionViews(nextView, currentView);
+			this.transitionViews(nextView, currentView, route);
 		}
 	}
 
@@ -229,7 +229,7 @@ class flour_app
 	|
 	|
 	*/
-	transitionViews(nextView, currentView)
+	transitionViews(nextView, currentView, route)
 	{	
 		if(flour.util.isFunction(nextView.willShow))
 		{
@@ -247,7 +247,7 @@ class flour_app
 				hostElement: this.mHostElement,
 				nextView: nextView,
 				currentView: currentView,
-				route: this.mCurrentRoute
+				route: route
 			};
 
 			this.mTransitionHandler(details, () => 
