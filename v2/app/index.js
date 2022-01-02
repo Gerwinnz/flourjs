@@ -23,6 +23,8 @@
 			animationOut = 'view__out-back';
 		}
 
+		console.log('e.route.direction', e.route.direction);
+
 		nextViewEl = e.nextView.el;
 		currentViewEl = e.currentView.el;
 
