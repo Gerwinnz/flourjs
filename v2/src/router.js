@@ -15,6 +15,28 @@ flour.router = function(routes, baseURL)
 	var mRoutes = [];
 	var mRequests = [];
 	var mLastRequestIndex = false;
+	var mRequestId = 0;
+
+
+
+	/*
+	|
+	|
+	|
+	*/
+	var push = function(state, title, url)
+	{
+		if(!state)
+		{
+			state = {};
+		}
+
+		state.id = mRequestId;
+		state.url = url;
+		mRequestId ++;
+		history.pushState(state, null, url);
+		flour.publish('history:state_change', state);
+	}
 
 
 	
@@ -76,17 +98,21 @@ flour.router = function(routes, baseURL)
 
 
     	// Determine if this request is the same as the last one, if so direction is back
-    	var i = mRequests.length - 2;
-	    if(request.popstate && matchedRoute.requestURL === mRequests[i])
+    	var previousRequestId = mRequests[mRequests.length - 2];
+    	var currentRequestId = mRequests[mRequests.length - 1];
+
+	    if(request.popstate && request.id === previousRequestId)
 	    {
-	      mRequests.pop();
-	      matchedRoute.direction = 'back';
+	      	mRequests.pop();
+	      	matchedRoute.direction = 'back';
 	    }
 	    else
 	    {
-	      mRequests.push(matchedRoute.requestURL);
-	      matchedRoute.direction = 'forward';
+	      	mRequests.push(request.id);
+	      	matchedRoute.direction = 'forward';
 	    }
+
+	    console.log(matchedRoute.direction, mRequests);
 
 
 	    // add get vars to the params
@@ -171,7 +197,8 @@ flour.router = function(routes, baseURL)
 	transformRoutes(routes);
 
 	return {
-		match: match
+		match: match,
+		push: push
 	};
 
 };

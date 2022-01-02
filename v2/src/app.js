@@ -70,11 +70,11 @@ class flour_app
 			this.matchRoute(data);
 		});
 
-		window.addEventListener('popstate', () => 
+		window.addEventListener('popstate', (event) => 
 		{
-			flour.publish('history:state_change', {
-		      popstate: true
-		    });
+			var state = event.state;
+			state.popstate = true;
+			flour.publish('history:state_change', state);
 		});
 
 		this.matchRoute({url: document.URL});
@@ -315,8 +315,7 @@ class flour_app
 
 				if(handledURL)
 				{
-					flour.publish('history:state_change', {url: handledURL});
-					history.pushState({}, null, handledURL);
+					this.mRouter.push({}, null, handledURL);
 				}
 			}
 		}
