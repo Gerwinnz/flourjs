@@ -169,16 +169,6 @@
 
 
 		<div id="app"></div>
-
-		<!-- <div id="list-view" class="view-wrapper"></div>
-		<div id="form-view" class="view-wrapper"></div> -->
-
-		<!-- <div class="view-wrapper">
-			<card-box name="Barry Burton">
-				<p slot="extra">This component exists in plain html.</p>
-			</card-box>
-		</div> -->
-
 		
 		<script type="text/javascript" src="app/views/app.js"></script>
 		<script type="text/javascript" src="app/views/form.js"></script>

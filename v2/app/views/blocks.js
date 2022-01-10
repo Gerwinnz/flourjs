@@ -31,6 +31,11 @@ flour.view.add('blocks', function()
 		displayBlockView(route.params);
 	};
 
+	view.willShow = function(data)
+	{
+		console.log('will show blocks view', data);
+	};
+
 
 
 	var displayBlockView = function(params)

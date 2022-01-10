@@ -16,7 +16,7 @@ flour.view.add('app', function()
 		<div f-ref="app" class="body"></div>
 
 		<div class="footer">
-			Flourjs - 2021
+			flour.js
 		</div>
 	`;
 

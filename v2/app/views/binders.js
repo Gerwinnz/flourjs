@@ -34,6 +34,10 @@ flour.view.add('binders', function()
 		displayBinderView(route.params);
 	};
 
+	view.willHide = function()
+	{
+		return {prev: 'binders'};
+	}
 
 
 	var displayBinderView = function(params)

@@ -46,7 +46,7 @@ class flour_app
 		{
 			this.mTransitionHandler = params.transitionHandler;
 		}
-		//this.state = flour.state();
+		
 
 		if(params.view && flour.view.defined[params.view] !== undefined)
 		{
@@ -63,7 +63,6 @@ class flour_app
 			this.mHostElement = this.mElement;
 		}
 
-		window.appRouter = this.router;
 
 		flour.subscribe('history:state_change', (data) => 
 		{
@@ -76,6 +75,7 @@ class flour_app
 			state.popstate = true;
 			flour.publish('history:state_change', state);
 		});
+
 
 		this.matchRoute({url: document.URL});
 		this.attachLinkClicks();
@@ -93,7 +93,6 @@ class flour_app
 	matchRoute(data)
 	{
 		var route = this.mRouter.match(data);
-		var extra = undefined;
 
 		if(!route)
 		{
@@ -117,7 +116,6 @@ class flour_app
 		var isDifferentRoute = route.requestURL !== this.mCurrentRoute.requestURL;
 		var isDifferentParams = JSON.stringify(route.params) !== JSON.stringify(this.mCurrentRoute.params);
 
-
 		if(isDifferentView || isDifferentRoute || isDifferentParams)
 		{
 			var nextView = false;
@@ -135,15 +133,6 @@ class flour_app
 					this.mCurrentRoute = route;
 					return;
 				}
-			}
-
-
-			//
-			//	Call willHide on current view so 
-			//
-			if(currentView && flour.util.isFunction(currentView.willHide))
-			{
-				extra = currentView.willHide(route);
 			}
 
 
@@ -203,6 +192,18 @@ class flour_app
 	*/
 	displayView(nextView, currentView, route)
 	{
+		var extra = undefined;
+
+		if(currentView && flour.util.isFunction(currentView.willHide))
+		{
+			extra = currentView.willHide();
+		}
+
+		if(flour.util.isFunction(nextView.willShow))
+		{
+			nextView.willShow(extra);
+		}
+
 		if(nextView.ready === false)
 		{
 			var onReady = function()
@@ -231,16 +232,6 @@ class flour_app
 	*/
 	transitionViews(nextView, currentView, route)
 	{	
-		if(flour.util.isFunction(nextView.willShow))
-		{
-			nextView.willShow();
-		}
-
-		if(currentView && flour.util.isFunction(currentView.willHide))
-		{
-			currentView.willHide();
-		}
-
 		if(this.mTransitionHandler)
 		{
 			var details = {
