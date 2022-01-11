@@ -4,6 +4,14 @@ body{
 	margin: 0;
 }
 
+pre{
+	padding:  16px;
+	color: #fff;
+	background-color: #444;
+	border-radius: 8px;
+	border: solid 1px #222;
+	box-shadow: inset 0px 2px 8px rgba(0,0,0,.05);
+}
 
 
 .nav{

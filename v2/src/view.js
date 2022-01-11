@@ -85,6 +85,7 @@ flour.view.base = function()
 		if(!this.tag){ this.tag = 'div'; }
 		if(!this.events){ this.events = {}; }
 		if(!this.refs){ this.refs = {}; }
+		if(!this.renderCount){ this.renderCount = 0; }
 
 		this.id = id;
 		this.el = document.createElement(this.tag);
@@ -110,7 +111,8 @@ flour.view.base = function()
 		{
 			this.init(params);
 		}
-		else
+
+		if(this.renderCount === 0)
 		{
 			this.render();
 		}
@@ -136,6 +138,8 @@ flour.view.base = function()
 
 		this.el.innerHTML = '';
 		this.el.appendChild(this.templateInstance.fragment);
+
+		this.renderCount ++;
 	};
 
 

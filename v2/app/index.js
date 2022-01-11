@@ -76,10 +76,4 @@
 	// ]
 
 
-	var sharedState = flour.state({
-		name: 'Gerwin',
-		email: 'gvanroyen@gmail.com'
-	});
-
-
 }());
