@@ -17,11 +17,4 @@ flour.view.add('components', function()
 			</div>
 		</div>
 	`;
-
-
-
-	view.init = function(params)
-	{
-		view.render();
-	};
 });

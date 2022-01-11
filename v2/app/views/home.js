@@ -14,16 +14,4 @@ flour.view.add('home', function()
 			</ul>
 		</div>
 	`;
-
-
-	/*
-	|
-	|	Init
-	|
-	*/
-	view.init = function(params)
-	{
-		view.render();
-	};
-
 });

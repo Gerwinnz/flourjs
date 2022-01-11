@@ -23,8 +23,6 @@ flour.view.add('block-list', function()
 
 		view.state.set('new_item_name', '');
 		view.state.set('items', []);
-		
-		view.render();
 	};
 
 

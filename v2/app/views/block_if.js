@@ -20,18 +20,16 @@ flour.view.add('block-if', function()
 	};
 	
 	view.templateHTML = `
-		<div>
-			<h1>Block if</h1>
-			
-			{{#if show}}
-				<div>SHOW === TRUE</div>
-				<div>COUNT === <span f-text="count"></span></div>
-				<hr />
-			{{/if}}
+		<h1>Block if</h1>
+		
+		{{#if show}}
+			<div>SHOW === TRUE</div>
+			<div>COUNT === <span f-text="count"></span></div>
+			<hr />
+		{{/if}}
 
-			<button f-on="click handleToggleClick">Toggle show!</button>
-			<button f-on="click handleIncrementCountClick">Increment count!</button>
-		</div>
+		<button f-on="click handleToggleClick">Toggle show!</button>
+		<button f-on="click handleIncrementCountClick">Increment count!</button>
 	`;
 
 });

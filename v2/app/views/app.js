@@ -20,15 +20,4 @@ flour.view.add('app', function()
 		</div>
 	`;
 
-
-	/*
-	|
-	|	Init
-	|
-	*/
-	view.init = function(params)
-	{
-		view.render();
-	};
-
 });
