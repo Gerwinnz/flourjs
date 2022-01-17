@@ -21,6 +21,8 @@ flour.view.add('block-if', function()
 	
 	view.templateHTML = `
 		<h1>Block if</h1>
+
+		<p>Count: <span f-text="count"></span>.</p>
 		
 		{{#if show}}
 			<div>SHOW === TRUE</div>
