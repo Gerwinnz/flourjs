@@ -56,7 +56,15 @@
 							</div>
 
 							<div style="padding: 4px; margin-top: 4px; background-color: #f5f5f5; border-radius: 4px;">
-								
+								<div>
+									<div style="border-radius: 4px; background-color: #fff;">
+										{{#list tags}}
+											<div style="padding: 8px 4px; font-size: 14px;">
+												<div>{{name}}</div>
+											</div>
+										{{/list}}
+									</div>
+								</div>
 
 								<div style="display: flex; margin-top: 4px;">
 									<input type="text" placeholder="New item name..." f-value="new_tag_name" style="padding: 0 4px; flex: 1; border: none; margin-right: 4px;" />

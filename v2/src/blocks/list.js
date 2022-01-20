@@ -88,6 +88,12 @@ flour.block.add('list', function(block, state, view)
 			state: itemState
 		};
 
+		itemState.onChange(function(event)
+		{
+			state.getItem(mKey, itemId).update(event.key, event.value);
+		});
+
+
 		if(index === undefined)
 		{
 			mItems.push(item);
@@ -98,12 +104,6 @@ flour.block.add('list', function(block, state, view)
 		}
 
 		updateLookup();
-
-
-		itemState.onChange(function(event)
-		{
-			state.getItem(mKey, itemId).update(event.key, event.value);
-		});
 
 
 		if(mItems.length === 1)
