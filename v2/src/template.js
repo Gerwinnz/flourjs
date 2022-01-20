@@ -27,17 +27,7 @@ var flour = flour || {};
 |
 */
 flour.template = {
-	elementUniqueId: 0,
-
-	getElementIndex: function(el)
-	{
-		var siblings = el.parentNode.children;
-		for(var i = 0, n = siblings.length; i < n; i ++){
-			if(siblings[i] === el){
-				return i;
-			}
-		}
-	}
+	elementUniqueId: 0
 };
 
 
@@ -191,10 +181,39 @@ flour.template.parse = function(html, state, view)
 		(function(block)
 		{
 			var el = templateFragment.content.querySelector('#flour-' + block.elementId);
-			el.removeAttribute('id');
+			var referenceNode = document.createTextNode('');
+			var blockContents = [];
 
-			block.el = el;
-			block.pos = flour.template.getElementIndex(block.el);
+			el.removeAttribute('id');
+			el.after(referenceNode);
+			el.remove();
+
+			block.display = function(contents)
+			{
+				if(contents)
+				{
+					for(var i = 0, n = contents.children.length; i < n; i ++)
+					{
+						blockContents.push(contents.children[i]);
+					}
+
+					referenceNode.after(contents);
+				}
+				else
+				{
+					if(blockContents)
+					{
+						for(var i = 0, n = blockContents.length; i < n; i ++)
+						{
+							blockContents[i].parentNode.removeChild(blockContents[i]);
+						}
+
+						blockContents.length = 0;
+					}
+				}
+			};
+
+			//block.el = el;
 			
 			var cleanup = flour.block.defined[block.type](block, state, view);
 			if(flour.util.isFunction(cleanup))
