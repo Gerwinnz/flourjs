@@ -24,13 +24,13 @@ flour.block.add('if', function(block, state, view)
 		if(mValue)
 		{
 			mTemplate = flour.template.parse(mBlockHtml, state, view);
-			block.el.append(mTemplate.fragment);
+			block.display(mTemplate.fragment);
 		}
 		else
 		{
 			mTemplate.cleanup();
 			mTemplate = false;
-			block.el.innerHTML = '';
+			block.display(false);
 		}
 	};
 

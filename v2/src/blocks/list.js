@@ -3,13 +3,21 @@
 flour.block.add('list', function(block, state, view)
 {
 	var mKey = block.key;
-	var mListEl = block.el.parentElement;
+	//var mListEl = block.el.parentElement;
 	var mBlockHtml = block.html;
 	
+	var mItems = [];
+	var mLookup = {};
+
 	var mListItems = {};
 	var mState = state.get(mKey);
 
-	block.el.remove();
+	//block.el.remove();
+
+	var getItem = function(id)
+	{
+		return mItems[mLookup[id]];
+	}
 
 
 	/*
@@ -68,28 +76,49 @@ flour.block.add('list', function(block, state, view)
 		var itemId = item.id;
 		var itemState = flour.state(item);
 		var itemTemplate = flour.template.parse(mBlockHtml, itemState, view);
-
-		mListItems[item.id] = {
+		var item = {
+			id: itemId,
 			el: itemTemplate.fragment.firstElementChild,
 			state: itemState
 		};
+
+		if(index === undefined)
+		{
+			mItems.push(item);
+		}
+		else
+		{
+			mItems.splice(index, 0, item);
+		}
+
+		for(var i = 0, n = mItems.length; i < n; i ++)
+		{
+			mLookup[mItems[i].id] = i;
+		}
+
 
 		itemState.onChange(function(event)
 		{
 			state.getItem(mKey, itemId).update(event.key, event.value);
 		});
 
-		if(index === 0)
+
+		if(mItems.length === 1)
 		{
-			mListEl.prepend(itemTemplate.fragment);
-		}
-		else if(index <= mState.length - 1)
-		{
-			mListEl.insertBefore(itemTemplate.fragment, mListItems[mState[index].id].el);
+			block.display(mItems[0].el);
 		}
 		else
 		{
-			mListEl.append(itemTemplate.fragment);
+			if(index < mItems.length - 1)
+			{
+				var itemAhead = mItems[index + 1].el;
+				itemAhead.parentNode.insertBefore(itemTemplate.fragment, itemAhead);
+			}
+			else
+			{
+				var endItem = mItems[mItems.length - 2].el;
+				endItem.after(itemTemplate.fragment);
+			}
 		}
 	}
 
@@ -104,11 +133,18 @@ flour.block.add('list', function(block, state, view)
 	*/
 	var handleRemoveItem = function(event)
 	{
-		var itemId = event.item.id;
-		if(mListItems[itemId])
+		var item = getItem(event.item.id);
+
+		if(item)
 		{
-			mListItems[itemId].el.remove();
-			mListItems[itemId] = null;
+			item.el.remove();
+			mItems.splice(event.index, 1);
+			
+			mLookup[item.id] = null;
+			for(var i = 0, n = mItems.length; i < n; i ++)
+			{
+				mLookup[mItems[i].id] = i;
+			}
 		}
 	};
 
@@ -123,12 +159,13 @@ flour.block.add('list', function(block, state, view)
 	*/
 	var handleUpdateItem = function(event)
 	{
-		var itemId = event.item.id;
-		if(mListItems[itemId])
+		var item = getItem(event.item.id);
+
+		if(item)
 		{
 			for(var i = 0, n = event.keys.length; i < n; i ++)
 			{
-				mListItems[itemId].state.set(event.keys[i], event.values[i]);
+				item.state.set(event.keys[i], event.values[i]);
 			}
 		}
 	};
@@ -144,20 +181,29 @@ flour.block.add('list', function(block, state, view)
 	*/
 	var handleMoveItem = function(event)
 	{
-		var itemId = event.item.id;
-		if(mListItems[itemId])
+		var item = getItem(event.item.id);
+		var newIndex = event.index;
+		var currentIndex = event.oldIndex;
+
+		if(item)
 		{
-			if(event.index === 0)
+			if(newIndex < event.value.length - 1)
 			{
-				mListEl.prepend(mListItems[itemId].el);
-			}
-			else if(event.index < event.value.length - 1)
-			{
-				mListEl.insertBefore(mListItems[itemId].el, mListItems[event.value[event.index + 1].id].el);
+				var itemAheadIndex = mLookup[event.value[newIndex + 1].id];
+				var itemAhead = mItems[itemAheadIndex].el;
+				itemAhead.parentNode.insertBefore(item.el, itemAhead);
 			}
 			else
 			{
-				mListEl.append(mListItems[itemId].el);
+				var endItem = mItems[mItems.length - 1].el;
+				endItem.parentNode.append(item.el);
+			}
+
+
+			mItems.splice(newIndex, 0, mItems.splice(currentIndex, 1)[0]);
+			for(var i = 0, n = mItems.length; i < n; i ++)
+			{
+				mLookup[mItems[i].id] = i;
 			}
 		}
 	};
@@ -174,7 +220,7 @@ flour.block.add('list', function(block, state, view)
 	var renderListItems = function()
 	{
 		mListItems = {};
-		mListEl.innerHTML = '';
+		//mListEl.innerHTML = '';
 
 		mState.forEach((item) => 
 		{
