@@ -184,7 +184,6 @@ flour.template.parse = function(html, state, view)
 			var referenceNode = document.createTextNode('');
 			var blockContents = [];
 
-			el.removeAttribute('id');
 			el.after(referenceNode);
 			el.remove();
 

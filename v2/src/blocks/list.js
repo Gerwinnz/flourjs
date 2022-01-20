@@ -3,16 +3,10 @@
 flour.block.add('list', function(block, state, view)
 {
 	var mKey = block.key;
-	//var mListEl = block.el.parentElement;
 	var mBlockHtml = block.html;
 	
 	var mItems = [];
 	var mLookup = {};
-
-	var mListItems = {};
-	var mState = state.get(mKey);
-
-	//block.el.remove();
 
 	var getItem = function(id)
 	{
@@ -46,8 +40,6 @@ flour.block.add('list', function(block, state, view)
 		{
 			handleMoveItem(event);
 		}
-
-		mState = event.value;
 
 		if(event.type === 'update')
 		{
@@ -219,21 +211,26 @@ flour.block.add('list', function(block, state, view)
 	*/
 	var renderListItems = function()
 	{
-		mListItems = {};
-		//mListEl.innerHTML = '';
+		// clear existing
+		for(var i = 0, n = mItems.length; i < n; i ++)
+		{
+			mItems[i].el.remove();
+		}
 
-		mState.forEach((item) => 
+		mItems.length = 0;
+
+
+		// display items in state
+		var items = state.get(mKey);
+		items.forEach((item) => 
 		{
 			insertItem(item);
 		});
 	}
 
 
-	if(mState && mState.length > 0)
-	{
-		renderListItems();
-	}
-
+	
+	renderListItems();
 
 	return cleanup;
 });
