@@ -8,9 +8,23 @@ flour.block.add('list', function(block, state, view)
 	var mItems = [];
 	var mLookup = {};
 
+
+	/*
+	|
+	|	Helpers for managing the list of items
+	|
+	*/
 	var getItem = function(id)
 	{
 		return mItems[mLookup[id]];
+	}
+
+	var updateLookup = function()
+	{
+		for(var i = 0, n = mItems.length; i < n; i ++)
+		{
+			mLookup[mItems[i].id] = i;
+		}
 	}
 
 
@@ -83,10 +97,7 @@ flour.block.add('list', function(block, state, view)
 			mItems.splice(index, 0, item);
 		}
 
-		for(var i = 0, n = mItems.length; i < n; i ++)
-		{
-			mLookup[mItems[i].id] = i;
-		}
+		updateLookup();
 
 
 		itemState.onChange(function(event)
@@ -131,12 +142,7 @@ flour.block.add('list', function(block, state, view)
 		{
 			item.el.remove();
 			mItems.splice(event.index, 1);
-			
-			mLookup[item.id] = null;
-			for(var i = 0, n = mItems.length; i < n; i ++)
-			{
-				mLookup[mItems[i].id] = i;
-			}
+			updateLookup();
 		}
 	};
 
@@ -193,10 +199,7 @@ flour.block.add('list', function(block, state, view)
 
 
 			mItems.splice(newIndex, 0, mItems.splice(currentIndex, 1)[0]);
-			for(var i = 0, n = mItems.length; i < n; i ++)
-			{
-				mLookup[mItems[i].id] = i;
-			}
+			updateLookup();
 		}
 	};
 
