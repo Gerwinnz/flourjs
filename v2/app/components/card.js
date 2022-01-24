@@ -3,7 +3,31 @@
 flour.view.add('card', function()
 {
 	var view = this;
-	view.templateHTML = `
+	
+
+	view.init = function(params)
+	{
+		params = params || {};
+		view.state.set('name', params.name);
+		view.state.set('id', this.id);
+	};
+
+
+	view.attributeChanged = function(name, value)
+	{
+		view.state.set(name, value);
+	};
+
+
+	view.handleNameClick = function()
+	{
+		view.state.set('name', view.state.get('name') + ' - clicked!!');
+	};
+
+
+
+	view.templateHTML = 
+	`
 		<style>
 			.card{
 				background-color: #fff;
@@ -28,35 +52,6 @@ flour.view.add('card', function()
 			</div>
 		</div>
 	`;
-
-
-	/*
-	|
-	|	Init
-	|
-	*/
-	view.init = function(params)
-	{
-		params = params || {};
-		view.state.set('name', params.name);
-		view.state.set('id', this.id);
-
-		view.render();
-	};
-
-
-
-	view.attributeChanged = function(name, value)
-	{
-		view.state.set(name, value);
-	};
-
-
-
-	view.handleNameClick = function()
-	{
-		view.state.set('name', view.state.get('name') + ' - clicked!!');
-	};
 
 });
 

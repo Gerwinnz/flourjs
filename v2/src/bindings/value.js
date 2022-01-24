@@ -113,7 +113,11 @@ flour.binding.add('f-value',
 
 
 		setElementValue(value);
-
+		flour.util.defer(function()
+		{
+			setElementValue(value);
+		});
+		
 
 		return function(){
 			remove();

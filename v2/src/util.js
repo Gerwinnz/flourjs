@@ -28,6 +28,22 @@ flour.util.warn = function(error)
 
 
 
+/*
+|
+|	Defer
+|
+*/
+flour.util.defer = function(callback)
+{
+	setTimeout(function()
+	{
+		callback();
+	}, 0);
+};
+
+
+
+
 
 /*
 |
@@ -52,17 +68,6 @@ flour.util.log = function()
 
 	console.log.apply(console, args);
 };
-
-flour.util.logStepIn = function()
-{
-	flour.util.logSteps ++;
-};
-
-flour.util.logStepOut = function()
-{
-	flour.util.logSteps --;
-};
-
 
 
 

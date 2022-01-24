@@ -1,48 +1,7 @@
+import { transitionHandler } from './transition_handler';
 
 (function(){
 
-
-	//
-	var transitionHandler = function(e, callback)
-	{
-		// First load no current view
-		if(!e.currentView)
-		{
-			e.hostElement.append(e.nextView.el);
-			callback();
-			return;
-		}
-
-		//
-		var animationIn = 'view__in-forward';
-		var animationOut = 'view__out-forward';
-
-		if(e.route.direction === 'back')
-		{
-			animationIn = 'view__in-back';
-			animationOut = 'view__out-back';
-		}
-
-		console.log('e.route.direction', e.route.direction);
-
-		nextViewEl = e.nextView.el;
-		currentViewEl = e.currentView.el;
-
-		nextViewEl.classList.add('view--animating', animationIn);
-		currentViewEl.classList.add('view--animating', animationOut);
-
-		e.hostElement.append(e.nextView.el);
-
-		nextViewEl.addEventListener('animationend', function()
-		{
-			nextViewEl.classList.remove('view--animating', animationIn);
-			currentViewEl.classList.remove('view--animating', animationOut);
-			callback();
-		}, {once: true});
-	};
-
-
-	//
 	var app = flour.app({
 		view: 'app',
 		base_url: 'http://localhost/flourjs/v2',
@@ -58,12 +17,13 @@
 			'/components': { view: 'components' },
 			'/components/:component': { view: 'components' },
 
+			'/form': { view: 'form' },
+
 			'/': { view: 'home'}
 		}
 	});
 
 	window.app = app;
-
 
 	//
 	// Possibly should be an array so the order is respected 🤔
@@ -74,6 +34,5 @@
 	// 		['/components/:component', { view: 'components'}],
 	// 		['/', { view: 'home'}]
 	// ]
-
 
 }());

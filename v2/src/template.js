@@ -53,7 +53,6 @@ flour.template.parse = function(html, state, view)
 	for(var blockType in flour.block.defined)
 	{
 		(function(){
-
 			var regEx = new RegExp('{{#' + blockType + ' (\\w*)}}', 'g');
 			var result;
 
@@ -80,7 +79,7 @@ flour.template.parse = function(html, state, view)
 				var elementId = flour.template.elementUniqueId;
 				flour.template.elementUniqueId ++;
 
-				html = html.replace(replaceString, '<span id="flour-' + elementId + '"></span>');
+				html = html.replace(replaceString, '<option id="flour-' + elementId + '"></option>');
 				blocks.push({
 					elementId: elementId,
 					type: blockType,
@@ -88,7 +87,6 @@ flour.template.parse = function(html, state, view)
 					html: innerHTML
 				});
 			}
-
 		}());
 	}
 
@@ -134,7 +132,7 @@ flour.template.parse = function(html, state, view)
 	//
 	// Find custom elements/components and update attributes mapped to a state value
 	//
-	var stateVariablePattern = /\${([\w.]+)}/;
+	var stateVariablePattern = /\{([\w.]+)}/;
 	var customElements = templateFragment.content.querySelectorAll(flour.customElement.defined.join(','));
 
 	for(var i = 0, n = customElements.length; i < n; i ++)
@@ -178,8 +176,7 @@ flour.template.parse = function(html, state, view)
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
-		(function(block)
-		{
+		(function(block){
 			var el = templateFragment.content.querySelector('#flour-' + block.elementId);
 			var referenceNode = document.createTextNode('');
 			var blockContents = [];

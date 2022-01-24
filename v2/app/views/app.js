@@ -10,6 +10,7 @@ flour.view.add('app', function()
 				<li><a href="/binders">Binders</a></li>
 				<li><a href="/blocks">Blocks</a></li>
 				<li><a href="/components">Components</a></li>
+				<li><a href="/form">Form</a></li>
 			</ul>
 		</div>
 
