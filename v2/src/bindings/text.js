@@ -5,18 +5,21 @@ flour.binding.add('f-text',
 
 	attach: function(element, state, view)
 	{
-		var key = element.getAttribute('f-text');
-		var value = state.get(key)
-		element.innerText = value;
-
-		var remove = state.onChange(key, function(event)
+		var mKey = element.getAttribute('f-text');
+		var mValue = state.get(mKey)
+		
+		var cleanup = state.onChange(mKey, function(event)
 		{
 			element.innerText = event.value;
 		});
 
-		return function(){
-			remove();
-		}
+
+		// initial setup
+		element.innerText = mValue;
+
+
+		// cleanup
+		return cleanup;
 	}
 
 });

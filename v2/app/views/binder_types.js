@@ -63,3 +63,33 @@ flour.view.add('f-value', function()
 		</p>
 	`;
 });
+
+flour.view.add('f-show', function()
+{
+	var view = this;
+
+	view.init = function()
+	{
+		view.state.set('show', true);
+	};
+
+	view.handleDisplayToggle = function()
+	{
+		view.state.set('show', !view.state.get('show'));
+	};
+	
+	view.templateHTML = `
+		<h1>f-show</h1>
+		<p>
+			A simple hide toggle when the passed in state is falsy.
+		</p>
+
+		<p>
+			Show is set to <span f-show="show">true</span><span f-show="!show">false</span> as you can see.
+		</p>
+
+		<p f-show="show">Show me as a block!</p>
+
+		<button f-on="click handleDisplayToggle">Toggle</button>
+	`;
+});

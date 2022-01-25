@@ -3,6 +3,14 @@
 flour.block.add('if', function(block, state, view)
 {
 	var mKey = block.key;
+	var mInverse = false;
+
+	if(mKey[0] === '!')
+	{
+		mInverse = true;
+		mKey = mKey.substring(1);
+	}
+
 	var mBlockHtml = block.html;
 	var mValue = state.get(mKey);
 	var mTemplate = false;
@@ -21,15 +29,22 @@ flour.block.add('if', function(block, state, view)
 
 	var showContent = function()
 	{
-		if(mValue)
+		var show = mValue ? true : false;
+		show = mInverse ? !show : show;
+		
+		if(show)
 		{
 			mTemplate = flour.template.parse(mBlockHtml, state, view);
 			block.display(mTemplate.fragment);
 		}
 		else
 		{
-			mTemplate.cleanup();
-			mTemplate = false;
+			if(mTemplate)
+			{
+				mTemplate.cleanup();
+				mTemplate = false;
+			}
+
 			block.display(false);
 		}
 	};

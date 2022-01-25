@@ -5,11 +5,11 @@ flour.binding.add('f-options',
 
 	attach: function(element, state, view)
 	{
-		var key = element.getAttribute('f-options');
-		var value = element.getAttribute('f-value');
-		var options = state.get(key) || [];
+		var mKey = element.getAttribute('f-options');
+		var mValue = element.getAttribute('f-value');
+		var mOptions = state.get(mKey) || [];
 
-		var remove = state.onChange(key, function(event)
+		var cleanup = state.onChange(mKey, function(event)
 		{
 			setOptions(event.value);
 		});
@@ -24,18 +24,18 @@ flour.binding.add('f-options',
 
 			element.innerHTML = html;
 
-			if(value){
-				element.value = state.get(value);
+			if(mValue){
+				element.value = state.get(mValue);
 			}
 		};
 
 		
-		setOptions(options);
+		// initial setup
+		setOptions(mOptions);
 
 
-		return function(){
-			remove();
-		}
+		// cleanup
+		return cleanup;
 	}
 
 });

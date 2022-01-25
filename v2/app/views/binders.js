@@ -13,6 +13,7 @@ flour.view.add('binders', function()
 					<li><a href="/binders/ref">f-ref</a></li>
 					<li><a href="/binders/text">f-text</a></li>
 					<li><a href="/binders/value">f-value</a></li>
+					<li><a href="/binders/show">f-show</a></li>
 				</ul>
 			</div>
 			<div f-ref="dest">

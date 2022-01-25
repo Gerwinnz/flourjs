@@ -15,10 +15,10 @@ flour.binding.add('f-on',
 
 	attach: function(element, state, view)
 	{
-		var attributeValue = element.getAttribute('f-on');
-		var events = attributeValue.split(',');
+		var mValue = element.getAttribute('f-on');
+		var mEvents = mValue.split(',');
 
-		for(var i = 0, n = events.length; i < n; i ++)
+		for(var i = 0, n = mEvents.length; i < n; i ++)
 		{
 			(function(eventString){
 
@@ -42,7 +42,7 @@ flour.binding.add('f-on',
 					});
 				}
 
-			}(events[i]));
+			}(mEvents[i]));
 		}
 	}
 

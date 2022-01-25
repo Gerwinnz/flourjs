@@ -5,14 +5,14 @@ flour.binding.add('f-value',
 
 	attach: function(element, state, view)
 	{
-		var key = element.getAttribute('f-value');
-		var type = element.type ? element.type.toLowerCase() : 'text';
-		var value = state.get(key);
-		var elementValue = element.getAttribute('value');
+		var mKey = element.getAttribute('f-value');
+		var mType = element.type ? element.type.toLowerCase() : 'text';
+		var mValue = state.get(mKey);
+		var mElementValue = element.getAttribute('value');
 
-		if(value === undefined)
+		if(mValue === undefined)
 		{
-			value = '';
+			mValue = '';
 		}
 
 
@@ -22,17 +22,17 @@ flour.binding.add('f-value',
 		//
 		function setElementValue(val)
 		{
-			if(type === 'radio')
+			if(mType === 'radio')
 			{
-				element.checked = elementValue === val;
+				element.checked = mElementValue === val;
 				return;
 			}
 			
-			if(type === 'checkbox')
+			if(mType === 'checkbox')
 			{
 				if(flour.util.isArray(val))
 				{
-					element.checked = val.includes(elementValue);
+					element.checked = val.includes(mElementValue);
 				}
 				else
 				{
@@ -50,7 +50,7 @@ flour.binding.add('f-value',
 		//
 		// Sub to state change so we update the element to match
 		//
-		var remove = state.onChange(key, function(event)
+		var cleanup = state.onChange(mKey, function(event)
 		{
 			setElementValue(event.value);
 		});
@@ -61,27 +61,27 @@ flour.binding.add('f-value',
 		//		
 		// Attach appropriate change/input listeners on our element so we can update the state
 		//
-		if(type === 'radio')
+		if(mType === 'radio')
 		{
 			element.addEventListener('change', function()
 			{
-				state.set(key, elementValue);
+				state.set(mKey, mElementValue);
 			});
 		}
-		else if(type === 'checkbox')
+		else if(mType === 'checkbox')
 		{
-			if(flour.util.isArray(value))
+			if(flour.util.isArray(mValue))
 			{
 				element.addEventListener('change', function()
 				{
-					var checkedItems = state.get(key);
-					var itemPosition = checkedItems.indexOf(elementValue);
+					var checkedItems = state.get(mKey);
+					var itemPosition = checkedItems.indexOf(mElementValue);
 					
 					if(element.checked)
 					{
 						if(itemPosition === -1)
 						{
-							checkedItems.push(elementValue);
+							checkedItems.push(mElementValue);
 						}
 					}
 					else
@@ -92,14 +92,14 @@ flour.binding.add('f-value',
 						}
 					}
 
-					state.set(key, checkedItems);
+					state.set(mKey, checkedItems);
 				});
 			}
 			else
 			{
 				element.addEventListener('change', function()
 				{
-					state.set(key, element.checked ? true : false);
+					state.set(mKey, element.checked ? true : false);
 				});
 			}
 		}
@@ -107,21 +107,21 @@ flour.binding.add('f-value',
 		{
 			element.addEventListener('input', function()
 			{
-				state.set(key, element.value);
+				state.set(mKey, element.value);
 			});
 		}
 
 
-		setElementValue(value);
+		// initial setup
+		setElementValue(mValue);
 		flour.util.defer(function()
 		{
-			setElementValue(value);
+			setElementValue(mValue);
 		});
 		
 
-		return function(){
-			remove();
-		}
+		// cleanup
+		return cleanup;
 	}
 
 });

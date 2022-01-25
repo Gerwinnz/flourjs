@@ -30,6 +30,12 @@ flour.view.add('block-if', function()
 			<hr />
 		{{/if}}
 
+		{{#if !show}}
+			<div>SHOW === FALSE</div>
+			<div>COUNT === <span f-text="count"></span></div>
+			<hr />
+		{{/if}}
+
 		<button f-on="click handleToggleClick">Toggle show!</button>
 		<button f-on="click handleIncrementCountClick">Increment count!</button>
 	`;
