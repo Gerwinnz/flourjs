@@ -1,5 +1,9 @@
 
-
+/*
+|
+|	Sets inner text to the state value
+|
+*/
 flour.binding.add('f-text', 
 {
 

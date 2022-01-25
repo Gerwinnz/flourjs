@@ -1,5 +1,16 @@
 
-
+/*
+|
+|	Two way binding between the state and the elements value
+|   
+|   State values should be formatted for the appropriate input as such
+|	 - input:type=text,password,number,email etc - string
+|	 - input:type=radio - string
+|    - input:type=checkbox - array or bool
+|	 - select - string matching option value
+|
+|
+*/
 flour.binding.add('f-value', 
 {
 

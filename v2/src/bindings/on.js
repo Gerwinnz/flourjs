@@ -1,5 +1,4 @@
 
-
 /*
 |
 |	Generic event attaching binder that allows adding multiple events separated by commas

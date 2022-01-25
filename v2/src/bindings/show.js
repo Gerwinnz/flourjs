@@ -1,5 +1,4 @@
 
-
 /*
 |
 |	Basic show/hide if value is truthy

@@ -1,5 +1,9 @@
 
-
+/*
+|
+|	Stores reference to element in the view's ref name space with the passed in name
+|
+*/
 flour.binding.add('f-ref', 
 {
 

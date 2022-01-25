@@ -1,5 +1,17 @@
 
-
+/*
+|
+|	Sets the select elements inner html to contain options matching the state value
+|
+|	State value should be an array formatted as:
+|   [
+|		{
+|			value: 'foo',
+|			label: 'Foo'
+|		}
+|	]
+|
+*/
 flour.binding.add('f-options', 
 {
 
