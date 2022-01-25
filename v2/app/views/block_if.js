@@ -7,6 +7,21 @@ flour.view.add('block-if', function()
 	{
 		view.state.set('show', true);
 		view.state.set('count', 1);
+		view.state.set('items', 
+		[
+			{
+				id: 1,
+				name: 'Gandalf'
+			},
+			{
+				id: 2,
+				name: 'Frodo'
+			},
+			{
+				id: 3,
+				name: 'Sam'
+			}
+		]);
 	}
 
 	view.handleToggleClick = function()
@@ -27,6 +42,9 @@ flour.view.add('block-if', function()
 		{{#if show}}
 			<div>SHOW === TRUE</div>
 			<div>COUNT === <span f-text="count"></span></div>
+			{{#list items}}
+				<p>{{name}}</p>
+			{{/list}}
 			<hr />
 		{{/if}}
 

@@ -4,26 +4,6 @@ flour.view.add('binders', function()
 	var view = this;
 	var binderView = false;
 
-	view.templateHTML = `
-		<div class="info-layout">
-			<div class="sub-nav sub-nav--code">
-				<ul>
-					<li><a href="/binders/on">f-on</a></li>
-					<li><a href="/binders/options">f-options</a></li>
-					<li><a href="/binders/ref">f-ref</a></li>
-					<li><a href="/binders/text">f-text</a></li>
-					<li><a href="/binders/value">f-value</a></li>
-					<li><a href="/binders/show">f-show</a></li>
-				</ul>
-			</div>
-			<div f-ref="dest">
-
-			</div>
-		</div>
-	`;
-
-
-
 	view.init = function(params)
 	{
 		view.render();
@@ -59,4 +39,24 @@ flour.view.add('binders', function()
 
 		view.refs.dest.append(binderView.el);
 	}
+
+
+	view.templateHTML = `
+		<div class="info-layout">
+			<div class="sub-nav sub-nav--code">
+				<ul>
+					<li><a href="/binders/on">f-on</a></li>
+					<li><a href="/binders/options">f-options</a></li>
+					<li><a href="/binders/ref">f-ref</a></li>
+					<li><a href="/binders/text">f-text</a></li>
+					<li><a href="/binders/value">f-value</a></li>
+					<li><a href="/binders/show">f-show</a></li>
+				</ul>
+			</div>
+			<div f-ref="dest">
+
+			</div>
+		</div>
+	`;
+
 });
