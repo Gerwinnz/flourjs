@@ -93,3 +93,50 @@ flour.view.add('f-show', function()
 		<button f-on="click handleDisplayToggle">Toggle</button>
 	`;
 });
+
+flour.view.add('f-class', function()
+{
+	var view = this;
+
+	view.init = function()
+	{
+		view.state.set('my_class', 'square--red');
+		view.state.set('red', true);
+		view.state.set('rounded', true);
+	};
+	
+	view.templateHTML = `
+		<style>
+			.square{
+				width: 80px;
+				height: 80px;
+				margin: 16px 0;
+				background-color: #888;
+			}
+
+			.square--red{
+				background-color: salmon;
+			}
+
+			.square--rounded{
+				border-radius: 8px;
+			}
+		</style>
+		<h1>f-class</h1>
+		
+		<div>
+			<div>red: <span f-show="red">true</span></div>
+			<div>rounded: <span f-show="rounded">true</span></div>
+		</div>
+
+		<div>
+			<pre>my_class</pre>
+			<div class="square" f-class="my_class"></div>
+			<hr />
+
+			<pre>red square--red,rounded square--rounded</pre>
+			<div class="square" f-class="red square--red,rounded square--rounded"></div>
+			<hr />
+		</div>
+	`;
+});
