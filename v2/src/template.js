@@ -123,6 +123,8 @@ flour.template.parse = function(html, state, view)
 				{
 					cleanupCallbacks.push(cleanup);
 				}
+
+				elements[i].removeAttribute(bindingName);
 			}
 		}
 	}

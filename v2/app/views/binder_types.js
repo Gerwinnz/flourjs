@@ -124,16 +124,17 @@ flour.view.add('f-class', function()
 		</style>
 		<h1>f-class</h1>
 		
-		<div>
-			<div>red: <span f-show="red">true</span></div>
-			<div>rounded: <span f-show="rounded">true</span></div>
-		</div>
 
 		<div>
 			<pre>my_class</pre>
+			<input type="text" f-value="my_class" />
 			<div class="square" f-class="my_class"></div>
 			<hr />
 
+			<div>
+				<div>red: <input type="checkbox" f-value="red" /></div>
+				<div>rounded: <input type="checkbox" f-value="rounded" /></div>
+			</div>
 			<pre>red square--red,rounded square--rounded</pre>
 			<div class="square" f-class="red square--red,rounded square--rounded"></div>
 			<hr />

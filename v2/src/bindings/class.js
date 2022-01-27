@@ -12,38 +12,54 @@ flour.binding.add('f-class',
 		var mKey = element.getAttribute('f-class');
 		var mClasses = mKey.split(',');
 		var mCleanups = [];
+		var mClassNames = [];
 	
 
+		// apply classNames
+		var applyClassNames = function()
+		{
+			for(var i = 0, n = mClassNames.length; i < n; i ++)
+			{
+				if(mClassNames[i].className)
+				{
+					if(mClassNames[i].value)
+					{
+						element.classList.add(mClassNames[i].className);
+					}
+				}
+				else
+				{
+					element.classList.add(mClassNames[i].value);
+				}
+			}
+		};
+
+
+		// initial setup
 		for(var i = 0, n = mClasses.length; i < n; i ++)
 		{
 			(function(classString){
 
 				var parts = classString.split(' ');
 				var stateKey = parts[0];
-				var className = parts[1] === undefined ? false : parts[1];
+				var info = {
+					value: state.get(stateKey),
+					className: parts[1] === undefined ? false : parts[1]
+				};
 
-				if(className)
+				mClassNames.push(info);
+
+				mCleanups.push(state.onChange(stateKey, function(event)
 				{
-					console.log('conditional class name', element);
-				}
-				else
-				{
-					console.log('string class name', element);
-				}
+					element.classList.remove(info.className ? info.className : info.value);
+					info.value = event.value;
+					applyClassNames();
+				}));
 
 			}(mClasses[i]));
 		};
 
-		return;
-
-
-		mCleanups.push(state.onChange(mKey, function(event)
-		{
-			
-		}));
-
-
-		// initial setup
+		applyClassNames();
 		
 
 
