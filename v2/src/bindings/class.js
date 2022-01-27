@@ -62,7 +62,6 @@ flour.binding.add('f-class',
 		applyClassNames();
 		
 
-
 		// cleanup
 		return function()
 		{

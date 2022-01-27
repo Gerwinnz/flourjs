@@ -112,6 +112,8 @@ flour.view.add('f-class', function()
 				height: 80px;
 				margin: 16px 0;
 				background-color: #888;
+
+				transition: background 250ms, border-radius 250ms;
 			}
 
 			.square--red{
