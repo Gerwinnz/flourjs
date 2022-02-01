@@ -128,8 +128,8 @@ flour.view.add('f-class', function()
 		
 
 		<div>
-			<pre>my_class</pre>
 			<input type="text" f-value="my_class" />
+			<pre>my_class</pre>
 			<div class="square" f-class="my_class"></div>
 			<hr />
 

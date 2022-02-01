@@ -12,11 +12,14 @@
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
 		<script type="text/javascript" src="src/block.js"></script>
+		<script type="text/javascript" src="src/filter.js"></script>
 		<script type="text/javascript" src="src/router.js"></script>
 		<script type="text/javascript" src="src/pub_sub.js"></script>
 		<script type="text/javascript" src="src/binding.js"></script>
 		<script type="text/javascript" src="src/template.js"></script>
 		<script type="text/javascript" src="src/custom_element.js"></script>
+
+		<script type="text/javascript" src="src/filters/json.js"></script>
 
 		<script type="text/javascript" src="src/blocks/if.js"></script>
 		<script type="text/javascript" src="src/blocks/list.js"></script>
@@ -35,6 +38,7 @@
 		
 		<script type="text/javascript" src="app/views/app.js"></script>
 		<script type="text/javascript" src="app/views/form.js"></script>
+		<script type="text/javascript" src="app/views/http.js"></script>
 		<script type="text/javascript" src="app/views/home.js"></script>
 		
 		<script type="text/javascript" src="app/views/blocks.js"></script>

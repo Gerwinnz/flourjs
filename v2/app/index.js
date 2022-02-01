@@ -18,11 +18,12 @@ import { transitionHandler } from './transition_handler';
 			'/components/:component': { view: 'components' },
 
 			'/form': { view: 'form' },
+			'/http': { view: 'test' },
 
 			'/': { view: 'home'}
 		}
 	});
-
+ 
 	window.app = app;
 
 	//
