@@ -44,9 +44,11 @@ flour.view.add('card', function()
 		</style>
 
 		<div class="card">
-			<div>
-				<span f-text="name" on-click="handleNameClick"></span>
-			</div>
+			{{#if name}}
+				<div>
+					<span f-text="name" on-click="handleNameClick"></span>
+				</div>
+			{{/if}}
 			<div class="card__extra">
 				<slot name="extra">No extra details</slot>
 			</div>

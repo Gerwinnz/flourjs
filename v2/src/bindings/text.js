@@ -33,7 +33,7 @@ flour.binding.add('f-text',
 		var displayTextWithFilter = function(value)
 		{
 			element.innerText = mFilter(value);
-		}
+		};
 
 
 		// initial setup

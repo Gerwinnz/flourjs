@@ -7,7 +7,9 @@ flour.view.add('test', function()
 	view.init = function()
 	{
 		view.state.set('post_data', {
-			name: 'flourjs'
+			name: 'flourjs',
+			size: '11',
+			awesome: true
 		});
 	}
 
@@ -33,6 +35,14 @@ flour.view.add('test', function()
 					<div class="form__line">
 						<label>name</label>
 						<input type="text" f-value="post_data.name" />
+					</div>
+					<div class="form__line">
+						<label>size</label>
+						<input type="text" f-value="post_data.size" />
+					</div>
+					<div class="form__line">
+						<label>awesome</label>
+						<input type="checkbox" f-value="post_data.awesome" />
 					</div>
 				</div>
 			</card-box>
