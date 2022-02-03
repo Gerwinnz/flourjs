@@ -68,8 +68,8 @@ flour.customElement.add = function(tagName, details)
 				{
 					this.attachShadow({mode: 'open'}).append(this.view.el);
 
-					var slots = this.view.el.querySelectorAll('slot');
 					var view = this.view;
+					var slots = view.el.querySelectorAll('slot');
 
 					for(var i = 0, n = slots.length; i < n; i ++)
 					{

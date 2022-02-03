@@ -8,7 +8,7 @@ flour.view.add('test', function()
 	{
 		view.state.set('post_data', {
 			name: 'flourjs',
-			size: '11',
+			size: '11kb',
 			awesome: true
 		});
 	}
