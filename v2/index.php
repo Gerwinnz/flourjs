@@ -51,6 +51,7 @@
 		<script type="text/javascript" src="app/views/components.js"></script>
 
 		<script type="text/javascript" src="app/components/card.js"></script>
+		<script type="text/javascript" src="app/components/alert.js"></script>
 		
 		<script type="module" type="text/javascript" src="app/index.js"></script>
 

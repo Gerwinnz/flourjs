@@ -13,6 +13,7 @@ flour.block.add('if', function(block, state, view)
 
 	var mBlockHtml = block.html;
 	var mValue = state.get(mKey);
+	var mShow = false;
 	var mTemplate = false;
 
 
@@ -32,6 +33,13 @@ flour.block.add('if', function(block, state, view)
 		var show = mValue ? true : false;
 		show = mInverse ? !show : show;
 		
+		if(show === mShow)
+		{
+			return;
+		}
+
+		mShow = show;
+
 		if(show)
 		{
 			mTemplate = flour.template.parse(mBlockHtml, state, view);

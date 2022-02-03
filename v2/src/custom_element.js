@@ -28,7 +28,20 @@ flour.customElement.add = function(tagName, details)
 			constructor() 
 			{
 				super();
-				this.view = flour.view.get(details.view);
+				var params = {};
+
+				if(details && details.props)
+				{
+					for(var i = 0, n = details.props.length; i < n; i ++)
+					{
+						if(this.hasAttribute(details.props[i]))
+						{
+							params[details.props[i]] = this.getAttribute(details.props[i]);
+						}
+					}
+				}
+
+				this.view = flour.view.get(details.view, params);
 			}
 
 			static get observedAttributes() 

@@ -63,6 +63,10 @@ flour.view.add('test', function()
 			</div>
 		</div>
 
+		<alert-box level="error" title="An error occurred.">
+			<p>Yeah weird, it looks like something went wrong. This is how you can fix it and stuff...</p>
+		</alert-box>
+
 		<button f-on="click handleButtonClick">Fetch</button>
 	
 	`;
