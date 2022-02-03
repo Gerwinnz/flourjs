@@ -4,10 +4,10 @@ flour.view.add('alert', function()
 {
 	var view = this;
 
-	var classNames = {
-		'error': 'icon--error',
-		'warning': 'icon--warning',
-		'info': 'icon--info'
+	var levels = {
+		'error': {className: 'icon--error', icon: '!'},
+		'warning': {className: 'icon--warning', icon: '!'},
+		'info': {className: 'icon--info', icon: 'i'}
 	};
 	
 
@@ -17,7 +17,8 @@ flour.view.add('alert', function()
 		
 		view.state.onChange('level', function(event)
 		{
-			view.state.set('icon_class', classNames[event.value]);
+			view.state.set('icon_class', levels[event.value].className);
+			view.state.set('icon_text', levels[event.value].icon);
 		});
 
 		view.state.set('level', params.level || 'info');
@@ -44,7 +45,7 @@ flour.view.add('alert', function()
 			}
 
 			.alert__extra{
-				margin-top:  8px;
+				margin-top:  16px;
 				font-size:  12px;
 			}
 
@@ -86,7 +87,7 @@ flour.view.add('alert', function()
 
 		<div class="alert">
 			<div class="alert__header">
-				<div class="icon" f-class="icon_class">!</div>
+				<div class="icon" f-class="icon_class" f-text="icon_text"></div>
 				<span class="alert__title" f-text="title"></span>
 			</div>
 

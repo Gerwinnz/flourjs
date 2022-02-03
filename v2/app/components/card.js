@@ -18,12 +18,15 @@ flour.view.add('card', function()
 		view.state.set(name, value);
 	};
 
+	view.slotChanged = function(slot)
+	{
+		
+	};
 
 	view.handleNameClick = function()
 	{
 		view.state.set('name', view.state.get('name') + ' - clicked!!');
 	};
-
 
 
 	view.templateHTML = 

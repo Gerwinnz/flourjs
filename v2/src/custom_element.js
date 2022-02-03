@@ -58,7 +58,7 @@ flour.customElement.add = function(tagName, details)
 
 				if(this.view.attributeChanged)
 				{
-					this.view.attributeChanged(property, newValue);
+					this.view.attributeChanged(property, newValue, oldValue);
 				}
 			}
 
@@ -67,6 +67,22 @@ flour.customElement.add = function(tagName, details)
 				if(details.shadow === true)
 				{
 					this.attachShadow({mode: 'open'}).append(this.view.el);
+
+					var slots = this.view.el.querySelectorAll('slot');
+					var view = this.view;
+
+					for(var i = 0, n = slots.length; i < n; i ++)
+					{
+						(function(slot){
+							slot.addEventListener('slotchange', function()
+							{
+								if(view.slotChanged)
+								{
+									view.slotChanged(slot);
+								}
+							});
+						}(slots[i]));
+					}
 				}
 				else
 				{

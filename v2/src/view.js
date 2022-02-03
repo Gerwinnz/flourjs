@@ -140,6 +140,8 @@ flour.view.base = function()
 		this.el.appendChild(this.templateInstance.fragment);
 
 		this.renderCount ++;
+
+		this.trigger('rendered');
 	};
 
 
