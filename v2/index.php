@@ -9,6 +9,7 @@
 		
 		<script type="text/javascript" src="src/app.js"></script>
 		<script type="text/javascript" src="src/util.js"></script>
+		<script type="text/javascript" src="src/http.js"></script>
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
 		<script type="text/javascript" src="src/block.js"></script>

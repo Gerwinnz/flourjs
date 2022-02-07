@@ -18,7 +18,7 @@ import { transitionHandler } from './transition_handler';
 			'/components/:component': { view: 'components' },
 
 			'/form': { view: 'form' },
-			'/http': { view: 'test' },
+			'/http': { view: 'http' },
 
 			'/': { view: 'home'}
 		}

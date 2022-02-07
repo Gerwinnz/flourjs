@@ -1,8 +1,14 @@
 
 
-flour.view.add('test', function()
+flour.view.add('http', function()
 {
 	var view = this;
+
+	var getInfo = flour.http('/info/:name',
+	{
+		method: 'get',
+		format: 'json'
+	});
 
 	view.init = function()
 	{
