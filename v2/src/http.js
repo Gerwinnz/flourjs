@@ -1,6 +1,7 @@
 var flour = flour || {};
 
 
+flour.http = {};
 
 
 /*
@@ -10,15 +11,22 @@ var flour = flour || {};
 |
 |
 */
-flour.httpOptions = function(options)
+flour.http.setOptions = function(options)
 {
-	
+
 };
 
 
 
 
-flour.http = function(url, options)
+flour.http.add = async function(url, method, options)
 {
+	return function(data)
+	{
+		var options = {};
+		var response = await fetch(url, {});
 
+		return response.json();
+		console.log(url, data);
+	}
 };
