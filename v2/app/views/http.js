@@ -4,11 +4,7 @@ flour.view.add('http', function()
 {
 	var view = this;
 
-	var getInfo = flour.http.add('/info/:name',
-	{
-		method: 'get',
-		format: 'json'
-	});
+	var getInfo = flour.http.get('http://localhost/flourjs/v2/:name');
 
 	view.init = function()
 	{
@@ -22,8 +18,8 @@ flour.view.add('http', function()
 	view.handleButtonClick = function(event, el)
 	{
 		var postData = view.state.get('post_data');
-		getInfo(postData).then(() => {
-
+		getInfo(postData).then(function(response){
+			console.log(response);
 		});
 	};
 
