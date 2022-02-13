@@ -95,11 +95,34 @@ flour.http.add = function(url, method, optionOverrides)
 	{
 		var parsedURL = flour.http.parseURL(url, data);
 
+
+		// Add data to our request
 		if(data !== undefined)
 		{
-			options.body = flour.http.preFetchDataHandler(data);
+			if(method === 'GET')
+			{
+				var urlParams = [];
+
+				if(parsedURL.indexOf('?') === -1)
+				{
+					parsedURL += '?';
+				}
+
+				for(var key in data)
+				{
+					urlParams.push(key + '=' + data[key]);
+				}
+
+				parsedURL += urlParams.join('&');
+			}
+			else
+			{
+				options.body = flour.http.preFetchDataHandler(data);
+			}
 		}
 
+
+		// Perform fetch and return promise
 		return response = fetch(parsedURL, options).then(function(response)
 		{
 			if(options.responseType === 'array_buffer')

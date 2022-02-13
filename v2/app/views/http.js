@@ -20,7 +20,9 @@ flour.view.add('http', function()
 		var postData = view.state.get('post_data');
 		getInfo(postData).then(function(response){
 			console.log(response);
-		});
+		}).catch(function(error){
+			console.log(error);
+		})
 	};
 
 
