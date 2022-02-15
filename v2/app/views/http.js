@@ -8,6 +8,8 @@ flour.view.add('http', function()
 
 	view.init = function()
 	{
+		view.state.set('response', '');
+		view.state.set('error', false);
 		view.state.set('post_data', {
 			name: 'flourjs',
 			size: '11kb',
@@ -18,11 +20,35 @@ flour.view.add('http', function()
 	view.handleButtonClick = function(event, el)
 	{
 		var postData = view.state.get('post_data');
+
 		getInfo(postData).then(function(response){
-			console.log(response);
+			view.state.set('error', false);
+			view.state.set('response', response);
 		}).catch(function(error){
-			console.log(error);
-		})
+			view.state.set('response', '');
+			view.state.set('error', 'Fetch response returned a ' + error.status + ' ' + error.statusText);
+		});
+
+
+		// Alternative callback methods
+		//
+		// getInfo(postData, 
+		// {
+		// 	success: function(response)
+		// 	{
+		// 		view.state.set('error', false);
+		// 		view.state.set('response', response);
+		// 	},
+		// 	error: function(error)
+		// 	{
+		// 		view.state.set('response', '');
+		// 		view.state.set('error', 'Fetch response returned a ' + error.status + ' ' + error.statusText);
+		// 	},
+		// 	done: function(d)
+		// 	{
+		// 		console.log('it is done', d);
+		// 	}
+		// });
 	};
 
 
@@ -63,15 +89,15 @@ flour.view.add('http', function()
 			</card-box>
 		</div>
 
-		<div>
+		<div f-show="!error">
 			<card-box name="Post response:">
 			<div slot="extra">
-				<pre></pre>
+				<pre f-text="response"></pre>
 			</div>
 		</div>
 
-		<alert-box level="error" title="An error occurred.">
-			<p>Yeah weird, it looks like something went wrong. This is how you can fix it and stuff...</p>
+		<alert-box level="error" title="An error occurred." f-show="error">
+			<p f-text="error"></p>
 		</alert-box>
 
 		<button f-on="click handleButtonClick">Fetch</button>
