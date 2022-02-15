@@ -4,7 +4,7 @@ flour.view.add('http', function()
 {
 	var view = this;
 
-	var getInfo = flour.http.get('http://localhost/flourjs/v2/:name');
+	var getInfo = flour.http.get('http://localhost/flourjs/v2/api.php');
 
 	view.init = function()
 	{
@@ -24,6 +24,8 @@ flour.view.add('http', function()
 		getInfo(postData).then(function(response){
 			view.state.set('error', false);
 			view.state.set('response', response);
+
+			console.log(response);
 		}).catch(function(error){
 			view.state.set('response', '');
 			view.state.set('error', 'Fetch response returned a ' + error.status + ' ' + error.statusText);
@@ -77,6 +79,9 @@ flour.view.add('http', function()
 						<label>awesome</label>
 						<input type="checkbox" f-value="post_data.awesome" />
 					</div>
+					<div class="form__line">
+						<button f-on="click handleButtonClick">Fetch</button>
+					</div>
 				</div>
 			</card-box>
 		</div>
@@ -92,15 +97,13 @@ flour.view.add('http', function()
 		<div f-show="!error">
 			<card-box name="Post response:">
 			<div slot="extra">
-				<pre f-text="response"></pre>
+				<pre f-text="response | json"></pre>
 			</div>
 		</div>
 
 		<alert-box level="error" title="An error occurred." f-show="error">
 			<p f-text="error"></p>
 		</alert-box>
-
-		<button f-on="click handleButtonClick">Fetch</button>
 	
 	`;
 

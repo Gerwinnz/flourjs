@@ -4,7 +4,9 @@ var flour = flour || {};
 /*
 |
 |
-|	Default http options
+|	Flour HTTP name space
+|
+|	options: default fetch/http options used on all created http resources but can be overridden
 |
 |
 */
@@ -12,7 +14,7 @@ flour.http =
 {
 	options: 
 	{
-		
+		responseType: 'json'
 	}
 };
 
@@ -85,6 +87,7 @@ flour.http.delete = function(url, optionOverrides)
 */
 flour.http.add = function(url, method, optionOverrides)
 {
+	// Normalise options with base options
 	var options = JSON.parse(JSON.stringify(flour.http.options));
 	if(flour.util.isObject(optionOverrides))
 	{
@@ -96,12 +99,15 @@ flour.http.add = function(url, method, optionOverrides)
 
 	method = method === undefined ? 'GET' : method.toUpperCase();
 	options.method = method;
+	options.responseType = options.responseType !== undefined ? options.responseType.toLowerCase() : undefined;
 
-		
+	
+	// Define the callable response function
 	return function(data, extra)
 	{
 		var parsedURL = flour.http.parseURL(url, data);
 		extra = extra === undefined ? {} : extra;
+
 
 		// Add data to our request
 		if(data !== undefined)
@@ -133,6 +139,7 @@ flour.http.add = function(url, method, optionOverrides)
 		return response = fetch(parsedURL, options).then(function(response)
 		{
 			var returnValue = false;
+
 
 			// Handle a failed fetch
 			if(!response.ok)
