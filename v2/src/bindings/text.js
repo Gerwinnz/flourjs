@@ -39,7 +39,7 @@ flour.binding.add('f-text',
 		// initial setup
 		if(mFilter === false)
 		{
-			displayText(view.state.get(mKey));
+			displayText(state.get(mKey));
 			var cleanup = state.onChange(mKey, function(event)
 			{
 				displayText(event.value);
@@ -47,7 +47,7 @@ flour.binding.add('f-text',
 		}
 		else
 		{
-			displayTextWithFilter(view.state.get(mKey));
+			displayTextWithFilter(state.get(mKey));
 			var cleanup = state.onChange(mKey, function(event)
 			{
 				displayTextWithFilter(event.value);
