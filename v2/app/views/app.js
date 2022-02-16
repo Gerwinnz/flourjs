@@ -12,6 +12,7 @@ flour.view.add('app', function()
 				<li><a href="/components">Components</a></li>
 				<li><a href="/form">Form</a></li>
 				<li><a href="/http">HTTP</a></li>
+				<li><a href="/build">Build</a></li>
 			</ul>
 		</div>
 

@@ -19,6 +19,7 @@ import { transitionHandler } from './transition_handler';
 
 			'/form': { view: 'form' },
 			'/http': { view: 'http' },
+			'/build': { view: 'build' },
 
 			'/': { view: 'home'}
 		}

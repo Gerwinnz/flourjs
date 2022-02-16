@@ -41,6 +41,7 @@
 		<script type="text/javascript" src="app/views/form.js"></script>
 		<script type="text/javascript" src="app/views/http.js"></script>
 		<script type="text/javascript" src="app/views/home.js"></script>
+		<script type="text/javascript" src="app/views/build.js"></script>
 		
 		<script type="text/javascript" src="app/views/blocks.js"></script>
 		<script type="text/javascript" src="app/views/block_if.js"></script>
