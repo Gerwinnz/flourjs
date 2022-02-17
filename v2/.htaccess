@@ -13,6 +13,12 @@ RewriteRule ^(.+)$ index.php/$1 [QSA,L]
 <IfModule mod_filter.c>
 AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
 </IfModule>
+
+<IfModule mod_deflate.c>
+<FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|html|php|txt|xml)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>
 # END GZIP
 
 

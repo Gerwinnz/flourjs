@@ -4,7 +4,7 @@ flour.view.add('http', function()
 {
 	var view = this;
 
-	var getInfo = flour.http.get('http://localhost/flourjs/v2/api.php');
+	var getInfo = flour.http.get('http://localhost/flourjs/v2/api/http');
 
 	view.init = function()
 	{
@@ -21,12 +21,12 @@ flour.view.add('http', function()
 	{
 		var postData = view.state.get('post_data');
 
-		getInfo(postData).then(function(response){
+		getInfo(postData).then(function(response)
+		{
 			view.state.set('error', false);
 			view.state.set('response', response);
-
-			console.log(response);
-		}).catch(function(error){
+		}).catch(function(error)
+		{
 			view.state.set('response', '');
 			view.state.set('error', 'Fetch response returned a ' + error.status + ' ' + error.statusText);
 		});
