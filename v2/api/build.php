@@ -62,7 +62,8 @@
 	}
 
 	concat_path_files($flour_src_path, $flour_output_file);
-	file_put_contents($flour_output_minified_file, minify_js(file_get_contents($flour_output_file)));
+	$minified = \JShrink\Minifier::minify(file_get_contents($flour_output_file));
+	file_put_contents($flour_output_minified_file, $minified);
 
 
 
