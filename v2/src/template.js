@@ -36,7 +36,7 @@ flour.template.parse = function(html, state, view)
 	for(var blockType in flour.block.defined)
 	{
 		(function(){
-			var regEx = new RegExp('{{#' + blockType + ' (.*)}}', 'g');
+			var regEx = new RegExp('{{#' + blockType + ' ([^}]*)}}', 'g');
 			var result;
 
 			while((result = regEx.exec(html)) !== null)
@@ -173,9 +173,9 @@ flour.template.parse = function(html, state, view)
 			{
 				if(contents)
 				{
-					for(var i = 0, n = contents.children.length; i < n; i ++)
+					for(var i = 0, n = contents.childNodes.length; i < n; i ++)
 					{
-						blockContents.push(contents.children[i]);
+						blockContents.push(contents.childNodes[i]);
 					}
 
 					referenceNode.after(contents);

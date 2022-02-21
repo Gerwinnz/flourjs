@@ -16,6 +16,8 @@ flour.block.add('if', function(block, state, view)
 	var mShow = false;
 	var mTemplate = false;
 
+	console.log(mKey);
+
 
 	/*
 	|

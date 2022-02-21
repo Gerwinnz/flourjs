@@ -7,7 +7,7 @@
 
 		<link rel="stylesheet" type="text/css" href="app/style.css">
 		
-		<!-- <script type="text/javascript" src="src/app.js"></script>
+		<script type="text/javascript" src="src/app.js"></script>
 		<script type="text/javascript" src="src/util.js"></script>
 		<script type="text/javascript" src="src/http.js"></script>
 		<script type="text/javascript" src="src/view.js"></script>
@@ -32,9 +32,9 @@
 		<script type="text/javascript" src="src/bindings/view.js"></script>
 		<script type="text/javascript" src="src/bindings/class.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
-		<script type="text/javascript" src="src/bindings/options.js"></script> -->
+		<script type="text/javascript" src="src/bindings/options.js"></script>
 
-		<script type="text/javascript" src="dist/flour.min.js"></script>		
+		<!-- <script type="text/javascript" src="dist/flour.min.js"></script> -->
 	</head>
 	<body>
 		<div id="app"></div>
