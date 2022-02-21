@@ -34,7 +34,7 @@
 		<script type="text/javascript" src="src/bindings/value.js"></script>
 		<script type="text/javascript" src="src/bindings/options.js"></script> -->
 
-		<script type="text/javascript" src="dist/flour.js"></script>		
+		<script type="text/javascript" src="dist/flour.min.js"></script>		
 	</head>
 	<body>
 		<div id="app"></div>

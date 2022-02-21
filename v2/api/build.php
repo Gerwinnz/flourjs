@@ -1,11 +1,13 @@
 <?php
-
+	include_once('vendor/minifier.php');
+	
 	// Establish paths
 	$flour_root_path = dirname(__dir__, 1);
 	$flour_src_path = $flour_root_path . '/src/';
 	$flour_dist_path = $flour_root_path . '/dist/';
 
 	$flour_output_file = $flour_dist_path . 'flour.js';
+	$flour_output_minified_file = $flour_dist_path . 'flour.min.js';
 
 
 	// Empty our dist
@@ -20,12 +22,16 @@
 		unlink($flour_dist_path . $item);
 	}
 
-	touch($flour_output_file);
 
 
 	// Traverse our src files
 	function concat_path_files($path, $dest)
 	{
+		if(!file_exists($dest))
+		{
+			touch($dest);
+		}
+
 		$contents = scandir($path);
 		$path_dirs = [];
 
@@ -56,6 +62,8 @@
 	}
 
 	concat_path_files($flour_src_path, $flour_output_file);
+	file_put_contents($flour_output_minified_file, minify_js(file_get_contents($flour_output_file)));
+
 
 
 	$response = 
