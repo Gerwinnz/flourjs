@@ -1869,7 +1869,7 @@ flour.template.parse = function(html, state, view)
 	for(var blockType in flour.block.defined)
 	{
 		(function(){
-			var regEx = new RegExp('{{#' + blockType + ' ([^}]*)}}', 'g');
+			var regEx = new RegExp('{{#' + blockType + ' ([^}}]*)}}', 'g');
 			var result;
 
 			while((result = regEx.exec(html)) !== null)

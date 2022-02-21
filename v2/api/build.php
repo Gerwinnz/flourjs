@@ -1,6 +1,8 @@
 <?php
 	include_once('vendor/minifier.php');
 	
+
+
 	// Establish paths
 	$flour_root_path = dirname(__dir__, 1);
 	$flour_src_path = $flour_root_path . '/src/';
@@ -8,6 +10,7 @@
 
 	$flour_output_file = $flour_dist_path . 'flour.js';
 	$flour_output_minified_file = $flour_dist_path . 'flour.min.js';
+
 
 
 	// Empty our dist
@@ -61,20 +64,25 @@
 		}
 	}
 
+
+
+	// Kick off the concatanation of our src files
 	concat_path_files($flour_src_path, $flour_output_file);
+
+
+
+	// Minify
 	$minified = \JShrink\Minifier::minify(file_get_contents($flour_output_file));
 	file_put_contents($flour_output_minified_file, $minified);
 
 
 
+	// Response
 	$response = 
 	[
 		'root' => $flour_root_path,
 		'src' => $flour_src_path,
-		'dist' => $flour_dist_path,
-		'dist_contents' => $dist_contents
+		'dist' => $flour_dist_path
 	];
-
-
 
 	echo json_encode($response);
