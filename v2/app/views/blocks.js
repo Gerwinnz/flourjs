@@ -33,7 +33,7 @@ flour.view.add('blocks', function()
 
 	view.willShow = function(data)
 	{
-		console.log('will show blocks view', data);
+		console.log('will show life cycle method called', data);
 	};
 
 

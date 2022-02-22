@@ -136,7 +136,7 @@ form select{
 
 textarea{
 	height: auto;
-	padding:  4px;
+	padding:  8px 4px;
 	font-size:  14px;
 	font-family: sans-serif;
 }

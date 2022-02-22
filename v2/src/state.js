@@ -585,12 +585,13 @@ flour.state = function(defaultValues)
 
 
 		var setResponse = setValue(mValues, key, value);
-		if(setResponse.changes)
+		if(setResponse.changes.length)
 		{
 			console.log('state::set::' + changeEvent.type, key, value);
+
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
-				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
+				changedKey = setResponse.changes[i];
 
 				if(mKeyChangeListeners[changedKey])
 				{
@@ -612,18 +613,29 @@ flour.state = function(defaultValues)
 	function setValue(obj, key, value, changes)
 	{
 		key = (typeof key === "string") ? key.split(".") : key;
-		if(changes === undefined)
-		{
-			changes = [];
-		}
+		changes = changes === undefined ? [] : changes;
 
 	    var currentKey = key.shift();
 	    var valueChanged = false;
-	    changes.push(currentKey);
+	    
+	    var changedKey = changes.length > 0 ? changes[changes.length - 1] + '.' + currentKey : currentKey;
+	    if(mKeyChangeListeners[changedKey] !== undefined)
+		{
+			changes.push(changedKey);
+		}
 
-	    if (key.length === 0)
+	    if(key.length === 0)
 	    {
-	    	valueChanged = obj[currentKey] !== value;
+	    	if(flour.util.isObject(value))
+	    	{
+	    		valueChanged = JSON.stringify(obj[currentKey]) !== JSON.stringify(value);
+	    		changes = changes.concat(extractChangesFromObject(currentKey, value));
+	    	}
+	    	else
+	    	{
+	    		valueChanged = obj[currentKey] !== value;
+	    	}
+
 	        obj[currentKey] = value;
 	        return {
 	        	value: value,
@@ -636,6 +648,26 @@ flour.state = function(defaultValues)
 	    }
 
 	    return(setValue(obj[currentKey], key, value, changes));
+	}
+
+	function extractChangesFromObject(rootKey, object, changes)
+	{
+		var changes = changes ? changes : [];
+
+		for(var objectKey in object)
+		{
+			if(mKeyChangeListeners[rootKey + '.' + objectKey] !== undefined)
+			{
+				changes.push(rootKey + '.' + objectKey);
+			}
+			
+			if(flour.util.isObject(object[objectKey]))
+			{
+				changes = changes.concat(extractChangesFromObject(rootKey + '.' + objectKey, object[objectKey], changes));
+			}
+		}
+
+		return changes;
 	}
 
 
