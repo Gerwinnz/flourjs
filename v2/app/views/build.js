@@ -31,15 +31,10 @@ flour.view.add('build', function()
 				patch: parseInt(versionPieces[2])
 			});
 
-
-			// view.state.set('current_version_major', parseInt(versionPieces[0]));
-			// view.state.set('current_version_minor', parseInt(versionPieces[1]));
-			// view.state.set('current_version_patch', parseInt(versionPieces[2]));
-
-			// view.state.set('version_major', parseInt(versionPieces[0]));
-			// view.state.set('version_minor', parseInt(versionPieces[1]));
-			// view.state.set('version_patch', parseInt(versionPieces[2]));
+			updateNewVersion();
 		});
+
+		view.state.onChange('version_bump', updateNewVersion);
 	};
 
 
