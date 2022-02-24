@@ -588,6 +588,7 @@ flour.state = function(defaultValues)
 		if(setResponse.changes.length)
 		{
 			console.log('state::set::' + changeEvent.type, key, value);
+			console.log('changes', setResponse.changes);
 
 			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
 			{
@@ -629,7 +630,7 @@ flour.state = function(defaultValues)
 	    	if(flour.util.isObject(value))
 	    	{
 	    		valueChanged = JSON.stringify(obj[currentKey]) !== JSON.stringify(value);
-	    		changes = changes.concat(extractChangesFromObject(currentKey, value));
+	    		changes = changes.concat(extractChangesFromObject(changedKey, value));
 	    	}
 	    	else
 	    	{
@@ -650,9 +651,9 @@ flour.state = function(defaultValues)
 	    return(setValue(obj[currentKey], key, value, changes));
 	}
 
-	function extractChangesFromObject(rootKey, object, changes)
+	function extractChangesFromObject(rootKey, object)
 	{
-		var changes = changes ? changes : [];
+		var changes = [];
 
 		for(var objectKey in object)
 		{

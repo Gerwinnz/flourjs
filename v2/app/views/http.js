@@ -8,7 +8,7 @@ flour.view.add('http', function()
 
 	view.init = function()
 	{
-		view.state.set('response', '');
+		view.state.set('response', {});
 		view.state.set('error', false);
 		view.state.set('post_data', {
 			name: 'flourjs',
@@ -53,6 +53,11 @@ flour.view.add('http', function()
 		// });
 	};
 
+	view.handleSetResponse = function(event, el)
+	{
+		view.state.set('response.extra.one', {'bar': 'foo'});
+	};
+
 
 
 	/*
@@ -81,6 +86,7 @@ flour.view.add('http', function()
 					</div>
 					<div class="form__line">
 						<button f-on="click handleButtonClick">Fetch</button>
+						<button f-on="click handleSetResponse">Set response</button>
 					</div>
 				</div>
 			</card-box>
