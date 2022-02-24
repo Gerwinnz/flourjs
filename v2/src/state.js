@@ -626,7 +626,7 @@ flour.state = function(defaultValues)
 	    	if(flour.util.isObject(value))
 	    	{
 	    		valueChanged = JSON.stringify(obj[currentKey]) !== JSON.stringify(value);
-	    		changeList = changeList.concat(extractChangesFromObject(changedKey, value));
+	    		changeList = changeList.concat(getChangeListFromObject(changedKey, value));
 	    	}
 	    	else
 	    	{
@@ -647,7 +647,7 @@ flour.state = function(defaultValues)
 	    return(setValue(obj[currentKey], key, value, changeList));
 	}
 
-	function extractChangesFromObject(rootKey, object)
+	function getChangeListFromObject(rootKey, object)
 	{
 		var changeList = [];
 		for(var objectKey in object)
@@ -659,7 +659,7 @@ flour.state = function(defaultValues)
 			
 			if(flour.util.isObject(object[objectKey]))
 			{
-				changeList = changeList.concat(extractChangesFromObject(rootKey + '.' + objectKey, object[objectKey], changeList));
+				changeList = changeList.concat(getChangeListFromObject(rootKey + '.' + objectKey, object[objectKey], changeList));
 			}
 		}
 
