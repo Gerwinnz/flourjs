@@ -8,7 +8,7 @@
 		[
 			'one' => 
 			[
-				'foo' => 'bar'
+				'foo' => 'hello server!'
 			],
 			'two' => 
 			[

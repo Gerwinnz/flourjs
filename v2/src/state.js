@@ -585,14 +585,13 @@ flour.state = function(defaultValues)
 
 
 		var setResponse = setValue(mValues, key, value);
-		if(setResponse.changes.length)
+		if(setResponse.changeList.length)
 		{
 			console.log('state::set::' + changeEvent.type, key, value);
-			console.log('changes', setResponse.changes);
 
-			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
+			for(var i = 0, n = setResponse.changeList.length; i < n; i ++)
 			{
-				changedKey = setResponse.changes[i];
+				changedKey = setResponse.changeList[i];
 
 				if(mKeyChangeListeners[changedKey])
 				{
@@ -611,26 +610,23 @@ flour.state = function(defaultValues)
 		}
 	}
 
-	function setValue(obj, key, value, changes)
+	function setValue(obj, key, value, changeList)
 	{
 		key = (typeof key === "string") ? key.split(".") : key;
-		changes = changes === undefined ? [] : changes;
+		changeList = changeList === undefined ? [] : changeList;
 
 	    var currentKey = key.shift();
 	    var valueChanged = false;
 	    
-	    var changedKey = changes.length > 0 ? changes[changes.length - 1] + '.' + currentKey : currentKey;
-	    if(mKeyChangeListeners[changedKey] !== undefined)
-		{
-			changes.push(changedKey);
-		}
+	    var changedKey = changeList.length > 0 ? changeList[changeList.length - 1] + '.' + currentKey : currentKey;
+		changeList.push(changedKey);
 
 	    if(key.length === 0)
 	    {
 	    	if(flour.util.isObject(value))
 	    	{
 	    		valueChanged = JSON.stringify(obj[currentKey]) !== JSON.stringify(value);
-	    		changes = changes.concat(extractChangesFromObject(changedKey, value));
+	    		changeList = changeList.concat(extractChangesFromObject(changedKey, value));
 	    	}
 	    	else
 	    	{
@@ -640,7 +636,7 @@ flour.state = function(defaultValues)
 	        obj[currentKey] = value;
 	        return {
 	        	value: value,
-	        	changes: valueChanged ? changes : false
+	        	changeList: valueChanged ? changeList : false
 	        };
 	    }
 	    else if (!obj.hasOwnProperty(currentKey))
@@ -648,27 +644,26 @@ flour.state = function(defaultValues)
 	        obj[currentKey] = {};
 	    }
 
-	    return(setValue(obj[currentKey], key, value, changes));
+	    return(setValue(obj[currentKey], key, value, changeList));
 	}
 
 	function extractChangesFromObject(rootKey, object)
 	{
-		var changes = [];
-
+		var changeList = [];
 		for(var objectKey in object)
 		{
 			if(mKeyChangeListeners[rootKey + '.' + objectKey] !== undefined)
 			{
-				changes.push(rootKey + '.' + objectKey);
+				changeList.push(rootKey + '.' + objectKey);
 			}
 			
 			if(flour.util.isObject(object[objectKey]))
 			{
-				changes = changes.concat(extractChangesFromObject(rootKey + '.' + objectKey, object[objectKey], changes));
+				changeList = changeList.concat(extractChangesFromObject(rootKey + '.' + objectKey, object[objectKey], changeList));
 			}
 		}
 
-		return changes;
+		return changeList;
 	}
 
 
