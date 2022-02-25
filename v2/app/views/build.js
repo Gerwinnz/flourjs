@@ -15,17 +15,25 @@ flour.view.add('build', function()
 		view.state.set('version_bump', 'patch');
 		view.state.set('loading', false);
 
+		view.state.set('general', '');
+		added: view.state.set('added', '');
+		changed: view.state.set('changed', '');
+		deprecated: view.state.set('deprecated', '');
+		removed: view.state.set('removed', '');
+		fixed: view.state.set('fixed', '');
+		security: view.state.set('security', '');
+
+		view.state.set('new_version', {
+			major: '',
+			minor: '',
+			patch: ''
+		});
+
 		getVersion().then(function(response)
 		{
 			var versionPieces = response.version.split('.');
 
 			view.state.set('current_version', {
-				major: parseInt(versionPieces[0]),
-				minor: parseInt(versionPieces[1]),
-				patch: parseInt(versionPieces[2])
-			});
-
-			view.state.set('new_version', {
 				major: parseInt(versionPieces[0]),
 				minor: parseInt(versionPieces[1]),
 				patch: parseInt(versionPieces[2])
@@ -54,8 +62,19 @@ flour.view.add('build', function()
 	{
 		event.preventDefault();
 
+		var postData = {
+			version: view.state.get('new_version.major') + '.' + view.state.get('new_version.minor') + view.state.get('new_version.patch'),
+			general: view.state.get('general'),
+			added: view.state.get('added'),
+			changed: view.state.get('changed'),
+			deprecated: view.state.get('deprecated'),
+			removed: view.state.get('removed'),
+			fixed: view.state.get('fixed'),
+			security: view.state.get('security')
+		};
+
 		view.state.set('loading', true);
-		createBuild().then(function(response)
+		createBuild(postData).then(function(response)
 		{
 			console.log(response);
 			view.state.set('loading', false);

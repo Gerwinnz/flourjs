@@ -134,6 +134,11 @@ form select{
 	width: 100%;
 }
 
+form input[type=radio], 
+form input[type=checkbox]{
+	cursor: pointer;
+}
+
 textarea{
 	height: auto;
 	padding:  8px 4px;

@@ -1575,12 +1575,13 @@ flour.state = function(defaultValues)
 
 
 		var setResponse = setValue(mValues, key, value);
-		if(setResponse.changes)
+		if(setResponse.changeList.length)
 		{
 			console.log('state::set::' + changeEvent.type, key, value);
-			for(var i = 0, n = setResponse.changes.length; i < n; i ++)
+
+			for(var i = 0, n = setResponse.changeList.length; i < n; i ++)
 			{
-				changedKey = changedKey === false ? setResponse.changes[i] : changedKey + '.' + setResponse.changes[i];
+				changedKey = setResponse.changeList[i];
 
 				if(mKeyChangeListeners[changedKey])
 				{
@@ -1599,25 +1600,33 @@ flour.state = function(defaultValues)
 		}
 	}
 
-	function setValue(obj, key, value, changes)
+	function setValue(obj, key, value, changeList)
 	{
 		key = (typeof key === "string") ? key.split(".") : key;
-		if(changes === undefined)
-		{
-			changes = [];
-		}
+		changeList = changeList === undefined ? [] : changeList;
 
 	    var currentKey = key.shift();
 	    var valueChanged = false;
-	    changes.push(currentKey);
+	    
+	    var changedKey = changeList.length > 0 ? changeList[changeList.length - 1] + '.' + currentKey : currentKey;
+		changeList.push(changedKey);
 
-	    if (key.length === 0)
+	    if(key.length === 0)
 	    {
-	    	valueChanged = obj[currentKey] !== value;
+	    	if(flour.util.isObject(value))
+	    	{
+	    		valueChanged = JSON.stringify(obj[currentKey]) !== JSON.stringify(value);
+	    		changeList = changeList.concat(getChangeListFromObject(changedKey, value));
+	    	}
+	    	else
+	    	{
+	    		valueChanged = obj[currentKey] !== value;
+	    	}
+
 	        obj[currentKey] = value;
 	        return {
 	        	value: value,
-	        	changes: valueChanged ? changes : false
+	        	changeList: valueChanged ? changeList : false
 	        };
 	    }
 	    else if (!obj.hasOwnProperty(currentKey))
@@ -1625,7 +1634,26 @@ flour.state = function(defaultValues)
 	        obj[currentKey] = {};
 	    }
 
-	    return(setValue(obj[currentKey], key, value, changes));
+	    return(setValue(obj[currentKey], key, value, changeList));
+	}
+
+	function getChangeListFromObject(rootKey, object)
+	{
+		var changeList = [];
+		for(var objectKey in object)
+		{
+			if(mKeyChangeListeners[rootKey + '.' + objectKey] !== undefined)
+			{
+				changeList.push(rootKey + '.' + objectKey);
+			}
+			
+			if(flour.util.isObject(object[objectKey]))
+			{
+				changeList = changeList.concat(getChangeListFromObject(rootKey + '.' + objectKey, object[objectKey], changeList));
+			}
+		}
+
+		return changeList;
 	}
 
 
@@ -2907,7 +2935,6 @@ flour.block.add('if', function(block, state, view)
 	var mShow = false;
 	var mTemplate = false;
 
-	console.log(mKey);
 
 
 	/*
