@@ -8,8 +8,9 @@
 	$flour_root_path = dirname(__dir__, 1);
 	$flour_src_path = $flour_root_path . '/src/';
 	$flour_dist_path = $flour_root_path . '/dist/';
+	$flour_manifest_path = $flour_root_path . '/manifest.json';
 
-	$flour_manifest = json_decode(file_get_contents($flour_root_path . '/manifest.json'), true);
+	$flour_manifest = json_decode(file_get_contents($flour_manifest_path), true);
 
 	$flour_output_file = $flour_dist_path . 'flour.js';
 	$flour_output_minified_file = $flour_dist_path . 'flour.min.js';
@@ -79,16 +80,21 @@
 	file_put_contents($flour_output_minified_file, $minified);
 
 
+	// Write updated manifest
+	$flour_manifest['version'] = $_POST['version'];
+	$flour_manifest['build_date'] = date('Y-m-d H:i:s');
+
+	file_put_contents($flour_manifest_path, json_encode($flour_manifest));
+
+
 
 	// Response
 	$response = 
 	[
-		'root' => $flour_root_path,
-		'src' => $flour_src_path,
-		'dist' => $flour_dist_path,
-		'version' => $flour_manifest['version'],
 		'pay_load' => $_POST
 	];
+
+	// IF JSON BODY - json_decode(file_get_contents('php://input'))
 
 	echo json_encode($response);
 

@@ -546,13 +546,11 @@ flour.http.prePostDataHandler = function(data, options)
 	}
 
 	return myFormData;
-
-	return JSON.stringify(data);
 };
 
 
 
-flour.http.postFetchResponseHandler = function(data, options)
+flour.http.responseHandler = function(data, options)
 {
 	return data;
 };
@@ -609,6 +607,13 @@ flour.http.delete = function(url, optionOverrides)
 |	Creates and returns a callable function which performs a fetch and returns the response promise for a simple
 |	and clean api. This way the user only needs to use one .then()
 |
+|	
+|   getPost({postId: 1}).then(function(postResponse)
+|	{
+|		// voila
+|	});
+|
+|
 */
 flour.http.add = function(url, method, optionOverrides)
 {
@@ -633,7 +638,6 @@ flour.http.add = function(url, method, optionOverrides)
 		var parsedURL = flour.http.parseURL(url, data);
 		extra = extra === undefined ? {} : extra;
 
-		console.log('options', options);
 
 		// Add data to our request
 		if(data !== undefined)
@@ -706,7 +710,7 @@ flour.http.add = function(url, method, optionOverrides)
 			}
 
 
-			// If using callbacks
+			// If using callbacks :: TODO - Move these into the response handler so can be customised??
 			if(flour.util.isFunction(extra.success))
 			{
 				returnValue.then(function(output)

@@ -101,6 +101,13 @@ flour.http.delete = function(url, optionOverrides)
 |	Creates and returns a callable function which performs a fetch and returns the response promise for a simple
 |	and clean api. This way the user only needs to use one .then()
 |
+|	
+|   getPost({postId: 1}).then(function(postResponse)
+|	{
+|		// voila
+|	});
+|
+|
 */
 flour.http.add = function(url, method, optionOverrides)
 {
@@ -125,7 +132,6 @@ flour.http.add = function(url, method, optionOverrides)
 		var parsedURL = flour.http.parseURL(url, data);
 		extra = extra === undefined ? {} : extra;
 
-		console.log('options', options);
 
 		// Add data to our request
 		if(data !== undefined)
