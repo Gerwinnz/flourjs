@@ -80,10 +80,10 @@
 	file_put_contents($flour_output_minified_file, $minified);
 
 
+
 	// Write updated manifest
 	$flour_manifest['version'] = $_POST['version'];
 	$flour_manifest['build_date'] = date('Y-m-d H:i:s');
-
 	file_put_contents($flour_manifest_path, json_encode($flour_manifest));
 
 
