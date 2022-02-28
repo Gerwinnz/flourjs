@@ -13,7 +13,8 @@
 	// Response
 	$response = 
 	[
-		'version' => $flour_manifest['version']
+		'version' => $flour_manifest['version'],
+		'build_date' => $flour_manifest['build_date']
 	];
 
 

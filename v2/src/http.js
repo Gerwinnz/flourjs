@@ -20,14 +20,33 @@ flour.http =
 
 
 
-flour.http.preFetchDataHandler = function(data)
+flour.http.prePostDataHandler = function(data, options)
 {
-	return data;
+	var contentType = options.headers && options.headers['Content-Type'] !== undefined ? options.headers['Content-Type'] : false;
+
+
+	// Stringify application json
+	if(contentType === 'application/json')
+	{
+		return JSON.stringify(data);
+	}
+
+	
+	// Default to form data
+	var myFormData = new FormData()
+	for(var key in data)
+	{
+		myFormData.append(key, data[key]);
+	}
+
+	return myFormData;
+
+	return JSON.stringify(data);
 };
 
 
 
-flour.http.postFetchResponseHandler = function(data)
+flour.http.responseHandler = function(data, options)
 {
 	return data;
 };
@@ -108,6 +127,7 @@ flour.http.add = function(url, method, optionOverrides)
 		var parsedURL = flour.http.parseURL(url, data);
 		extra = extra === undefined ? {} : extra;
 
+		console.log('options', options);
 
 		// Add data to our request
 		if(data !== undefined)
@@ -130,7 +150,7 @@ flour.http.add = function(url, method, optionOverrides)
 			}
 			else
 			{
-				options.body = flour.http.preFetchDataHandler(data);
+				options.body = flour.http.prePostDataHandler(data, options);
 			}
 		}
 
@@ -180,7 +200,7 @@ flour.http.add = function(url, method, optionOverrides)
 			}
 
 
-			// If using callbacks
+			// If using callbacks :: TODO - Move these into the response handler so can be customised??
 			if(flour.util.isFunction(extra.success))
 			{
 				returnValue.then(function(output)

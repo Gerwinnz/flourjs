@@ -6,7 +6,7 @@ flour.view.add('build', function()
 
 	// Create build resource
 	var getVersion = flour.http.get('http://localhost/flourjs/v2/api/version');
-	var createBuild = flour.http.get('http://localhost/flourjs/v2/api/build');
+	var createBuild = flour.http.post('http://localhost/flourjs/v2/api/build');
 
 
 	// Init
@@ -63,7 +63,7 @@ flour.view.add('build', function()
 		event.preventDefault();
 
 		var postData = {
-			version: view.state.get('new_version.major') + '.' + view.state.get('new_version.minor') + view.state.get('new_version.patch'),
+			version: view.state.get('new_version.major') + '.' + view.state.get('new_version.minor') + '.' + view.state.get('new_version.patch'),
 			general: view.state.get('general'),
 			added: view.state.get('added'),
 			changed: view.state.get('changed'),
@@ -87,34 +87,6 @@ flour.view.add('build', function()
 	`
 		<form f-on="submit handleFormSubmit">
 			<div>
-				<h2>Version</h2>
-				
-				<h3>
-					New: 
-					<span f-text="new_version.major"></span>.<span f-text="new_version.minor"></span>.<span f-text="new_version.patch"></span>
-				</h3>
-				<h3>
-					Current: 
-					<span f-text="current_version.major"></span>.<span f-text="current_version.minor"></span>.<span f-text="current_version.patch"></span>
-				</h3>
-				
-				<div>
-					<label for="version_major">Major</label>
-					<input id="version_major" type="radio" value="major" name="version" f-value="version_bump" />
-				</div>
-				<div>
-					<label for="version_minor">Minor</label>
-					<input id="version_minor" type="radio" value="minor" name="version" f-value="version_bump" />
-				</div>
-				<div>
-					<label for="version_patch">Patch</label>
-					<input id="version_patch" type="radio" value="patch" name="version" f-value="version_bump" />
-				</div>
-			</div>
-
-			<div>
-				<h2>Change log details</h2>
-
 				<div class="form__line">
 					<label>General</label>
 					<textarea f-value="general" placeholder="General comments about this release"></textarea>
@@ -151,10 +123,34 @@ flour.view.add('build', function()
 				</div>
 			</div>
 
-			<div>
+			<div class="form__line">
+				Current version 
+				<span f-text="current_version.major"></span>.<span f-text="current_version.minor"></span>.<span f-text="current_version.patch"></span>
+			</div>
+
+			<div class="form__line">
+				<div>
+					<label for="version_major">Major</label>
+					<input id="version_major" type="radio" value="major" name="version" f-value="version_bump" />
+				</div>
+				<div>
+					<label for="version_minor">Minor</label>
+					<input id="version_minor" type="radio" value="minor" name="version" f-value="version_bump" />
+				</div>
+				<div>
+					<label for="version_patch">Patch</label>
+					<input id="version_patch" type="radio" value="patch" name="version" f-value="version_bump" />
+				</div>
+			</div>
+
+			<div class="form__line">
 				<button f-class="loading button--loading">
-					{{#if loading}}Loading...{{/if}}
-					{{#if !loading}}Create build{{/if}}
+					{{#if loading}}Creating...{{/if}}
+
+					{{#if !loading}}
+						Create build 
+						<span f-text="new_version.major"></span>.<span f-text="new_version.minor"></span>.<span f-text="new_version.patch"></span>
+					{{/if}}
 				</button>
 			</div>
 		</form>

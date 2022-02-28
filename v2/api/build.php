@@ -86,7 +86,8 @@
 		'root' => $flour_root_path,
 		'src' => $flour_src_path,
 		'dist' => $flour_dist_path,
-		'version' => $flour_manifest['version']
+		'version' => $flour_manifest['version'],
+		'pay_load' => $_POST
 	];
 
 	echo json_encode($response);
