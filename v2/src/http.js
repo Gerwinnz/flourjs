@@ -40,8 +40,6 @@ flour.http.prePostDataHandler = function(data, options)
 	}
 
 	return myFormData;
-
-	return JSON.stringify(data);
 };
 
 
