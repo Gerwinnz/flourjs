@@ -99,6 +99,8 @@ pre{
 }
 
 
+
+
 button{
 	padding: 0 16px;
 	background-color: #1A6AE2;
@@ -140,7 +142,8 @@ form input[type=checkbox]{
 }
 
 textarea{
-	height: auto;
+	height: 40px;
+	line-height: 24px;
 	padding:  8px 4px;
 	font-size:  14px;
 	font-family: sans-serif;
@@ -174,6 +177,23 @@ select option{
 	margin-right: 0;
 }
 
+
+.build-contents__section{
+	padding: 16px;
+	background-color: #fff;
+	border-radius: 8px;
+}
+
+.build-contents__section textarea{
+	border:  none;
+	padding-left: 0;
+	padding-right: 0;
+	resize: none;
+}
+
+.build-contents__section textarea{
+	outline: none!important;
+}
 
 
 .view-wrapper{

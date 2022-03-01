@@ -103,40 +103,39 @@ flour.view.add('build', function()
 	view.templateHTML = 
 	`
 		<form f-on="submit handleFormSubmit">
-			<div>
+			<div class="build-contents__section">
 				<div class="form__line">
-					<label>General</label>
-					<textarea f-value="general" placeholder="General comments about this release"></textarea>
+					<textarea auto-resize f-value="general" placeholder="General comments"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Added</label>
-					<textarea f-value="added" placeholder="Added features and functionality"></textarea>
+					<textarea auto-resize f-value="added" placeholder="Added"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Changed</label>
-					<textarea f-value="changed" placeholder="Changes to existing functionality"></textarea>
+					<textarea auto-resize f-value="changed" placeholder="Changed"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Deprecated</label>
-					<textarea f-value="deprecated" placeholder="What's been deprecated and marked for removal"></textarea>
+					<textarea auto-resize f-value="deprecated" placeholder="Deprecated"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Removed</label>
-					<textarea f-value="removed" placeholder="What's been removed"></textarea>
+					<textarea auto-resize f-value="removed" placeholder="Removed"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Fixed</label>
-					<textarea f-value="fixed" placeholder="Bug fixes"></textarea>
+					<textarea auto-resize f-value="fixed" placeholder="Fixed"></textarea>
 				</div>
 
 				<div class="form__line">
 					<label>Security</label>
-					<textarea f-value="security" placeholder="Fixes specifically around security"></textarea>
+					<textarea auto-resize f-value="security" placeholder="Security"></textarea>
 				</div>
 			</div>
 
