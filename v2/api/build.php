@@ -25,6 +25,7 @@
 	$flour_root_path = dirname(__dir__, 1);
 	$flour_src_path = $flour_root_path . '/src/';
 	$flour_dist_path = $flour_root_path . '/dist/';
+	$flour_versions_path = $flour_root_path . '/versions/';
 	$flour_version_path = $flour_root_path . '/versions/' . $version;
 	$flour_manifest_path = $flour_root_path . '/manifest.json';
 	$flour_change_log_path = $flour_root_path . '/changelog.md';
@@ -34,6 +35,17 @@
 	$flour_output_file = $flour_dist_path . 'flour-' . $version . '.js';
 	$flour_output_minified_file = $flour_dist_path . 'flour-' . $version . '.min.js';
 
+
+	// Create dirs in case they don't exist - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	if(!is_dir($flour_dist_path))
+	{
+		mkdir($flour_dist_path);
+	}
+
+	if(!is_dir($flour_versions_path))
+	{
+		mkdir($flour_versions_path);
+	}
 
 
 	// Empty our dist - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
