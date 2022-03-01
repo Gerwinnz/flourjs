@@ -9,30 +9,30 @@ flour.view.add('build', function()
 	var createBuild = flour.http.post('http://localhost/flourjs/v2/api/build');
 
 
+	//
 	// Init
+	//
 	view.init = function()
 	{
 		view.state.set('version_bump', 'patch');
 		view.state.set('loading', false);
 
 		view.state.set('general', '');
-		added: view.state.set('added', '');
-		changed: view.state.set('changed', '');
-		deprecated: view.state.set('deprecated', '');
-		removed: view.state.set('removed', '');
-		fixed: view.state.set('fixed', '');
-		security: view.state.set('security', '');
+		view.state.set('added', '');
+		view.state.set('changed', '');
+		view.state.set('deprecated', '');
+		view.state.set('removed', '');
+		view.state.set('fixed', '');
+		view.state.set('security', '');
 
-		view.state.set('new_version', {
-			major: '',
-			minor: '',
-			patch: ''
-		});
+		view.state.set('new_version', {major: '', minor: '', patch: ''});
+		view.state.set('current_version', {major: 0, minor: 0, patch: 0});
 
+
+		// Fetch details
 		getVersion().then(function(response)
 		{
 			var versionPieces = response.version.split('.');
-
 			view.state.set('current_version', {
 				major: parseInt(versionPieces[0]),
 				minor: parseInt(versionPieces[1]),
@@ -46,7 +46,9 @@ flour.view.add('build', function()
 	};
 
 
+	//
 	// Update new version
+	//
 	var updateNewVersion = function()
 	{
 		var bump = view.state.get('version_bump');
@@ -57,7 +59,9 @@ flour.view.add('build', function()
 	};
 
 
+	//
 	// Click handler
+	//
 	view.handleFormSubmit = function(event, el)
 	{
 		event.preventDefault();
@@ -73,11 +77,24 @@ flour.view.add('build', function()
 			security: view.state.get('security')
 		};
 
+
+		// Post
 		view.state.set('loading', true);
 		createBuild(postData).then(function(response)
 		{
-			console.log(response);
 			view.state.set('loading', false);
+
+			if(response.status === 'success')
+			{
+				var versionPieces = response.version.split('.');
+				view.state.set('current_version', {
+					major: parseInt(versionPieces[0]),
+					minor: parseInt(versionPieces[1]),
+					patch: parseInt(versionPieces[2])
+				});
+
+				updateNewVersion();
+			}
 		});
 	};
 
