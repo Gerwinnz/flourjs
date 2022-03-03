@@ -225,10 +225,13 @@ flour.block.add('list', function(block, state, view)
 
 		// display items in state
 		var items = state.get(mKey);
-		items.forEach((item) => 
+		if(items)
 		{
-			insertItem(item);
-		});
+			items.forEach((item) => 
+			{
+				insertItem(item);
+			});
+		}
 	}
 
 

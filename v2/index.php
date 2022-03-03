@@ -32,6 +32,7 @@
 		<script type="text/javascript" src="src/bindings/view.js"></script>
 		<script type="text/javascript" src="src/bindings/class.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
+		<script type="text/javascript" src="src/bindings/style.js"></script>
 		<script type="text/javascript" src="src/bindings/options.js"></script>
 
 		<!-- <script type="text/javascript" src="dist/flour.min.js"></script> -->
@@ -44,6 +45,7 @@
 		<script type="text/javascript" src="app/views/http.js"></script>
 		<script type="text/javascript" src="app/views/home.js"></script>
 		<script type="text/javascript" src="app/views/build.js"></script>
+		<script type="text/javascript" src="app/views/wall_builder.js"></script>
 		
 		<script type="text/javascript" src="app/views/blocks.js"></script>
 		<script type="text/javascript" src="app/views/block_if.js"></script>
