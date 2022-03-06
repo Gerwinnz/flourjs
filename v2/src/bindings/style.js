@@ -19,16 +19,23 @@ flour.binding.add('f-style',
 		{
 			(function(styleOption){
 
-				var parts = styleOption.split(' ');
+				var parts = styleOption.trim().split(' ');
 				var property = parts[0].trim();
-				var stateKey = parts[1].trim();;
+				var stateKey = parts[1].trim();
+				var value = state.get(stateKey);
+
+				if(value)
+				{
+					element.style[property] = value;
+				}
 
 				mCleanups.push(state.onChange(stateKey, function(event)
 				{
-					element.style[property] = event.value;
+					if(event.value)
+					{
+						element.style[property] = event.value;
+					}
 				}));
-
-				element.style[property] = state.get(stateKey);
 
 			}(mStyles[i]));
 		};
