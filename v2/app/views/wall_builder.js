@@ -11,7 +11,7 @@ flour.view.add('wall_builder', function()
 	view.init = function()
 	{
 		view.state.set('batton_spacing', 400);
-		view.state.set('batton_width', 400);
+		view.state.set('batton_width', 40);
 	};
 
 
@@ -30,9 +30,9 @@ flour.view.add('wall_builder', function()
 
 		<div>
 			<h2>Walls</h2>
-			<hall-wall width="2150" batton_spacing="{batton_spacing}"></hall-wall>
-			<hall-wall width="2545" batton_spacing="{batton_spacing}"></hall-wall>
-			<hall-wall width="3190" batton_spacing="{batton_spacing}"></hall-wall>
+			<hall-wall width="2150" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="130,515,904,7254,1713"></hall-wall>
+			<hall-wall width="2545" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="448,918,1366,1824,2294"></hall-wall>
+			<hall-wall width="3190" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="370,836,1294,1744,2200,2658,2813"></hall-wall>
 		</div>
 	`;
 
@@ -62,8 +62,8 @@ flour.view.add('wall', function()
 		var battons = [];
 		var battonSpacing = view.state.get('batton_spacing');
 		var width = view.state.get('width') || 100;
-		var battonCount = Math.ceil(width / battonSpacing);
-		var leftOver = width % battonSpacing / 2;
+		var battonCount = Math.floor(width / battonSpacing);
+		var leftOver = (width - (battonSpacing * (battonCount - 1))) / 2; //(width % battonSpacing) / 2;
 
 		var leftFirstCSS = leftOver / scale;
 		var leftCSS = battonSpacing / scale;
@@ -81,23 +81,38 @@ flour.view.add('wall', function()
 		view.state.set('battons', battons);
 	}
 
+	var setStuds = function(event)
+	{
+		var rawValues = event.value.split(',');
+		var studs = [];
+		var width = 50 / scale;
+
+		for(var i = 0, n = rawValues.length; i < n; i ++)
+		{
+			studs.push({
+				id: i,
+				width: width + 'px',
+				margin_left: (0 - (width / 2)) + 'px',
+				left: (rawValues[i] / scale) + 'px'
+			});
+		}
+
+		view.state.set('stud_items', studs);
+	};
+
 	view.init = function()
 	{
-		view.state.onChange('wainscote_height', setCssValue);
-		view.state.onChange('batton_height', setCssValue);
-		view.state.onChange('batton_width', setCssValue);
-		view.state.onChange('rail_height', setCssValue);
-		view.state.onChange('wall_height', setCssValue);
-		view.state.onChange('width', setCssValue);
-
+		view.state.onChange('wainscote_height, batton_height, batton_width, rail_height, wall_height, width', setCssValue);
+		
 		view.state.set('wainscote_height', 800);
 		view.state.set('batton_spacing', 400);
 		view.state.set('batton_width', 40);
 		view.state.set('rail_height', 115);
-		view.state.set('wall_height', 2400);
+		view.state.set('wall_height', 1200);
+		view.state.set('stud_items', []);
 
-		view.state.onChange('batton_spacing', setBattons);
-		view.state.onChange('batton_width', setBattons);
+		view.state.onChange('batton_spacing, batton_width', setBattons);
+		view.state.onChange('studs', setStuds);
 	}
 
 	view.attributeChanged = function(attribute, value)
@@ -118,6 +133,13 @@ flour.view.add('wall', function()
 				background-color: #ddd;
 				margin-left:  60px;
 				margin-bottom: 20px;
+			}
+
+			.stud{
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				background-color: #55555510;
 			}
 
 			.wainscote{
@@ -190,6 +212,10 @@ flour.view.add('wall', function()
 				</div>
 				<div class="rail rail--bottom"></div>
 			</div>
+
+			{{#list stud_items}}
+				<div class="stud" f-style="left left, width width, marginLeft margin_left"></div>
+			{{/list}}
 		</div>
 	`;
 })
@@ -198,5 +224,5 @@ flour.view.add('wall', function()
 flour.customElement.add('hall-wall', {
 	view: 'wall',
 	shadow: true,
-	props: ['batton_spacing', 'width']
+	props: ['batton_spacing', 'batton_width', 'width', 'studs']
 });

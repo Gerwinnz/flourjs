@@ -780,30 +780,41 @@ flour.state = function(defaultValues)
 		}
 
 
-		// Add listener for a specific change to a key value
-		if(mKeyChangeListeners[key] === undefined)
-		{
-			mKeyChangeListeners[key] = [];
-		}
+		// Add listener for a specific change to a key value - supports comma delimmited keys
+		var keys = key.split(',');
 
-		var length = mKeyChangeListeners[key].push(
+		for(var i = 0, n = keys.length; i < n; i ++)
 		{
-			id: id,
-			calls: 0,
-			callback: callback
-		});
+			(function(key){
 
-		return function(){
-			for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
-			{
-				if(mKeyChangeListeners[key][i].id === id)
+				key = key.trim();
+
+				if(mKeyChangeListeners[key] === undefined)
 				{
-					mKeyChangeListeners[key].splice(i,1);
-					i --;
-					n --;
+					mKeyChangeListeners[key] = [];
 				}
-			}
-		};
+
+				var length = mKeyChangeListeners[key].push(
+				{
+					id: id,
+					calls: 0,
+					callback: callback
+				});
+
+				return function(){
+					for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
+					{
+						if(mKeyChangeListeners[key][i].id === id)
+						{
+							mKeyChangeListeners[key].splice(i,1);
+							i --;
+							n --;
+						}
+					}
+				};
+
+			}(keys[i]))
+		}
 	};
 
 
