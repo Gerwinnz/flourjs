@@ -10,7 +10,7 @@ flour.view.add('wall_builder', function()
 	//
 	view.init = function()
 	{
-		view.state.set('batton_spacing', 400);
+		view.state.set('batton_spacing', 300);
 		view.state.set('batton_width', 40);
 	};
 
@@ -18,19 +18,36 @@ flour.view.add('wall_builder', function()
 	// Output
 	view.templateHTML = 
 	`
-		<h3>Battons</h3>
-		<div class="form__line">
-			<label>Batton spacing</label>
-			<input type="number" f-value="batton_spacing" />
-		</div>
-		<div class="form__line">
-			<label>Batton width</label>
-			<input type="number" f-value="batton_width" />
+		<style>
+			.global-options{
+				display: flex;
+				position: sticky;
+				top: 8px;
+				padding:  16px;
+				background-color: #fff;
+				border-radius: 8px;
+				z-index: 10;
+				box-shadow: 0 4px 16px rgba(0,0,0,.1);
+			}
+
+			.global-options .form__line{
+				margin: 0 16px 0 0;
+			}
+		</style>
+
+		<div class="global-options">
+			<div class="form__line">
+				<label>Batton spacing</label>
+				<input type="number" min="120" f-value="batton_spacing" />
+			</div>
+			<div class="form__line">
+				<label>Batton width</label>
+				<input type="number" min="20" f-value="batton_width" />
+			</div>
 		</div>
 
 		<div>
-			<h2>Walls</h2>
-			<hall-wall width="2150" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="130,515,904,7254,1713"></hall-wall>
+			<hall-wall width="2150" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="130,515,904,1254,1713"></hall-wall>
 			<hall-wall width="2545" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="448,918,1366,1824,2294"></hall-wall>
 			<hall-wall width="3190" batton_spacing="{batton_spacing}" batton_width="{batton_width}" studs="370,836,1294,1744,2200,2658,2813"></hall-wall>
 		</div>
@@ -62,10 +79,13 @@ flour.view.add('wall', function()
 		var battons = [];
 		var battonSpacing = view.state.get('batton_spacing');
 		var width = view.state.get('width') || 100;
+		var offset = parseInt(view.state.get('offset'));
 		var battonCount = Math.floor(width / battonSpacing);
 		var leftOver = (width - (battonSpacing * (battonCount - 1))) / 2; //(width % battonSpacing) / 2;
 
-		var leftFirstCSS = leftOver / scale;
+		console.log('offset', offset);
+
+		var leftFirstCSS = (leftOver + offset) / scale;
 		var leftCSS = battonSpacing / scale;
 
 		for(var i = 0; i < battonCount; i ++)
@@ -110,8 +130,10 @@ flour.view.add('wall', function()
 		view.state.set('rail_height', 115);
 		view.state.set('wall_height', 1200);
 		view.state.set('stud_items', []);
+		view.state.set('ply_width', (1200 / scale) + 'px');
+		view.state.set('offset', 0);
 
-		view.state.onChange('batton_spacing, batton_width', setBattons);
+		view.state.onChange('batton_spacing, batton_width, offset', setBattons);
 		view.state.onChange('studs', setStuds);
 	}
 
@@ -120,19 +142,29 @@ flour.view.add('wall', function()
 		view.state.set(attribute, value);
 	};
 
+	view.handleMouseMove = function(event, el)
+	{
+		view.state.set('mouse_x', (event.pageX - el.offsetLeft) + 'px');
+	};
 
 	view.templateHTML = 
 	`
 		<style>
 			.wall-details{
+				margin-top:  32px;
 				font-size: 12px;
 			}
 
 			.wall{
+				overflow: hidden;
 				position: relative;
 				background-color: #ddd;
-				margin-left:  60px;
-				margin-bottom: 20px;
+				margin-top: 20px;
+			}
+
+			.wall-options{
+				padding: 8px;
+				border-radius: 4px;
 			}
 
 			.stud{
@@ -192,14 +224,32 @@ flour.view.add('wall', function()
 			.space-info{
 				position: absolute;
 				top: 10px;
-				right: 10px;
+				right: 8px;
 				text-align: right;
-				font-size:  11px;
+				font-size:  10px;
+			}
+
+			.plywood{
+				position: absolute;
+				top: 0px;
+				bottom: 0px;
+
+				border-left: solid 1px #f00;
+				border-right: solid 1px #f00;
+			}
+
+			.form__line{
+
+			}
+
+			.form__line label{
+				display: block;
+				font-size: 12px;
 			}
 		</style>
 
 		<div class="wall-details"><span f-text="width"></span>mm</div>
-		<div class="wall" f-style="width width_css, height wall_height_css">
+		<div class="wall" f-style="width width_css, height wall_height_css" f-on="mousemove handleMouseMove">
 			<div class="wainscote" f-style="width width_css">
 				<div class="rail rail--top"></div>
 				<div class="battons" f-style="height batton_height_css">
@@ -216,6 +266,15 @@ flour.view.add('wall', function()
 			{{#list stud_items}}
 				<div class="stud" f-style="left left, width width, marginLeft margin_left"></div>
 			{{/list}}
+
+			<div class="plywood" f-style="width ply_width, left mouse_x"></div>
+		</div>
+
+		<div class="wall-options">
+			<div class="form__line">
+				<label>Left offset</label>
+				<input type="number" f-value="offset" />
+			</div>
 		</div>
 	`;
 })
