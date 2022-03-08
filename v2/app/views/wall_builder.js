@@ -83,9 +83,10 @@ flour.view.add('wall', function()
 		var battonCount = Math.floor(width / battonSpacing);
 		var leftOver = (width - (battonSpacing * (battonCount - 1))) / 2; //(width % battonSpacing) / 2;
 
+		leftOver += offset;
 		console.log('offset', offset);
 
-		var leftFirstCSS = (leftOver + offset) / scale;
+		var leftFirstCSS = leftOver / scale;
 		var leftCSS = battonSpacing / scale;
 
 		for(var i = 0; i < battonCount; i ++)
