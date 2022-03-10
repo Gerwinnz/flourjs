@@ -9,7 +9,7 @@ flour.view.add('home', function()
 			<ul>
 				<li><a href="/binders">Binders</a></li>
 				<li><a href="/blocks">Blocks</a></li>
-				<li><a href="/components">Components</a></li>
+				<li><a href="/examples">Examples</a></li>
 			</ul>
 		</div>
 	`;

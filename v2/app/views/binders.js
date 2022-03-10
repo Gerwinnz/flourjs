@@ -28,15 +28,7 @@ flour.view.add('binders', function()
 			binderView.remove();
 		}
 
-		if(params.binder === undefined)
-		{
-			binderView = flour.view.get('f-on');
-		}
-		else
-		{
-			binderView = flour.view.get('f-' + params.binder);
-		}
-
+		binderView = flour.view.get(params.binder ? 'f-' + params.binder : 'f-on');
 		view.refs.dest.append(binderView.el);
 	}
 

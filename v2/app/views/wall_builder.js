@@ -61,15 +61,35 @@ flour.view.add('wall', function()
 	var view = this;
 	var scale = 5;
 
-	var setCssValue = function(event)
-	{
-		view.state.set(event.key + '_css', (event.value / 5) + 'px');
 
-		if(event.key === 'rail_height' || event.key === 'wainscote_height')
+	view.init = function()
+	{
+		view.state.onChange('wainscote_height, batton_height, batton_width, rail_height, wall_height, width', function(event)
 		{
-			var battonHeight = view.state.get('wainscote_height') - view.state.get('rail_height');
-			view.state.set('batton_height', battonHeight);
-		}
+			view.state.set(event.key + '_css', (event.value / 5) + 'px');
+		});
+
+		view.state.onChange('rail_height, wainscote_height', function()
+		{
+			view.state.set('batton_height', view.state.get('wainscote_height') - view.state.get('rail_height'));
+		});
+		
+		view.state.set('wainscote_height', 800);
+		view.state.set('batton_spacing', 400);
+		view.state.set('batton_width', 40);
+		view.state.set('rail_height', 115);
+		view.state.set('wall_height', 1200);
+		view.state.set('stud_items', []);
+		view.state.set('ply_width', (1200 / scale) + 'px');
+		view.state.set('offset', 0);
+
+		view.state.onChange('batton_spacing, batton_width, offset', setBattons);
+		view.state.onChange('studs', setStuds);
+	}
+
+	view.attributeChanged = function(attribute, value)
+	{
+		view.state.set(attribute, value);
 	};
 
 	var setBattons = function(event)
@@ -84,7 +104,6 @@ flour.view.add('wall', function()
 		var leftOver = (width - (battonSpacing * (battonCount - 1))) / 2; //(width % battonSpacing) / 2;
 
 		leftOver += offset;
-		console.log('offset', offset);
 
 		var leftFirstCSS = leftOver / scale;
 		var leftCSS = battonSpacing / scale;
@@ -121,28 +140,6 @@ flour.view.add('wall', function()
 		view.state.set('stud_items', studs);
 	};
 
-	view.init = function()
-	{
-		view.state.onChange('wainscote_height, batton_height, batton_width, rail_height, wall_height, width', setCssValue);
-		
-		view.state.set('wainscote_height', 800);
-		view.state.set('batton_spacing', 400);
-		view.state.set('batton_width', 40);
-		view.state.set('rail_height', 115);
-		view.state.set('wall_height', 1200);
-		view.state.set('stud_items', []);
-		view.state.set('ply_width', (1200 / scale) + 'px');
-		view.state.set('offset', 0);
-
-		view.state.onChange('batton_spacing, batton_width, offset', setBattons);
-		view.state.onChange('studs', setStuds);
-	}
-
-	view.attributeChanged = function(attribute, value)
-	{
-		view.state.set(attribute, value);
-	};
-
 	view.handleMouseMove = function(event, el)
 	{
 		view.state.set('mouse_x', (event.pageX - el.offsetLeft) + 'px');
@@ -165,7 +162,9 @@ flour.view.add('wall', function()
 
 			.wall-options{
 				padding: 8px;
+				margin: 8px 0 0 0;
 				border-radius: 4px;
+				background-color: #eee;
 			}
 
 			.stud{

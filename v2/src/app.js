@@ -71,7 +71,7 @@ class flour_app
 
 		window.addEventListener('popstate', (event) => 
 		{
-			var state = event.state;
+			var state = event.state || {};
 			state.popstate = true;
 			flour.publish('history:state_change', state);
 		});

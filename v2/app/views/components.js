@@ -1,23 +1,48 @@
 
-flour.view.add('components', function()
+flour.view.add('examples', function()
 {
 	var view = this;
-	var binderView = false;
+	var blockView = false;
+
+
+	view.init = function(params)
+	{
+		view.render();
+		displayBlockView(params);
+	};
+
+	view.routeUpdate = function(route)
+	{
+		displayBlockView(route.params);
+	};
+
+
+
+	var displayBlockView = function(params)
+	{
+		if(blockView)
+		{
+			blockView.remove();
+		}
+
+		blockView = flour.view.get(params.example || 'form');
+		view.refs.dest.append(blockView.el);
+	}
+
+
 
 	view.templateHTML = `
-		<div>
-			<h1>Components</h1>
-			<p>Creating a component in flour.js is the same as creating a view and then calling flour.customElement.add().</p>
-			<pre>flour.customElement.add('card-box', {
-	view: 'card',
-	shadow: true,
-	props: ['name']
-});</pre>
-			<p>This will create the component for you.</p>
-			<ul>
-				<li>One</li>
-				<li>Two</li>
-			</ul>
+		<div class="info-layout">
+			<div class="sub-nav sub-nav--code">
+				<ul>
+					<li><a href="/examples/form">Form</a></li>
+					<li><a href="/examples/http">HTTP</a></li>
+					<li><a href="/examples/wall_builder">Wall builder</a></li>
+				</ul>
+			</div>
+			<div f-ref="dest">
+
+			</div>
 		</div>
 	`;
 });

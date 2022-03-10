@@ -9,9 +9,7 @@ flour.view.add('app', function()
 			<ul>
 				<li><a href="/binders">Binders</a></li>
 				<li><a href="/blocks">Blocks</a></li>
-				<li><a href="/components">Components</a></li>
-				<li><a href="/form">Form</a></li>
-				<li><a href="/http">HTTP</a></li>
+				<li><a href="/examples">Examples</a></li>
 				<li><a href="/build">Build</a></li>
 			</ul>
 		</div>

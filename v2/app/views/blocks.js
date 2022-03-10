@@ -45,15 +45,7 @@ flour.view.add('blocks', function()
 			blockView.remove();
 		}
 
-		if(params.block === undefined)
-		{
-			blockView = flour.view.get('block-if');
-		}
-		else
-		{
-			blockView = flour.view.get('block-' + params.block);
-		}
-
+		blockView = flour.view.get(params.block ? 'block-' + params.block : 'block-if');
 		view.refs.dest.append(blockView.el);
 	}
 });

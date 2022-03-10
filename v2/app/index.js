@@ -14,13 +14,10 @@ import { transitionHandler } from './transition_handler';
 			'/blocks': { view: 'blocks' },
 			'/blocks/:block': { view: 'blocks' },
 
-			'/components': { view: 'components' },
-			'/components/:component': { view: 'components' },
+			'/examples': { view: 'examples' },
+			'/examples/:example': { view: 'examples' },
 
-			'/form': { view: 'form' },
-			'/http': { view: 'http' },
 			'/build': { view: 'build' },
-			'/wall-builder': { view: 'wall_builder' },
 
 			'/': { view: 'home'}
 		}
