@@ -4,21 +4,6 @@ flour.view.add('blocks', function()
 	var view = this;
 	var blockView = false;
 
-	view.templateHTML = `
-		<div class="info-layout">
-			<div class="sub-nav sub-nav--code">
-				<ul>
-					<li><a href="/blocks/if">#if</a></li>
-					<li><a href="/blocks/list">#list</a></li>
-				</ul>
-			</div>
-			<div f-ref="dest">
-
-			</div>
-		</div>
-	`;
-
-
 
 	view.init = function(params)
 	{
@@ -33,9 +18,8 @@ flour.view.add('blocks', function()
 
 	view.willShow = function(data)
 	{
-		console.log('will show life cycle method called', data);
+		
 	};
-
 
 
 	var displayBlockView = function(params)
@@ -45,7 +29,28 @@ flour.view.add('blocks', function()
 			blockView.remove();
 		}
 
-		blockView = flour.view.get(params.block ? 'block-' + params.block : 'block-if');
+		blockView = flour.view.get(params.block ? 'block_' + params.block : 'block_if');
 		view.refs.dest.append(blockView.el);
 	}
+
+
+	view.templateHTML = `
+		<div class="info-layout">
+			<div class="sub-nav sub-nav--code">
+				<ul>
+					<li><a href="/blocks/if">#if</a></li>
+
+					<li>
+						<ul>
+							<li><a href="/blocks/list">#list</a></li>
+							<li><a href="/blocks/list_perf">#list_perf</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div f-ref="dest">
+
+			</div>
+		</div>
+	`;
 });

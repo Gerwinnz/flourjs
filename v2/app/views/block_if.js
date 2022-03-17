@@ -1,5 +1,5 @@
 
-flour.view.add('block-if', function()
+flour.view.add('block_if', function()
 {
 	var view = this;
 

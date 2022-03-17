@@ -587,7 +587,7 @@ flour.state = function(defaultValues)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changeList.length)
 		{
-			console.log('state::set::' + changeEvent.type, key, value);
+			//console.log('state::set::' + changeEvent.type, key, value);
 
 			for(var i = 0, n = setResponse.changeList.length; i < n; i ++)
 			{
