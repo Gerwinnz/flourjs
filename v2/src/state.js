@@ -70,6 +70,11 @@ flour.state = function(defaultValues)
 				updateLookup();
 			}
 
+			if(event.type === mChangeTypes.insertItems)
+			{
+				updateLookup();
+			}
+
 			if(event.type === mChangeTypes.removeItem)
 			{
 				updateLookup();
