@@ -41,6 +41,12 @@ flour.block.add('list', function(block, state, view)
 			handleInsertItem(event);
 		}
 
+		if(event.type === 'insertItems')
+		{
+			console.log('INSERT ITEMS EVENT');
+			handleInsertItems(event);
+		}
+
 		if(event.type === 'removeItem')
 		{
 			console.log('REMOVE ITEM EVENT');
@@ -81,6 +87,14 @@ flour.block.add('list', function(block, state, view)
 	{
 		insertItem(event.item, event.index);
 	};
+
+	var handleInsertItems = function(event)
+	{
+		for(var i = 0, n = event.items.length; i < n; i++)
+		{
+			insertItem(event.items[i].item, event.items[i].index);
+		}
+	}
 
 	var insertItem = function(item, index)
 	{

@@ -21,6 +21,7 @@ flour.state = function(defaultValues)
 	var mChangeTypes = {
 		'update': 'update',
 		'insertItem': 'insertItem',
+		'insertItems': 'insertItems',
 		'removeItem': 'removeItem',
 		'updateItem': 'updateItem',
 		'moveItem': 'moveItem'
@@ -45,6 +46,7 @@ flour.state = function(defaultValues)
 
 		var mItems = get(key);
 		var mLookup = false;
+
 
 		if(!flour.util.isArray(mItems))
 		{
@@ -202,6 +204,50 @@ flour.state = function(defaultValues)
 				type: mChangeTypes.insertItem,
 				item: newItem,
 				index: position
+			};
+
+			set(key, targetArray, eventDetails);
+		};
+
+
+		var insertItems = function(newItems, newItemsIndex)
+		{
+			var addedItems = [];
+			var position = 0;
+			var targetArray = get(key);
+
+
+			if(!flour.util.isArray(targetArray))
+			{
+				flour.util.throw('Adding items failed as state value at "' + key + '" is not an array.');
+				return;
+			}
+
+			
+			// insert at specified position or at end by default
+			if(newItemsIndex !== undefined)
+			{
+				position = newItemsIndex;
+				targetArray.splice.apply(targetArray, [newItemsIndex, 0].concat(newItems));
+			}
+			else
+			{
+				position = targetArray.length === 0 ? 0 : targetArray.length - 1;
+				targetArray = targetArray.concat(newItems);
+			}
+
+			for(var i = 0, n = newItems.length; i < n; i ++)
+			{
+				addedItems.push({
+					index: (position + i),
+					item: newItems[i]
+				});
+			}
+
+			// create event details
+			var eventDetails = {
+				type: mChangeTypes.insertItems,
+				items: addedItems
 			};
 
 			set(key, targetArray, eventDetails);
@@ -498,6 +544,7 @@ flour.state = function(defaultValues)
 
 			getItem: getItem,
 			insertItem: insertItem,
+			insertItems: insertItems,
 			removeItem: removeItem,
 
 			updateItem: updateItem,
@@ -713,6 +760,18 @@ flour.state = function(defaultValues)
 
 
 
+	var insertItems = function(key, newItems, newItemsIndex)
+	{
+		if(!mManagedArrays[key])
+		{
+			mManagedArrays[key] = managedArray(key);
+		}
+
+		return mManagedArrays[key].insertItems(newItems, newItemsIndex);
+	}
+
+
+
 	/*
 	|
 	|
@@ -875,6 +934,7 @@ flour.state = function(defaultValues)
 
 		getItem: getItem,
 		insertItem: insertItem,
+		insertItems: insertItems,
 		removeItem: removeItem,
 
 		values: mValues,

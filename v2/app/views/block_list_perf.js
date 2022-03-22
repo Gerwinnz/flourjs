@@ -19,31 +19,55 @@ flour.view.add('block_list_perf', function()
 			view.state.set('items_count', event.value.length);
 		});
 
+		view.state.set('method', 'set');
 		view.state.set('items', []);
 	};
 
 
 	view.handleAddItemsClick = function(event, element)
 	{
-		var count = parseInt(element.getAttribute('data-count'));
-		var items = view.state.get('items');
+		var method = view.state.get('method');
+		var addCount = parseInt(element.getAttribute('data-count'));
 		const t0 = performance.now();
 
-		for (let i = 0; i < count; i ++)
+
+		if(method === 'set')
 		{
-			itemId ++;
-			items.push({
-				id: itemId,
-				name: itemId + '_item'
-			});
+			var items = view.state.get('items');
+			for (let i = 0; i < addCount; i ++)
+			{
+				itemId ++;
+				items.push({
+					id: itemId,
+					name: itemId + '_item'
+				});
+			}
+
+			view.state.set('items', items);
 		}
 
-		view.state.set('items', items);
-		
+
+		if(method === 'insert')
+		{
+			var items = [];
+			for (let i = 0; i < addCount; i ++)
+			{
+				itemId ++;
+				items.push({
+					id: itemId,
+					name: itemId + '_item'
+				});
+			}
+
+			view.state.insertItems('items', items);
+		}
+
+
 		const t1 = performance.now();
 		view.state.set('task_time', t1 - t0);
-		view.state.set('task', 'Adding ' + count + ' items');
+		view.state.set('task', 'Adding ' + addCount + ' items using ' + method + ' method');
 
+		console.log(view.state);
 	};
 
 	view.handleUpdateItemClick = function(event, element)
@@ -51,6 +75,7 @@ flour.view.add('block_list_perf', function()
 		const t0 = performance.now();
 		
 		var item = view.state.getItem('items', 2);
+		console.log(item);
 		item.update('name', 'Hello there!');
 
 		const t1 = performance.now();
@@ -72,6 +97,18 @@ flour.view.add('block_list_perf', function()
 			{{#if task_time}}
 				<p><span f-text="task"></span> took <span f-text="task_time"></span> milliseconds.</p>
 			{{/if}}
+
+			<div class="form__line">
+				<label>Add method</label>
+				<div>
+					<input id="method_set" type="radio" name="method" value="set" f-value="method" />
+					<label for="method_set">Set</label>
+				</div>
+				<div>
+					<input id="method_insert" type="radio" name="method" value="insert" f-value="method" />
+					<label for="method_insert">Insert items</label>
+				</div>
+			</div>
 
 			<div class="form__line">
 				<button f-on="click handleAddItemsClick" data-count="250">Add 250 items</button>
