@@ -64,7 +64,7 @@ flour.view.add('block_list_perf', function()
 
 
 		const t1 = performance.now();
-		view.state.set('task_time', t1 - t0);
+		view.state.set('task_time', Math.round(t1 - t0));
 		view.state.set('task', 'Adding ' + addCount + ' items using ' + method + ' method');
 
 		console.log(view.state);
@@ -79,7 +79,7 @@ flour.view.add('block_list_perf', function()
 		item.update('name', 'Hello there!');
 
 		const t1 = performance.now();
-		view.state.set('task_time', t1 - t0);
+		view.state.set('task_time', Math.round(t1 - t0));
 		view.state.set('task', 'Updating name on item 2');
 	}
 
