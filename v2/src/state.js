@@ -616,6 +616,7 @@ flour.state = function(defaultValues)
 	|
 	|   @key - string - name of stored value to be returned, can be 'foo.bar'
 	|   @value - any - the value to be stored in the key's location
+	|	@changeEvent - object - the event data that will be passed to onChange callbacks for this key
 	|	
 	|
 	*/
@@ -628,8 +629,13 @@ flour.state = function(defaultValues)
 		// handle updating a managed array
 		if(changeEvent.type === mChangeTypes.update && flour.util.isArray(value))
 		{
-			if(flour.util.isArray(get(key)) && mManagedArrays[key])
+			if(flour.util.isArray(get(key)))
 	    	{
+	    		if(!mManagedArrays[key])
+				{
+					mManagedArrays[key] = managedArray(key);
+				}
+
 	    		mManagedArrays[key].updateItems(value);
 	    		return;
 	    	}
@@ -936,6 +942,8 @@ flour.state = function(defaultValues)
 		id: flour.stateId,
 		get: get,
 		set: set,
+
+		getList: {},
 
 		getItem: getItem,
 		insertItem: insertItem,
