@@ -383,7 +383,7 @@ flour.state = function(defaultValues)
 				return;
 			}
 
-			
+			console.log('update item');
 
 			var index = mLookup[itemId];
 			var item = targetArray[index];
@@ -506,10 +506,13 @@ flour.state = function(defaultValues)
 				}
 				else
 				{
-					itemsToUpdate.push({
-						index: i,
-						value: newItems[i]
-					});
+					if(JSON.stringify(newItems[i]) !== JSON.stringify(mItems[mLookup[newItems[i].id]]))
+					{
+						itemsToUpdate.push({
+							index: i,
+							value: newItems[i]
+						});
+					}
 				}
 			}
 
