@@ -383,7 +383,7 @@ flour.state = function(defaultValues)
 				return;
 			}
 
-			console.log('update item');
+			
 
 			var index = mLookup[itemId];
 			var item = targetArray[index];
@@ -394,7 +394,6 @@ flour.state = function(defaultValues)
 
 			if(flour.util.isObject(keys))
 			{
-
 				for(var itemKey in keys)
 				{
 					var updated = updateItemValue(item, itemKey, keys[itemKey]);
