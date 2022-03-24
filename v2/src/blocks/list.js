@@ -43,7 +43,7 @@ flour.block.add('list', function(block, state, view)
 
 		if(event.type === 'insertItems')
 		{
-			console.log('INSERT ITEMS EVENT');
+			console.log('INSERT ITEMS EVENT', event);
 			handleInsertItems(event);
 		}
 

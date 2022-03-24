@@ -383,6 +383,8 @@ flour.state = function(defaultValues)
 				return;
 			}
 
+			console.log('update item');
+
 			var index = mLookup[itemId];
 			var item = targetArray[index];
 			if(!item){ return; }
@@ -392,6 +394,7 @@ flour.state = function(defaultValues)
 
 			if(flour.util.isObject(keys))
 			{
+
 				for(var itemKey in keys)
 				{
 					var updated = updateItemValue(item, itemKey, keys[itemKey]);
@@ -486,6 +489,9 @@ flour.state = function(defaultValues)
 			var itemsToRemove = [];
 			var itemsToAdd = [];
 
+			var insertCluster = [];
+			var insertClusterIndex = false;
+
 
 			// create new items mLookup and check for items to add or update
 			for(var i = 0, n = newItems.length; i < n; i ++)
@@ -523,11 +529,27 @@ flour.state = function(defaultValues)
 				removeItem(itemsToRemove[i]);
 			}
 
+
+			// add new items in clusters where indexes are in sequence
 			for(var i = 0, n = itemsToAdd.length; i < n; i ++)
 			{
-				insertItem(itemsToAdd[i].value, itemsToAdd[i].index);
+				if(insertClusterIndex === false)
+				{
+					insertClusterIndex = itemsToAdd[i].index;
+				}
+
+				insertCluster.push(itemsToAdd[i].value);
+
+				if(itemsToAdd[i + 1] === undefined || itemsToAdd[i + 1].index !== itemsToAdd[i].index + 1)
+				{
+					insertItems(insertCluster);
+					insertCluster.length = 0;
+					insertClusterIndex = false;
+				}
 			}
 
+
+			// update and move items
 			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)
 			{
 				if(mLookup[itemsToUpdate[i].value[itemKey]] !== itemsToUpdate[i].index)
