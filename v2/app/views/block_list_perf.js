@@ -19,6 +19,7 @@ flour.view.add('block_list_perf', function()
 			view.state.set('items_count', event.value.length);
 		});
 
+		view.state.set('insert_index', 0);
 		view.state.set('method', 'set');
 		view.state.set('items', []);
 	};
@@ -30,6 +31,7 @@ flour.view.add('block_list_perf', function()
 		var addCount = parseInt(element.getAttribute('data-count'));
 		const t0 = performance.now();
 
+		updatesCount ++;
 
 		if(method === 'set')
 		{
@@ -39,7 +41,8 @@ flour.view.add('block_list_perf', function()
 				itemId ++;
 				items.push({
 					id: itemId,
-					name: itemId + '_item'
+					name: itemId + '_item',
+					batch: updatesCount
 				});
 			}
 
@@ -55,11 +58,12 @@ flour.view.add('block_list_perf', function()
 				itemId ++;
 				items.push({
 					id: itemId,
-					name: itemId + '_item'
+					name: itemId + '_item',
+					batch: updatesCount
 				});
 			}
 
-			view.state.insertItems('items', items);
+			view.state.insertItems('items', items, parseInt(view.state.get('insert_index')));
 		}
 
 
@@ -96,7 +100,7 @@ flour.view.add('block_list_perf', function()
 			{{/if}}
 
 			<div class="form__line">
-				<label>Add method</label>
+				<label>Method</label>
 				<div>
 					<input id="method_set" type="radio" name="method" value="set" f-value="method" />
 					<label for="method_set">Set</label>
@@ -105,6 +109,11 @@ flour.view.add('block_list_perf', function()
 					<input id="method_insert" type="radio" name="method" value="insert" f-value="method" />
 					<label for="method_insert">Insert items</label>
 				</div>
+			</div>
+
+			<div class="form__line">
+				<label>Insert index</label>
+				<input type="text" f-value="insert_index" />
 			</div>
 
 			<div class="form__line">
@@ -118,13 +127,22 @@ flour.view.add('block_list_perf', function()
 			</div>
 		</div>
 		
-		<div style="padding: 8px 0;">
-			{{#list items}}
-				<div style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-					{{id}}: <span f-text="name"></span>
-				</div>
-			{{/list}}
-		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#list items}}
+					<tr style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
+						<td>{{id}}</td>
+						<td><span f-text="name"></span></td>
+					</tr>
+				{{/list}}
+			</tbody>
+		</table>
 	`;
 
 });

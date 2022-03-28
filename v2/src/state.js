@@ -237,7 +237,7 @@ flour.state = function(defaultValues)
 			}
 			else
 			{
-				position = targetArray.length === 0 ? 0 : targetArray.length - 1;
+				position = targetArray.length === 0 ? 0 : targetArray.length;
 				targetArray = targetArray.concat(newItems);
 			}
 

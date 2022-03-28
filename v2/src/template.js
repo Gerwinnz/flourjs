@@ -62,7 +62,7 @@ flour.template.parse = function(html, state, view)
 				var elementId = flour.template.elementUniqueId;
 				flour.template.elementUniqueId ++;
 
-				html = html.replace(replaceString, '<option id="flour-' + elementId + '"></option>');
+				html = html.replace(replaceString, '<!-- flour-slot-' + elementId + ' --><option id="flour-' + elementId + '"></option>');
 				blocks.push({
 					elementId: elementId,
 					type: blockType,
