@@ -28,7 +28,18 @@ flour.template.parse = function(html, state, view)
 	var blocks = [];
 	var cleanupCallbacks = [];
 
+
+	//
+	//	Create comment filter for our tree walker
+	//
+	function commentFilter(node)
+	{
+		return NodeFilter.FILTER_ACCEPT;
+	}
+
+	commentFilter.acceptNode = commentFilter;
 	
+
 
 	//
 	// parse block tags {{#block}}{{/block}}
@@ -62,7 +73,7 @@ flour.template.parse = function(html, state, view)
 				var elementId = flour.template.elementUniqueId;
 				flour.template.elementUniqueId ++;
 
-				html = html.replace(replaceString, '<!-- flour-slot-' + elementId + ' --><option id="flour-' + elementId + '"></option>');
+				html = html.replace(replaceString, '<!-- flour-slot-' + elementId + ' -->');
 				blocks.push({
 					elementId: elementId,
 					type: blockType,
@@ -156,18 +167,30 @@ flour.template.parse = function(html, state, view)
 
 
 
+
 	//
 	// go through our found blocks and call them
 	//
 	for(var i = 0, n = blocks.length; i < n; i ++)
 	{
 		(function(block){
-			var el = templateFragment.content.querySelector('#flour-' + block.elementId);
-			var referenceNode = document.createTextNode('');
+			var referenceNode = false;
 			var blockContents = [];
 
-			el.after(referenceNode);
-			el.remove();
+			var treeWalker = document.createTreeWalker(
+				templateFragment.content,
+				NodeFilter.SHOW_COMMENT,
+				commentFilter,
+				false
+			);
+
+			while(treeWalker.nextNode()) 
+			{
+				if(treeWalker.currentNode.nodeValue === ' flour-slot-' + block.elementId + ' ')
+				{
+					referenceNode = treeWalker.currentNode;
+				}
+			}
 
 			block.display = function(contents)
 			{
@@ -194,7 +217,6 @@ flour.template.parse = function(html, state, view)
 				}
 			};
 
-			//block.el = el;
 			
 			var cleanup = flour.block.defined[block.type](block, state, view);
 			if(flour.util.isFunction(cleanup))
