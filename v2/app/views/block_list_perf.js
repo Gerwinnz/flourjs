@@ -127,7 +127,7 @@ flour.view.add('block_list_perf', function()
 			</div>
 		</div>
 		
-		<table>
+		<table style="width: 100%; margin-top: 32px;">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -136,9 +136,9 @@ flour.view.add('block_list_perf', function()
 			</thead>
 			<tbody>
 				{{#list items}}
-					<tr style="padding: 8px; background-color: #fff; margin:  8px 0; border-radius: 8px;">
-						<td>{{id}}</td>
-						<td><span f-text="name"></span></td>
+					<tr>
+						<td style="padding: 8px; border-top: solid 1px #ddd;">{{id}}</td>
+						<td style="padding: 8px; border-top: solid 1px #ddd;"><span f-text="name"></span></td>
 					</tr>
 				{{/list}}
 			</tbody>
