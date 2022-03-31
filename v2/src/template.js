@@ -70,12 +70,12 @@ flour.template.parse = function(html, state, view)
 				var replaceString = html.substr(start, end - start);
 				var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
 
-				var elementId = flour.template.elementUniqueId;
-				flour.template.elementUniqueId ++;
+				var slotId = flour.template.slotId;
+				flour.template.slotId ++;
 
-				html = html.replace(replaceString, '<!-- flour-slot-' + elementId + ' -->');
+				html = html.replace(replaceString, '<!-- flour-slot-' + slotId + ' -->');
 				blocks.push({
-					elementId: elementId,
+					slotId: slotId,
 					type: blockType,
 					key: key,
 					html: innerHTML
@@ -186,7 +186,7 @@ flour.template.parse = function(html, state, view)
 
 			while(treeWalker.nextNode()) 
 			{
-				if(treeWalker.currentNode.nodeValue === ' flour-slot-' + block.elementId + ' ')
+				if(treeWalker.currentNode.nodeValue === ' flour-slot-' + block.slotId + ' ')
 				{
 					referenceNode = treeWalker.currentNode;
 				}
