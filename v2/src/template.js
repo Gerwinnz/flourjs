@@ -10,7 +10,7 @@ var flour = flour || {};
 |
 */
 flour.template = {
-	elementUniqueId: 0
+	slotId: 0
 };
 
 
