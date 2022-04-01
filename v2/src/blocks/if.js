@@ -11,10 +11,23 @@ flour.block.add('if', function(block, state, view)
 		mKey = mKey.substring(1);
 	}
 
+	var evaluate = function(val)
+	{
+		return !!val;
+	}
+
+	var expressionPieces = mKey.split(' ');
+	if(expressionPieces.length > 1)
+	{
+		console.log('we have an expression', expressionPieces);
+	}
+
 	var mBlockHtml = block.html;
-	var mValue = state.get(mKey);
+	var mValue = evaluate(state.get(mKey));
 	var mShow = false;
 	var mTemplate = false;
+
+
 
 
 
@@ -25,7 +38,7 @@ flour.block.add('if', function(block, state, view)
 	*/
 	var cleanup = state.onChange(mKey, function(event)
 	{
-		mValue = event.value;
+		mValue = evaluate(event.value);
 		showContent();
 	});
 
