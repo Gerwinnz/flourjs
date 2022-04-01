@@ -37,37 +37,31 @@ flour.block.add('list', function(block, state, view)
 	{
 		if(event.type === 'insertItem')
 		{
-			console.log('INSERT ITEM EVENT');
 			handleInsertItem(event);
 		}
 
 		if(event.type === 'insertItems')
 		{
-			console.log('INSERT ITEMS EVENT', event);
 			handleInsertItems(event);
 		}
 
 		if(event.type === 'removeItem')
 		{
-			console.log('REMOVE ITEM EVENT');
 			handleRemoveItem(event);
 		}
 
 		if(event.type === 'updateItem')
 		{
-			console.log('UPDATE ITEM EVENT');
 			handleUpdateItem(event);
 		}
 
 		if(event.type === 'moveItem')
 		{
-			console.log('MOVE ITEM EVENT');
 			handleMoveItem(event);
 		}
 
 		if(event.type === 'update')
 		{
-			console.log('UPDATE LIST EVENT');
 			renderListItems();
 		}
 	});

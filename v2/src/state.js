@@ -544,7 +544,7 @@ flour.state = function(defaultValues)
 
 				if(itemsToAdd[i + 1] === undefined || itemsToAdd[i + 1].index !== itemsToAdd[i].index + 1)
 				{
-					insertItems(insertCluster);
+					insertItems(insertCluster, insertClusterIndex);
 					insertCluster.length = 0;
 					insertClusterIndex = false;
 				}
