@@ -133,13 +133,13 @@ flour.view.add('block_list_perf', function()
 						<input id="insert_end" type="radio" name="insert_at" value="end" f-value="insert_at" />
 						<label for="insert_end">End</label>
 					</div>
+					<div>
+						<input id="insert_custom" type="radio" name="insert_at" value="custom" f-value="insert_at" />
+						<label for="insert_custom">Custom</label>
+					</div>
 					{{#if insert_at == 'custom'}}
 						<div>
-							<input id="insert_custom" type="radio" name="insert_at" value="custom" f-value="insert_at" />
-							<label for="insert_custom">Custom</label>
-							<div>
-								<input type="text" f-value="insert_index" />
-							</div>
+							<input type="text" f-value="insert_index" />
 						</div>
 					{{/if}}
 				</div>
