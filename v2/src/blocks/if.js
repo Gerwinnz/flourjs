@@ -19,7 +19,27 @@ flour.block.add('if', function(block, state, view)
 	var expressionPieces = mKey.split(' ');
 	if(expressionPieces.length > 1)
 	{
-		console.log('we have an expression', expressionPieces);
+		console.log('we have an expression');
+
+		for(var i = 0, n  = expressionPieces.length; i < n; i ++)
+		{
+			(function(piece){
+				var type = 'var';
+				var firstChar = piece[0];
+				var lastChar = piece[piece.length - 1];
+
+				if((firstChar === "'" && lastChar === "'") || (firstChar === '"' && lastChar === '"'))
+				{
+					type = 'string';
+				}
+				else if(!isNaN(parseFloat(piece)))
+				{
+					type = 'number';
+				}
+
+				console.log(piece + ' is ' + type);
+			}(expressionPieces[i]))
+		}
 	}
 
 	var mBlockHtml = block.html;
