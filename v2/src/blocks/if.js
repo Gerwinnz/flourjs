@@ -16,30 +16,42 @@ flour.block.add('if', function(block, state, view)
 		return !!val;
 	}
 
-	var expressionPieces = mKey.split(' ');
-	if(expressionPieces.length > 1)
+	var getPieceDetails = function(piece)
 	{
-		console.log('we have an expression');
+		var firstChar = piece[0];
+		var lastChar = piece[piece.length - 1];
+		var type = 'var';
+		var value = piece;
 
-		for(var i = 0, n  = expressionPieces.length; i < n; i ++)
+		if((firstChar === "'" && lastChar === "'") || (firstChar === '"' && lastChar === '"'))
 		{
-			(function(piece){
-				var type = 'var';
-				var firstChar = piece[0];
-				var lastChar = piece[piece.length - 1];
-
-				if((firstChar === "'" && lastChar === "'") || (firstChar === '"' && lastChar === '"'))
-				{
-					type = 'string';
-				}
-				else if(!isNaN(parseFloat(piece)))
-				{
-					type = 'number';
-				}
-
-				console.log(piece + ' is ' + type);
-			}(expressionPieces[i]))
+			type = 'string';
+			value = piece.substr(1, piece.length - 2);
 		}
+		else if(!isNaN(parseFloat(piece)))
+		{
+			type = 'number';
+			value = piece;
+		}
+
+		return {
+			type: type,
+			value: value
+		}
+	}
+
+	var expressionPieces = mKey.split(' ');
+	if(expressionPieces.length === 3)
+	{
+		console.log('we have a comparison expression');
+
+		var firstItem = getPieceDetails(expressionPieces[0]);
+		var comparison = expressionPieces[1];
+		var lastItem = getPieceDetails(expressionPieces[2]);
+
+		console.log(firstItem);
+		console.log(comparison);
+		console.log(lastItem);
 	}
 
 	var mBlockHtml = block.html;

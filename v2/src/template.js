@@ -77,7 +77,7 @@ flour.template.parse = function(html, state, view)
 				blocks.push({
 					slotId: slotId,
 					type: blockType,
-					key: key,
+					key: key.trim(),
 					html: innerHTML
 				});
 			}
