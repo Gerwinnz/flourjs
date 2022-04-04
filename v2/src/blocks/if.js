@@ -20,24 +20,28 @@ flour.block.add('if', function(block, state, view)
 	{
 		var firstChar = piece[0];
 		var lastChar = piece[piece.length - 1];
-		var type = 'var';
-		var value = piece;
+		var details = {
+			type: 'var',
+			value: piece
+		};
 
 		if((firstChar === "'" && lastChar === "'") || (firstChar === '"' && lastChar === '"'))
 		{
-			type = 'string';
-			value = piece.substr(1, piece.length - 2);
+			details.type = 'string';
+			details.value = piece.substr(1, piece.length - 2);
 		}
 		else if(!isNaN(parseFloat(piece)))
 		{
-			type = 'number';
-			value = parseFloat(piece);
+			details.type = 'number';
+			details.value = parseFloat(piece);
+		}
+		else
+		{
+			details.name = piece;
+			details.value = state.get(piece);;
 		}
 
-		return {
-			type: type,
-			value: value
-		}
+		return details;
 	}
 
 	var expressionPieces = mKey.split(' ');
@@ -50,17 +54,39 @@ flour.block.add('if', function(block, state, view)
 		var lastItem = getPieceDetails(expressionPieces[2]);
 		var vars = [];
 
+
 		if(firstItem.type === 'var')
 		{
-			vars.push(firstItem.value);
+			vars.push(firstItem.name);
 		}
 
 		if(lastItem.type === 'var')
 		{
-			vars.push(lastItem.value);
+			vars.push(lastItem.name);
 		}
 
 		mKey = vars.join(',');
+
+
+		if(comparison === '==' || comparison === '===')
+		{
+
+		}
+
+		if(comparison === '!=' || comparison === '!==')
+		{
+
+		}
+
+		if(comparison === '>')
+		{
+			
+		}
+
+		if(comparison === '<')
+		{
+			
+		}
 
 		console.log(firstItem);
 		console.log(comparison);
