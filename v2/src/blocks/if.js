@@ -31,7 +31,7 @@ flour.block.add('if', function(block, state, view)
 		else if(!isNaN(parseFloat(piece)))
 		{
 			type = 'number';
-			value = piece;
+			value = parseFloat(piece);
 		}
 
 		return {
@@ -48,6 +48,19 @@ flour.block.add('if', function(block, state, view)
 		var firstItem = getPieceDetails(expressionPieces[0]);
 		var comparison = expressionPieces[1];
 		var lastItem = getPieceDetails(expressionPieces[2]);
+		var vars = [];
+
+		if(firstItem.type === 'var')
+		{
+			vars.push(firstItem.value);
+		}
+
+		if(lastItem.type === 'var')
+		{
+			vars.push(lastItem.value);
+		}
+
+		mKey = vars.join(',');
 
 		console.log(firstItem);
 		console.log(comparison);
@@ -68,6 +81,7 @@ flour.block.add('if', function(block, state, view)
 	|	Sub to change events 
 	|
 	*/
+	console.log('IF onchange for: ' + mKey);
 	var cleanup = state.onChange(mKey, function(event)
 	{
 		mValue = evaluate(event.value);
