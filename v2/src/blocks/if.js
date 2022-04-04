@@ -88,6 +88,20 @@ flour.block.add('if', function(block, state, view)
 			
 		}
 
+		evaluate = function()
+		{
+			var mFuncStr = ``;
+			for(var i = 0, n = vars.length; i < n; i ++)
+			{
+				mFuncStr += `var ` + vars[i] + ` = '` + state.get(vars[i]) + `'; `;
+			}
+
+			mFuncStr += `return ` + expressionPieces.join(' ') + ';';
+
+			mFunc = new Function(mFuncStr);
+			return mFunc();
+		};
+
 		console.log(firstItem);
 		console.log(comparison);
 		console.log(lastItem);
