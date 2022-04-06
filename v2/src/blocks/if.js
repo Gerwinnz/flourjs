@@ -20,7 +20,7 @@ flour.block.add('if', function(block, state, view)
 	{
 		var firstChar = piece[0];
 		var lastChar = piece[piece.length - 1];
-		var isVarRegEx = new RegExp(/[\w|.]{1,}/);
+		var isVarRegEx = new RegExp(/[a-zA-Z.]{1,}/);
 
 		var details = {
 			value: piece
