@@ -20,8 +20,9 @@ flour.block.add('if', function(block, state, view)
 	{
 		var firstChar = piece[0];
 		var lastChar = piece[piece.length - 1];
+		var isVarRegEx = new RegExp(/[\w|.]{1,}/);
+
 		var details = {
-			type: 'var',
 			value: piece
 		};
 
@@ -35,76 +36,46 @@ flour.block.add('if', function(block, state, view)
 			details.type = 'number';
 			details.value = parseFloat(piece);
 		}
-		else
+		else if(isVarRegEx.test(piece))
 		{
+			details.type = 'var';
 			details.name = piece;
-			details.value = state.get(piece);;
+			details.value = state.get(piece);
 		}
 
 		return details;
 	}
 
 	var expressionPieces = mKey.split(' ');
-	if(expressionPieces.length === 3)
+	if(expressionPieces.length > 1)
 	{
-		console.log('we have a comparison expression');
-
-		var firstItem = getPieceDetails(expressionPieces[0]);
-		var comparison = expressionPieces[1];
-		var lastItem = getPieceDetails(expressionPieces[2]);
 		var vars = [];
+		var mFunc = false;
 
-
-		if(firstItem.type === 'var')
+		for(var i = 0, n = expressionPieces.length; i < n; i ++)
 		{
-			vars.push(firstItem.name);
+			(function(piece){
+				var pieceDetails = getPieceDetails(piece);
+				if(pieceDetails.type === 'var')
+				{
+					vars.push(pieceDetails.name);
+				}
+			}(expressionPieces[i]));
 		}
-
-		if(lastItem.type === 'var')
-		{
-			vars.push(lastItem.name);
-		}
-
+		
 		mKey = vars.join(',');
-
-
-		if(comparison === '==' || comparison === '===')
-		{
-
-		}
-
-		if(comparison === '!=' || comparison === '!==')
-		{
-
-		}
-
-		if(comparison === '>')
-		{
-			
-		}
-
-		if(comparison === '<')
-		{
-			
-		}
+		mFunc = new Function(mKey, 'return ' + expressionPieces.join(' ') + ';');
 
 		evaluate = function()
 		{
-			var mFuncStr = ``;
+			var params = [];
 			for(var i = 0, n = vars.length; i < n; i ++)
 			{
-				mFuncStr += `var ` + vars[i] + ` = '` + state.get(vars[i]) + `'; `;
+				params.push(state.get(vars[i]));
 			}
 
-			mFuncStr += `return ` + expressionPieces.join(' ') + ';';
-
-			mFunc = new Function(mFuncStr);
-			return mFunc();
+			return mFunc.apply(this, params);
 		};
-
-		console.log(firstItem);
-		console.log(comparison);
-		console.log(lastItem);
 	}
 
 	var mBlockHtml = block.html;
