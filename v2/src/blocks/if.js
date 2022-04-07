@@ -18,16 +18,13 @@ flour.block.add('if', function(block, state, view)
 	*/
 	var expression = state.onExpressionChange(mKey, function(value)
 	{
-		mValue = value;
-		showContent();
+		showContent(value);
 	});
 
-	var cleanup = expression.cleanup;
-	var mValue = expression.value;
 
-	var showContent = function()
+	var showContent = function(newValue)
 	{
-		var show = mValue ? true : false;
+		var show = newValue ? true : false;
 		
 		if(show === mShow)
 		{
@@ -53,8 +50,8 @@ flour.block.add('if', function(block, state, view)
 		}
 	};
 
-	showContent();
+	showContent(expression.value);
 
-	return cleanup;
+	return expression.cleanup;
 });
 
