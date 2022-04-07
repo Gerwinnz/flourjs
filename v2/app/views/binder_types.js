@@ -48,6 +48,8 @@ flour.view.add('f-text', function()
 		<p>
 			The state value will be set as the text content for the element.
 		</p>
+		<div><input type="text" f-value="text" /></div>
+		<div><span f-text="text"></span></div>
 	`;
 });
 

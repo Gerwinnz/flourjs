@@ -155,7 +155,10 @@ flour.view.base = function()
 	*/
 	this.destroy = function()
 	{
-		
+		if(this.templateInstance)
+		{
+			this.templateInstance.cleanup();
+		}
 	};
 
 

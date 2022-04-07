@@ -896,7 +896,8 @@ flour.state = function(defaultValues)
 					callback: callback
 				});
 
-				return function(){
+				return function()
+				{
 					for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
 					{
 						if(mKeyChangeListeners[key][i].id === id)
