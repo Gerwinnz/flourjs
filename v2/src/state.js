@@ -876,11 +876,12 @@ flour.state = function(defaultValues)
 
 		// Add listener for a specific change to a key value - supports comma delimmited keys
 		var keys = key.split(',');
+		var cleanups = [];
 
 		for(var i = 0, n = keys.length; i < n; i ++)
 		{
-			(function(key){
-
+			cleanups.push((function(key)
+			{
 				key = key.trim();
 
 				if(mKeyChangeListeners[key] === undefined)
@@ -907,7 +908,15 @@ flour.state = function(defaultValues)
 					}
 				};
 
-			}(keys[i]))
+			}(keys[i])));
+		}
+
+		return function()
+		{
+			for(var i = 0, n = cleanups.length; i < n; i ++)
+			{
+				cleanups[i]();
+			}
 		}
 	};
 
@@ -933,15 +942,15 @@ flour.state = function(defaultValues)
 		// find variable names
 		while((variableName = regEx.exec(strippedExpression)) !== null)
 		{
-			expressionVariables.push(variableName);
+			expressionVariables.push(variableName[0]);
 		}
 
 		// create our expression function
 		expressionVariablesJoined = expressionVariables.join(',');
 		expressionFunction = new Function(expressionVariablesJoined, 'return ' + expression + ';');
 
-		// sub to our state
-		var cleanup = onChange(expressionVariablesJoined, function(event)
+		//
+		var getExpressionResult = function()
 		{
 			var params = [];
 			for(var i = 0, n = expressionVariables.length; i < n; i ++)
@@ -949,10 +958,21 @@ flour.state = function(defaultValues)
 				params.push(get(expressionVariables[i]));
 			}
 
-			callback(expressionFunction.apply(this, params));
+			return (expressionFunction.apply(this, params));
+		}
+
+		// sub to our state
+		var cleanup = onChange(expressionVariablesJoined, function(event)
+		{
+			callback(getExpressionResult());
 		});
 
-		return cleanup;
+		console.log('cleanup', cleanup);
+
+		return {
+			cleanup: cleanup, 
+			value: getExpressionResult()
+		};
 	}
 
 
