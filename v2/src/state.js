@@ -969,8 +969,6 @@ flour.state = function(defaultValues)
 			callback(getExpressionResult());
 		});
 
-		console.log('cleanup', cleanup);
-
 		return {
 			cleanup: cleanup, 
 			value: getExpressionResult()
