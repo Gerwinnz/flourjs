@@ -911,6 +911,8 @@ flour.state = function(defaultValues)
 			}(keys[i])));
 		}
 
+
+		// return cleanup
 		return function()
 		{
 			for(var i = 0, n = cleanups.length; i < n; i ++)
