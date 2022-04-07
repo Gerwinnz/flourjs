@@ -916,6 +916,50 @@ flour.state = function(defaultValues)
 	/*
 	|
 	|
+	|
+	*/
+	var onExpressionChange = function(expression, callback)
+	{
+		var evalFunction = false;
+		var expressionFunction = false;
+		var expressionVariables = [];
+		var expressionVariablesJoined = '';
+		var regEx = new RegExp(/[a-zA-Z\._]{1,}/, 'g');
+		var variableName;
+
+		// remove strings
+		var strippedExpression = expression.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '');
+		
+		// find variable names
+		while((variableName = regEx.exec(strippedExpression)) !== null)
+		{
+			expressionVariables.push(variableName);
+		}
+
+		// create our expression function
+		expressionVariablesJoined = expressionVariables.join(',');
+		expressionFunction = new Function(expressionVariablesJoined, 'return ' + expression + ';');
+
+		// sub to our state
+		var cleanup = onChange(expressionVariablesJoined, function(event)
+		{
+			var params = [];
+			for(var i = 0, n = expressionVariables.length; i < n; i ++)
+			{
+				params.push(get(expressionVariables[i]));
+			}
+
+			callback(expressionFunction.apply(this, params));
+		});
+
+		return cleanup;
+	}
+
+
+
+	/*
+	|
+	|
 	|	Call all the change listeners stored against a key
 	|
 	|   @key - string - name of stored value callbacks are stored which need to be called
@@ -975,6 +1019,7 @@ flour.state = function(defaultValues)
 		removeItem: removeItem,
 
 		values: mValues,
-		onChange: onChange
+		onChange: onChange,
+		onExpressionChange: onExpressionChange
 	};
 };
