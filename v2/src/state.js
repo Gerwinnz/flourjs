@@ -877,12 +877,23 @@ flour.state = function(defaultValues)
 		// Add listener for a specific change to a key value - supports comma delimmited keys
 		var keys = key.split(',');
 		var cleanups = [];
+		var value = undefined;
+		var values = {};
 
 		for(var i = 0, n = keys.length; i < n; i ++)
 		{
 			cleanups.push((function(key)
 			{
+				var keyValue = undefined;
 				key = key.trim();
+				keyValue = get(key);
+
+				if(i === 0)
+				{
+					value = keyValue;
+				}
+
+				values[key] = keyValue;
 
 				if(mKeyChangeListeners[key] === undefined)
 				{
@@ -912,13 +923,16 @@ flour.state = function(defaultValues)
 			}(keys[i])));
 		}
 
-
 		// return cleanup
-		return function()
-		{
-			for(var i = 0, n = cleanups.length; i < n; i ++)
+		return {
+			value: value,
+			values: values,
+			remove: function()
 			{
-				cleanups[i]();
+				for(var i = 0, n = cleanups.length; i < n; i ++)
+				{
+					cleanups[i]();
+				}
 			}
 		}
 	};
@@ -965,13 +979,13 @@ flour.state = function(defaultValues)
 		}
 
 		// sub to our state
-		var cleanup = onChange(expressionVariablesJoined, function(event)
+		var listener = onChange(expressionVariablesJoined, function(event)
 		{
 			callback(getExpressionResult());
 		});
 
 		return {
-			cleanup: cleanup, 
+			remove: listener.remove, 
 			value: getExpressionResult()
 		};
 	}

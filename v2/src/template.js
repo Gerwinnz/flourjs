@@ -154,12 +154,12 @@ flour.template.parse = function(html, state, view)
 							var value = state.get(key);
 							customElement.setAttribute(attributeName, value);
 
-							var cleanup = state.onChange(key, function(event)
+							var listener = state.onChange(key, function(event)
 							{
 								customElement.setAttribute(attributeName, event.value);
 							});
 
-							cleanupCallbacks.push(cleanup);
+							cleanupCallbacks.push(listener.remove);
 						}
 					}
 				}(attributes[i]));

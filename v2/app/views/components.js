@@ -26,7 +26,7 @@ flour.view.add('examples', function()
 		}
 
 		blockView = flour.view.get(params.example || 'form');
-		view.refs.dest.append(blockView.el);
+		view.elements.dest.append(blockView.el);
 	}
 
 
@@ -40,7 +40,7 @@ flour.view.add('examples', function()
 					<li><a href="/examples/wall_builder">Wall builder</a></li>
 				</ul>
 			</div>
-			<div f-ref="dest">
+			<div f-name="dest">
 
 			</div>
 		</div>

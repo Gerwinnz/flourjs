@@ -29,7 +29,7 @@ flour.view.add('binders', function()
 		}
 
 		binderView = flour.view.get(params.binder ? 'f-' + params.binder : 'f-on');
-		view.refs.dest.append(binderView.el);
+		view.elements.dest.append(binderView.el);
 	}
 
 
@@ -46,7 +46,7 @@ flour.view.add('binders', function()
 					<li><a href="/binders/class">f-class</a></li>
 				</ul>
 			</div>
-			<div f-ref="dest">
+			<div f-name="dest">
 
 			</div>
 		</div>

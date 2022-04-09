@@ -39,24 +39,26 @@ flour.binding.add('f-text',
 		// initial setup
 		if(mFilter === false)
 		{
-			displayText(state.get(mKey));
-			var cleanup = state.onChange(mKey, function(event)
+			var listener = state.onChange(mKey, function(event)
 			{
 				displayText(event.value);
 			});
+
+			displayText(listener.value || '');
 		}
 		else
 		{
-			displayTextWithFilter(state.get(mKey));
-			var cleanup = state.onChange(mKey, function(event)
+			var listener = state.onChange(mKey, function(event)
 			{
 				displayTextWithFilter(event.value);
 			});
+
+			displayTextWithFilter(listener.value || '');
 		}
 
 
 		// cleanup
-		return cleanup;
+		return listener.remove
 	}
 
 });

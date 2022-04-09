@@ -27,6 +27,7 @@
 
 		<script type="text/javascript" src="src/bindings/on.js"></script>
 		<script type="text/javascript" src="src/bindings/ref.js"></script>
+		<script type="text/javascript" src="src/bindings/name.js"></script>
 		<script type="text/javascript" src="src/bindings/text.js"></script>
 		<script type="text/javascript" src="src/bindings/show.js"></script>
 		<script type="text/javascript" src="src/bindings/view.js"></script>

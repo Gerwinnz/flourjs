@@ -30,7 +30,7 @@ flour.view.add('blocks', function()
 		}
 
 		blockView = flour.view.get(params.block ? 'block_' + params.block : 'block_if');
-		view.refs.dest.append(blockView.el);
+		view.elements.dest.append(blockView.el);
 	}
 
 
@@ -43,7 +43,7 @@ flour.view.add('blocks', function()
 					<li><a href="/blocks/list_perf">#list_perf</a></li>
 				</ul>
 			</div>
-			<div f-ref="dest">
+			<div f-name="dest">
 
 			</div>
 		</div>

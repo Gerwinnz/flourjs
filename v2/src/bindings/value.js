@@ -18,13 +18,9 @@ flour.binding.add('f-value',
 	{
 		var mKey = element.getAttribute('f-value');
 		var mType = element.type ? element.type.toLowerCase() : 'text';
-		var mValue = state.get(mKey);
+		var mValue = undefined;
 		var mElementValue = element.getAttribute('value');
 
-		if(mValue === undefined)
-		{
-			mValue = '';
-		}
 
 
 
@@ -61,10 +57,12 @@ flour.binding.add('f-value',
 		//
 		// Sub to state change so we update the element to match
 		//
-		var cleanup = state.onChange(mKey, function(event)
+		var listener = state.onChange(mKey, function(event)
 		{
 			setElementValue(event.value);
 		});
+
+		mValue = listener.value === undefined ? '' : listener.value;
 
 
 
@@ -132,7 +130,7 @@ flour.binding.add('f-value',
 		
 
 		// cleanup
-		return cleanup;
+		return listener.remove;
 	}
 
 });

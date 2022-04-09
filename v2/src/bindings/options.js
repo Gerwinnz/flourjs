@@ -19,9 +19,8 @@ flour.binding.add('f-options',
 	{
 		var mKey = element.getAttribute('f-options');
 		var mValue = element.getAttribute('f-value');
-		var mOptions = state.get(mKey) || [];
 
-		var cleanup = state.onChange(mKey, function(event)
+		var listener = state.onChange(mKey, function(event)
 		{
 			setOptions(event.value);
 		});
@@ -43,11 +42,10 @@ flour.binding.add('f-options',
 
 		
 		// initial setup
-		setOptions(mOptions);
-
+		setOptions(listener.value || []);
 
 		// cleanup
-		return cleanup;
+		return listener.remove;
 	}
 
 });

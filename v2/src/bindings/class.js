@@ -43,18 +43,20 @@ flour.binding.add('f-class',
 				var parts = classString.split(' ');
 				var stateKey = parts[0];
 				var info = {
-					value: state.get(stateKey),
 					className: parts[1] === undefined ? false : parts[1]
 				};
 
-				mClassNames.push(info);
-
-				mCleanups.push(state.onChange(stateKey, function(event)
+				var listener = state.onChange(stateKey, function(event)
 				{
 					element.classList.remove(info.className ? info.className : info.value);
 					info.value = event.value;
 					applyClassNames();
-				}));
+				});
+
+				info.value = listener.value;
+
+				mClassNames.push(info);
+				mCleanups.push(listener.remove);
 
 			}(mClasses[i]));
 		};

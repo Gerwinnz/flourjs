@@ -1,7 +1,7 @@
 
 /*
 |
-|	Stores reference to element in the view's ref name space with the passed in name
+|	Calls the named function if it exists passing in the element reference
 |
 */
 flour.binding.add('f-ref', 
@@ -9,14 +9,12 @@ flour.binding.add('f-ref',
 
 	attach: function(element, state, view)
 	{
-		var mRefName = element.getAttribute('f-ref');
+		var mFunctionName = element.getAttribute('f-ref');
 		
-		if(view.refs === undefined)
+		if(flour.util.isFunction(view.mFunctionName))
 		{
-			view.refs = {};
+			view.mFunctionName(element);
 		}
-
-		view.refs[mRefName] = element;
 	}
 
 });

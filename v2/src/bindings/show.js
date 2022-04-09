@@ -10,14 +10,6 @@ flour.binding.add('f-show',
 	attach: function(element, state, view)
 	{
 		var mKey = element.getAttribute('f-show');
-		var mInverse = false;
-
-		if(mKey[0] === '!')
-		{
-			mInverse = true;
-			mKey = mKey.substring(1);
-		}
-
 		var mValue = state.get(mKey);
 		var mDisplayDefault = element.style.display;
 
@@ -27,16 +19,14 @@ flour.binding.add('f-show',
 		|	Sub to change events 
 		|
 		*/
-		var cleanup = state.onChange(mKey, function(event)
+		var listener = state.onExpressionChange(mKey, function(value)
 		{
-			mValue = event.value;
-			showContent();
+			showContent(value);
 		});
 
-		var showContent = function()
+		var showContent = function(newValue)
 		{
-			var show = mValue ? true : false;
-			show = mInverse ? !show : show;
+			var show = newValue ? true : false;
 
 			if(!show)
 			{
@@ -50,11 +40,11 @@ flour.binding.add('f-show',
 
 
 		// initial setup
-		showContent();
+		showContent(listener.value);
 
 
 		// cleanup
-		return cleanup;
+		return listener.remove;
 	}
 
 });

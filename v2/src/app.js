@@ -53,9 +53,9 @@ class flour_app
 			this.mView = flour.view.get(params.view);
 			this.mElement.append(this.mView.el);
 
-			if(this.mView.refs.app)
+			if(this.mView.elements.app)
 			{
-				this.mHostElement = this.mView.refs.app;
+				this.mHostElement = this.mView.elements.app;
 			}
 		}
 		else

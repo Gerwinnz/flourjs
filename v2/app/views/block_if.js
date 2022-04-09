@@ -38,6 +38,14 @@ flour.view.add('block_if', function()
 		<h1>Block if</h1>
 
 		<p>Count: <span f-text="count"></span></p>
+
+		<div f-show="count > 5">Greater than 5!</div>
+
+		{{#if count > 10}}
+			<div>COUNT IS GREATER THAN 10!!</div>
+		{{/if}}
+
+		<hr />
 		
 		{{#if show}}
 			<div>SHOW === TRUE</div>

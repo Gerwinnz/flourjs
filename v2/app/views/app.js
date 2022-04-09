@@ -14,7 +14,7 @@ flour.view.add('app', function()
 			</ul>
 		</div>
 
-		<div f-ref="app" class="body"></div>
+		<div f-name="app" class="body"></div>
 
 		<div class="footer">flour.js</div>
 	`;

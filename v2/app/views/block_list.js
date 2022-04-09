@@ -31,7 +31,7 @@ flour.view.add('block_list', function()
 
 		if(name === '')
 		{
-			view.refs.name_field.focus();
+			view.elements.name_field.focus();
 			return;
 		}
 
@@ -225,7 +225,7 @@ flour.view.add('block_list', function()
 		</div>
 
 		<div class="flex-row">
-			<input type="text" f-value="new_item_name" f-on="keydown handleNameFieldKeypress,focus handleNameFieldFocus" f-ref="name_field" />
+			<input type="text" f-value="new_item_name" f-on="keydown handleNameFieldKeypress,focus handleNameFieldFocus" f-name="name_field" />
 			<button class="button" f-on="click handleAddItemClick">Add item</button>
 			<button class="button" f-on="click handleSetItemsClick">Set items</button>
 			<div style="flex: 1;"></div>

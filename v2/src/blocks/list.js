@@ -33,7 +33,7 @@ flour.block.add('list', function(block, state, view)
 	|	Sub to change events 
 	|
 	*/
-	var cleanup = state.onChange(mKey, function(event)
+	var listener = state.onChange(mKey, function(event)
 	{
 		if(event.type === 'insertItem')
 		{
@@ -250,6 +250,6 @@ flour.block.add('list', function(block, state, view)
 	
 	renderListItems();
 
-	return cleanup;
+	return listener.remove;
 });
 

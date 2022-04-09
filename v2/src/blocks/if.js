@@ -16,7 +16,7 @@ flour.block.add('if', function(block, state, view)
 	|	Sub to change events 
 	|
 	*/
-	var expression = state.onExpressionChange(mKey, function(value)
+	var listener = state.onExpressionChange(mKey, function(value)
 	{
 		showContent(value);
 	});
@@ -50,8 +50,9 @@ flour.block.add('if', function(block, state, view)
 		}
 	};
 
-	showContent(expression.value);
 
-	return expression.cleanup;
+	showContent(listener.value);
+
+	return listener.remove;
 });
 
