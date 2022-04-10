@@ -14,16 +14,7 @@ flour.binding.add('f-show',
 		var mDisplayDefault = element.style.display;
 
 
-		/*
-		|
-		|	Sub to change events 
-		|
-		*/
-		var listener = state.onExpressionChange(mKey, function(value)
-		{
-			showContent(value);
-		});
-
+		// Show hide content
 		var showContent = function(newValue)
 		{
 			var show = newValue ? true : false;
@@ -39,11 +30,15 @@ flour.binding.add('f-show',
 		}
 
 
-		// initial setup
+		// Subscribe to expression
+		var listener = state.onExpressionChange(mKey, function(value)
+		{
+			showContent(value);
+		});
+
+
+		// Set initial state
 		showContent(listener.value);
-
-
-		// cleanup
 		return listener.remove;
 	}
 

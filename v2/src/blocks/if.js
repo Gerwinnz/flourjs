@@ -8,20 +8,7 @@ flour.block.add('if', function(block, state, view)
 	var mTemplate = false;
 
 
-
-
-
-	/*
-	|
-	|	Sub to change events 
-	|
-	*/
-	var listener = state.onExpressionChange(mKey, function(value)
-	{
-		showContent(value);
-	});
-
-
+	// Show hide content
 	var showContent = function(newValue)
 	{
 		var show = newValue ? true : false;
@@ -51,8 +38,15 @@ flour.block.add('if', function(block, state, view)
 	};
 
 
-	showContent(listener.value);
+	//Subscribe to expression
+	var listener = state.onExpressionChange(mKey, function(value)
+	{
+		showContent(value);
+	});
 
+
+	// Set initial state
+	showContent(listener.value);
 	return listener.remove;
 });
 

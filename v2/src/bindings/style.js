@@ -33,7 +33,7 @@ flour.binding.add('f-style',
 
 				if(listener.value)
 				{
-					element.style[property] = value;
+					element.style[property] = listener.value;
 				}
 
 				mCleanups.push(listener.remove);
