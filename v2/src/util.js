@@ -4,7 +4,21 @@ var flour = flour || {};
 
 
 flour.util = {
+	id: 0,
 	logSteps: 0
+};
+
+
+
+/*
+|
+|
+|
+*/
+flour.util.generateId = function()
+{
+	flour.util.id ++;
+	return flour.util.id;
 };
 
 

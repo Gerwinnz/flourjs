@@ -15,7 +15,6 @@ flour.router = function(routes, baseURL)
 	var mRoutes = [];
 	var mRequests = [];
 	var mLastRequestIndex = false;
-	var mRequestId = 0;
 
 
 
@@ -31,9 +30,9 @@ flour.router = function(routes, baseURL)
 			state = {};
 		}
 
-		state.id = mRequestId;
+		state.id = flour.util.generateId();
 		state.url = url;
-		mRequestId ++;
+
 		history.pushState(state, null, url);
 		flour.publish('history:state_change', state);
 	}
@@ -62,8 +61,7 @@ flour.router = function(routes, baseURL)
 
 	    if(request.id === undefined)
 	    {
-	    	request.id = mRequestId;
-	    	mRequestId ++;
+	    	request.id = flour.util.generateId();
 	    }
 
 	    // Pull out hash variables from the url

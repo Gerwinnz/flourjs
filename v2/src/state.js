@@ -16,7 +16,6 @@ flour.state = function(defaultValues)
 	var mKeyChangeListeners = {};
 	var mAllChangeListeners = [];
 	var mManagedArrays = {};
-	var mId = 0;
 
 	var mChangeTypes = {
 		'update': 'update',
@@ -846,8 +845,7 @@ flour.state = function(defaultValues)
 	*/
 	var onChange = function(key, callback)
 	{
-		var id = mId;
-		mId ++;
+		var id = flour.util.generateId();
 
 
 		// Add listener for all changes

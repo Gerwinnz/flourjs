@@ -9,9 +9,7 @@ var flour = flour || {};
 |
 |
 */
-flour.template = {
-	slotId: 0
-};
+flour.template = {};
 
 
 
@@ -73,8 +71,7 @@ flour.template.parse = function(html, state, view)
 				var replaceString = html.substr(start, end - start);
 				var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
 
-				var slotId = flour.template.slotId;
-				flour.template.slotId ++;
+				var slotId = flour.util.generateId();
 
 				html = html.replace(replaceString, '<!-- flour-slot-' + slotId + ' -->');
 				blocks.push({
