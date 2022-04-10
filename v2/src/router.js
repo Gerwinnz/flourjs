@@ -115,8 +115,6 @@ flour.router = function(routes, baseURL)
 	      	matchedRoute.direction = 'forward';
 	    }
 
-	    console.log(matchedRoute.direction, mRequests);
-
 
 	    // add get vars to the params
 	    if(getVariables.length > 0)
