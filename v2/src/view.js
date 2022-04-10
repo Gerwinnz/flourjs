@@ -39,7 +39,8 @@ flour.view.get = function(name, params)
 
 	if(!flour.view.defined[name])
 	{
-		throw 'Flour: View "' + name + '" has not been defined.';
+		flour.util.throw('Flour: View "' + name + '" has not been defined.');
+		return;
 	}
 
 	flour.view.id ++;

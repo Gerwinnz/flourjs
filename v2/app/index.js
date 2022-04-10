@@ -23,7 +23,6 @@ import { transitionHandler } from './transition_handler';
 		}
 	});
  
-	window.app = app;
 
 	//
 	// Possibly should be an array so the order is respected 🤔

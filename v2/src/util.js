@@ -5,7 +5,6 @@ var flour = flour || {};
 
 flour.util = {
 	id: 0,
-	logSteps: 0
 };
 
 
@@ -30,12 +29,12 @@ flour.util.generateId = function()
 */
 flour.util.throw = function(error)
 {
-	console.error('Flour error: ' + error);
+	console.error.apply(this, arguments);
 };
 
 flour.util.warn = function(error)
 {
-	console.warn('Flour warn: ' + error);
+	console.warn.apply(this, arguments);
 };
 
 
@@ -56,32 +55,6 @@ flour.util.defer = function(callback)
 };
 
 
-
-
-
-/*
-|
-|	Throws a flour console error
-|
-*/
-flour.util.log = function()
-{
-	var args = Array.prototype.slice.call(arguments);
-	
-	if(flour.util.logSteps > 0)
-	{
-		var step = '- - -';
-		var steps = '';
-		for(var i = 0, n = flour.util.logSteps; i < n; i ++)
-		{
-			steps = steps + ' ' + step;
-		}
-
-		args.unshift(steps);
-	}
-
-	console.log.apply(console, args);
-};
 
 
 
