@@ -802,7 +802,7 @@ flour.state = function(defaultValues)
 		}
 
 		return mManagedArrays[key].insertItems(newItems, newItemsIndex);
-	}
+	};
 
 
 
@@ -858,7 +858,8 @@ flour.state = function(defaultValues)
 				callback: key
 			});
 
-			return function(){
+			return function()
+			{
 				for(var i = 0, n = mAllChangeListeners.length; i < n; i ++)
 				{
 					if(mAllChangeListeners[i].id === id)

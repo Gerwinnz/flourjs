@@ -59,6 +59,7 @@ flour.view.add('block_list_perf', function()
 			}
 			else
 			{
+				insertIndex = insertAt === 'start' ? 0 : insertIndex;
 				items.splice.apply(items, [insertIndex, 0].concat(newItems));
 			}
 
