@@ -282,6 +282,13 @@ class flour_app
 
 
 
+	/*
+	|
+	|	
+	|	Attach click handler to app element to handle SPA links
+	|
+	|
+	*/
 	attachLinkClicks()
 	{
 		this.mElement.onclick = (e) => 
