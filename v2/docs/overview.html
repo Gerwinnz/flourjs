@@ -1,9 +1,9 @@
 #Overview
 
-Flour is a small framework for building rich front ends with simple APIs. With a total file size at under 10kb and no dependencies, Flour was designed to be dropped in to any web project without the hassle. Using Flour will usually start by creating a `view`. A most simple `view` will look like this.
+Flour is a small framework for building rich front ends with simple APIs. With a total file size at under 10kb and no dependencies, Flour was designed to be dropped in to any web project with minimum effort. Using Flour will usually start by creating a `view`. A most simple `view` will look like this.
 
 <pre>
-	flour.view.add(function()
+	flour.view.add('hello_world', () => 
 	{
 		this.templateHTML = `
 			<p>Hello world</p>
@@ -12,6 +12,65 @@ Flour is a small framework for building rich front ends with simple APIs. With a
 </pre>
 
 
+Views in Flour have various life-cycle hooks and properties. State for your view lives in the `state` property. Using the `init` life-cycle method which is called once when the view is created is a good place to set default state values. 
+
+<pre>
+	flour.view.add('hello_world_2', () => {
+
+		this.init = () => {
+			this.state.set('name', 'Gerwin');
+		};
 
 
+		this.templateHTML = `
+			<p>Hello {{name}}</p>
+		`;
 
+	});
+</pre>
+
+
+Your view's state is used to populate values in the view's `templateHTML` property. Flour's template engine uses bindings that are special attributes added to elements in the HTML. Flour's special bindings are all prefixed with `f-` so it's easy to distinguish them from standard HTML attributes.
+
+<pre>
+	flour.view.add('hello_world_3', () => {
+
+		this.init = () => {
+			this.state.set('name', 'Gerwin');
+		};
+
+
+		this.templateHTML = `
+			<div>
+				<input type="text" f-value="name" />
+			</div>
+			<p>Hello <span f-text="name"></span></p>
+		`;
+
+	});
+</pre>
+
+
+Bindings can do all kinds of things and Flour comes with several that should fullfil most requirements. Here we'll use the `f-on` binding to add a click event to our button.
+
+<pre>
+	flour.view.add('button_counter', () => {
+
+		this.init = () => {
+			this.state.set('count', 0);
+		};
+
+
+		this.handleButtonClick = () => {
+			this.state.set('count', this.state.get('count') + 1);
+		};
+
+
+		this.templateHTML = `
+			<div>
+				<button f-on="click handleButtonClick">Count: <span f-text="count"></span></button>
+			</div>
+		`;
+
+	});
+</pre>
