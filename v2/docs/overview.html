@@ -30,7 +30,7 @@ Views in Flour have various life-cycle hooks and properties. State for your view
 </pre>
 
 
-Your view's state is used to populate values in the view's `templateHTML` property. Flour's template engine uses bindings that are special attributes added to elements in the HTML. Flour's special bindings are all prefixed with `f-` so it's easy to distinguish them from standard HTML attributes.
+Your view's state is used to populate values in the view's `templateHTML` property. Flour's template engine uses bindings that are special attributes added to elements in the HTML. Flour's bindings are all prefixed with `f-` so it's easy to distinguish them from standard HTML attributes.
 
 <pre>
 	flour.view.add('hello_world_3', () => {
@@ -69,6 +69,42 @@ Bindings can do all kinds of things and Flour comes with several that should ful
 		this.templateHTML = `
 			<div>
 				<button f-on="click handleButtonClick">Count: <span f-text="count"></span></button>
+			</div>
+		`;
+
+	});
+</pre>
+
+
+As well as bindings, Flour also has a block syntax for certain use cases. The `list` block is the default way to display an array of items.
+
+<pre>
+	flour.view.add('list', () => {
+
+		this.init = () => {
+			this.state.set('dwarves', 
+			[
+				{
+					id: 0,
+					name: 'Thorin'
+				},
+				{
+					id: 1,
+					name: 'Fili'
+				},
+				{
+					id: 2,
+					name: 'Kili'
+				}
+			]);
+		};
+
+
+		this.templateHTML = `
+			<div>
+				{{#list dwarves}}
+					<div>{{name}}</div>
+				{{/list}}
 			</div>
 		`;
 
