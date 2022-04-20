@@ -87,6 +87,8 @@ flour.view.base = function()
 		if(!this.events){ this.events = {}; }
 		if(!this.refs){ this.refs = {}; }
 		if(!this.renderCount){ this.renderCount = 0; }
+		if(!this.views){ this.views = []; }
+		if(!this.embeddedViews){ this.embeddedViews = {}; }
 
 		this.id = id;
 		this.el = document.createElement(this.tag);
@@ -169,6 +171,32 @@ flour.view.base = function()
 		this.destroy();
 		this.el.parentNode.removeChild(this.el);
 	};
+
+
+
+
+	/*
+	|
+	|
+	|
+	*/
+	this.getView = function(viewName, viewParams, embedName)
+	{
+		var viewInstance = flour.view.get(viewName, viewParams);
+		this.views.push[name] = viewInstance;
+
+		if(embedName !== undefined)
+		{
+			if(this.embeddedViews[embedName] !== undefined)
+			{
+				this.embeddedViews[embedName].remove();
+			}
+
+			this.embeddedViews[embedName] = viewInstance;
+			this.trigger('embeddedViewUpdate', embedName);
+		}
+	};
+
 
 
 

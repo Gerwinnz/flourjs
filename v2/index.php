@@ -50,6 +50,7 @@
 		
 		<script type="text/javascript" src="app/views/blocks.js"></script>
 		<script type="text/javascript" src="app/views/block_if.js"></script>
+		<script type="text/javascript" src="app/views/block_view.js"></script>
 		<script type="text/javascript" src="app/views/block_list.js"></script>
 		<script type="text/javascript" src="app/views/block_list_perf.js"></script>
 

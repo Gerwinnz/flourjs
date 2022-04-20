@@ -7,7 +7,18 @@ flour.binding.add('f-view',
 	{
 		var mView = element.getAttribute('f-view');
 		
-		element.innerHTML = 'view: ' + mView;	
+		if(view.embeddedViews[mView])
+		{
+			element.append(view.embeddedViews[mView].el);
+		}
+
+		view.on('embeddedViewUpdate', function(viewName)
+		{
+			if(viewName === mView)
+			{
+				element.append(view.embeddedViews[mView].el);
+			}
+		})
 	}
 
 });

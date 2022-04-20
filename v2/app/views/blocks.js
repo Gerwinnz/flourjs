@@ -39,6 +39,7 @@ flour.view.add('blocks', function()
 			<div class="sub-nav sub-nav--code">
 				<ul>
 					<li><a href="/blocks/if">#if</a></li>
+					<li><a href="/blocks/view">#view</a></li>
 					<li><a href="/blocks/list">#list</a></li>
 					<li><a href="/blocks/list_perf">#list_perf</a></li>
 				</ul>
