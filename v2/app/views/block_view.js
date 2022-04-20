@@ -1,31 +1,28 @@
 
 flour.view.add('block_view', function()
 {
-	var view = this;
-
 	var childViewParams = {
 		count: 0
 	};
 
-	view.init = function()
+	this.init = () => 
 	{
-		view.createChildView();
+		this.createChildView();
 	};
 
-	view.createChildView = function()
+	this.createChildView = () => 
 	{
-		view.getView('block_view_child', childViewParams);
+		this.getView('block_view_child', childViewParams);
 		childViewParams.count ++;
 	}
 	
-	view.templateHTML = `
+	this.templateHTML = `
 		<h1>Block view</h1>
 		<div f-view="block_view_child"></div>
 		<div>
 			<button f-on="click createChildView">Create child view</button>
 		</div>
 	`;
-
 });
 
 
