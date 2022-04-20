@@ -183,18 +183,17 @@ flour.view.base = function()
 	this.getView = function(viewName, viewParams, embedName)
 	{
 		var viewInstance = flour.view.get(viewName, viewParams);
+		embedName = embedName === undefined ? viewName : embedName;
+		
 		this.views.push[name] = viewInstance;
-
-		if(embedName !== undefined)
+		
+		if(this.embeddedViews[embedName] !== undefined)
 		{
-			if(this.embeddedViews[embedName] !== undefined)
-			{
-				this.embeddedViews[embedName].remove();
-			}
-
-			this.embeddedViews[embedName] = viewInstance;
-			this.trigger('embeddedViewUpdate', embedName);
+			this.embeddedViews[embedName].remove();
 		}
+
+		this.embeddedViews[embedName] = viewInstance;
+		this.trigger('embeddedViewUpdate', embedName);
 	};
 
 

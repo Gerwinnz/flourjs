@@ -14,13 +14,13 @@ flour.view.add('block_view', function()
 
 	view.createChildView = function()
 	{
-		view.getView('block_view_child', childViewParams, 'child_view');
+		view.getView('block_view_child', childViewParams);
 		childViewParams.count ++;
 	}
 	
 	view.templateHTML = `
 		<h1>Block view</h1>
-		<div f-view="child_view"></div>
+		<div f-view="block_view_child"></div>
 		<div>
 			<button f-on="click createChildView">Create child view</button>
 		</div>
