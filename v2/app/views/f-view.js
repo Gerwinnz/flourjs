@@ -1,5 +1,5 @@
 
-flour.view.add('block_view', function()
+flour.view.add('f-view', function()
 {
 	var childViewParams = {
 		count: 0
@@ -12,13 +12,13 @@ flour.view.add('block_view', function()
 
 	this.createChildView = () => 
 	{
-		this.getView('block_view_child', childViewParams);
+		this.getView('f-view-child', childViewParams);
 		childViewParams.count ++;
 	}
 	
 	this.templateHTML = `
 		<h1>Block view</h1>
-		<div f-view="block_view_child"></div>
+		<div f-view="f-view-child"></div>
 		<div>
 			<button f-on="click createChildView">Create child view</button>
 		</div>
@@ -29,7 +29,7 @@ flour.view.add('block_view', function()
 
 
 
-flour.view.add('block_view_child', function()
+flour.view.add('f-view-child', function()
 {
 	this.init = (params) => 
 	{

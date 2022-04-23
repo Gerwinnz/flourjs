@@ -162,6 +162,11 @@ flour.view.base = function()
 		{
 			this.templateInstance.cleanup();
 		}
+
+		for(var i = 0, n = this.views.length; i < n; i ++)
+		{
+			this.views[i].destroy();
+		}
 	};
 
 
@@ -177,6 +182,12 @@ flour.view.base = function()
 
 	/*
 	|
+	|
+	|	Initiates a view and stores a reference to it so it can destroy the children views 
+	|
+	|	@viewName - string - the name of the view as it was added
+	| 	@viewParams - object - the params to init the view with
+	| 	@embedName(optional) - string - the name to store a reference to for the template engine to use to embed - defaults to viewName
 	|
 	|
 	*/
