@@ -2,11 +2,9 @@
 flour.view.add('binders', function()
 {
 	var view = this;
-	var binderView = false;
 
 	view.init = function(params)
 	{
-		view.render();
 		displayBinderView(params);
 	};
 
@@ -14,12 +12,6 @@ flour.view.add('binders', function()
 	{
 		displayBinderView(route.params);
 	};
-
-	view.willHide = function()
-	{
-		return {prev: 'binders'};
-	};
-
 
 	var displayBinderView = function(params)
 	{
