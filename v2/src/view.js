@@ -85,7 +85,6 @@ flour.view.base = function()
 		if(!this.state){ this.state = flour.state(); }
 		if(!this.tag){ this.tag = 'div'; }
 		if(!this.events){ this.events = {}; }
-		if(!this.refs){ this.refs = {}; }
 		if(!this.renderCount){ this.renderCount = 0; }
 		if(!this.views){ this.views = []; }
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
