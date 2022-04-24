@@ -12,13 +12,13 @@ flour.view.add('f-view', function()
 
 	this.createChildView = () => 
 	{
-		this.getView('f-view-child', childViewParams);
+		this.embedView('child', this.getView('f-view-child', childViewParams));
 		childViewParams.count ++;
 	}
 	
 	this.templateHTML = `
 		<h1>Block view</h1>
-		<div f-view="f-view-child"></div>
+		<div f-view="child"></div>
 		<div>
 			<button f-on="click createChildView">Create child view</button>
 		</div>

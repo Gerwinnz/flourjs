@@ -187,17 +187,31 @@ flour.view.base = function()
 	|
 	|	@viewName - string - the name of the view as it was added
 	| 	@viewParams - object - the params to init the view with
-	| 	@embedName(optional) - string - the name to store a reference to for the template engine to use to embed - defaults to viewName
 	|
 	|
 	*/
-	this.getView = function(viewName, viewParams, embedName)
+	this.getView = function(viewName, viewParams)
 	{
 		var viewInstance = flour.view.get(viewName, viewParams);
-		embedName = embedName === undefined ? viewName : embedName;
-		
 		this.views.push[name] = viewInstance;
 		
+		return viewInstance;
+	};
+
+
+
+	/*
+	|
+	|
+	|	Creates a names reference to a view which the f-view binder can use to inject into the template
+	|
+	|	@embedName - string - the name of the reference the binder will use
+	| 	@viewInstance - flour view - the view to embed
+	|
+	|
+	*/
+	this.embedView = function(embedName, viewInstance)
+	{
 		if(this.embeddedViews[embedName] !== undefined)
 		{
 			this.embeddedViews[embedName].remove();
@@ -206,7 +220,6 @@ flour.view.base = function()
 		this.embeddedViews[embedName] = viewInstance;
 		this.trigger('embeddedViewUpdate', embedName);
 	};
-
 
 
 

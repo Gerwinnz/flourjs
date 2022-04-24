@@ -15,7 +15,8 @@ flour.view.add('binders', function()
 
 	var displayBinderView = function(params)
 	{
-		view.getView(params.binder ? 'f-' + params.binder : 'f-on', {}, 'binder_view');
+		var viewName = params.binder ? 'f-' + params.binder : 'f-on';
+		view.embedView('view', view.getView(viewName));
 	};
 
 
@@ -33,7 +34,7 @@ flour.view.add('binders', function()
 					<li><a href="/binders/class">f-class</a></li>
 				</ul>
 			</div>
-			<div f-view="binder_view"></div>
+			<div f-view="view"></div>
 		</div>
 	`;
 

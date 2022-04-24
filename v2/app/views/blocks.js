@@ -15,7 +15,8 @@ flour.view.add('blocks', function()
 
 	var displayBlockView = function(params)
 	{
-		view.getView(params.block ? 'block_' + params.block : 'block_if', {}, 'block_view');
+		var viewName = params.block ? 'block_' + params.block : 'block_if';
+		view.embedView('view', view.getView(viewName));
 	};
 
 
@@ -28,7 +29,7 @@ flour.view.add('blocks', function()
 					<li><a href="/blocks/list_perf">#list_perf</a></li>
 				</ul>
 			</div>
-			<div f-view="block_view"></div>
+			<div f-view="view"></div>
 		</div>
 	`;
 });
