@@ -3,7 +3,7 @@
 Flour is a small framework for building rich front ends with simple APIs. With a total file size at under 10kb and no dependencies, Flour was designed to be dropped in to any web project with minimum effort. Using Flour will usually start by creating a `view`. A most simple `view` will look like this.
 
 <pre>
-	flour.view.add('hello_world', () => 
+	flour.view.add('hello_world', function() {
 	{
 		this.templateHTML = `
 			<p>Hello world</p>
@@ -15,7 +15,7 @@ Flour is a small framework for building rich front ends with simple APIs. With a
 Views in Flour have various life-cycle hooks and properties. State for your view lives in the `state` property. Using the `init` life-cycle method which is called once when the view is created is a good place to set default state values. 
 
 <pre>
-	flour.view.add('hello_world_2', () => {
+	flour.view.add('hello_world_2', function() {
 
 		this.init = () => {
 			this.state.set('name', 'Gerwin');
@@ -33,7 +33,7 @@ Views in Flour have various life-cycle hooks and properties. State for your view
 Your view's state is used to populate values in the view's `templateHTML` property. Flour's template engine uses bindings that are special attributes added to elements in the HTML. Flour's bindings are all prefixed with `f-` so it's easy to distinguish them from standard HTML attributes.
 
 <pre>
-	flour.view.add('hello_world_3', () => {
+	flour.view.add('hello_world_3', function() {
 
 		this.init = () => {
 			this.state.set('name', 'Gerwin');
@@ -54,7 +54,7 @@ Your view's state is used to populate values in the view's `templateHTML` proper
 Bindings can do all kinds of things and Flour comes with several that should fullfil most requirements. Here we'll use the `f-on` binding to add a click event to our button.
 
 <pre>
-	flour.view.add('button_counter', () => {
+	flour.view.add('button_counter', function() {
 
 		this.init = () => {
 			this.state.set('count', 0);
@@ -79,7 +79,7 @@ Bindings can do all kinds of things and Flour comes with several that should ful
 As well as bindings, Flour also has a block syntax for certain use cases. The `list` block is the default way to display an array of items.
 
 <pre>
-	flour.view.add('list', () => {
+	flour.view.add('list', function() {
 
 		this.init = () => {
 			this.state.set('dwarves', 
@@ -112,4 +112,60 @@ As well as bindings, Flour also has a block syntax for certain use cases. The `l
 </pre>
 
 
-A common task would be to display a child view. Flour has a `block` for doing this.
+As applications become more complex, moving functionality into children views improves maintainability.
+
+<pre>
+	flour.view.add('parent_view', function() {
+
+		this.init = () => {
+			this.embedView('child_view', this.getView('child_view'));
+		};
+
+
+		this.templateHTML = `
+			<div>
+				<div f-view="child_view"></div>
+			</div>
+		`;
+
+	});
+
+
+	flour.view.add('child_view', function() {
+
+		this.templateHTML = `
+			<div>
+				<p>Hello from child view.</p>
+			</div>
+		`;
+
+	});
+</pre>
+
+
+Flour wraps HTML's custom elements api to allow views to be made into components. Custom elements are extremely powerful and well suited for building simple re-usable pieces of UI. Flour wrapped custom elements can be used outside of flour views as well.
+
+<pre>
+	flour.view.add('card', function() {
+
+		this.templateHTML = `
+			<style>
+				.card{
+					padding: 16px;
+					border-radius: 8px;
+					background-color: #fff;
+					box-shadow: 0 4px 8px rgba(0,0,0,.05);
+				}
+			</style>
+			<div class="card">
+				<slot></slot>
+			</div>
+		`;
+
+	});
+
+	flour.customElement.add('white-card', {
+		view: 'card',
+		shadow: true
+	});
+</pre>

@@ -417,8 +417,6 @@ flour.state = function(defaultValues)
 
 			if(updatedKeys.length > 0)
 			{
-				console.log('managed_array::update_item', updatedKeys, updatedKeyValues);
-
 				var eventDetails = {
 					type: mChangeTypes.updateItem,
 					item: item,
