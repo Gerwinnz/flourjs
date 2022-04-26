@@ -85,7 +85,6 @@ flour.view.base = function()
 		if(!this.state){ this.state = flour.state(); }
 		if(!this.tag){ this.tag = 'div'; }
 		if(!this.events){ this.events = {}; }
-		if(!this.refs){ this.refs = {}; }
 		if(!this.renderCount){ this.renderCount = 0; }
 		if(!this.views){ this.views = []; }
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
@@ -162,6 +161,11 @@ flour.view.base = function()
 		{
 			this.templateInstance.cleanup();
 		}
+
+		for(var i = 0, n = this.views.length; i < n; i ++)
+		{
+			this.views[i].destroy();
+		}
 	};
 
 
@@ -178,15 +182,35 @@ flour.view.base = function()
 	/*
 	|
 	|
+	|	Initiates a view and stores a reference to it so it can destroy the children views 
+	|
+	|	@viewName - string - the name of the view as it was added
+	| 	@viewParams - object - the params to init the view with
+	|
 	|
 	*/
-	this.getView = function(viewName, viewParams, embedName)
+	this.getView = function(viewName, viewParams)
 	{
 		var viewInstance = flour.view.get(viewName, viewParams);
-		embedName = embedName === undefined ? viewName : embedName;
-
 		this.views.push[name] = viewInstance;
 		
+		return viewInstance;
+	};
+
+
+
+	/*
+	|
+	|
+	|	Creates a names reference to a view which the f-view binder can use to inject into the template
+	|
+	|	@embedName - string - the name of the reference the binder will use
+	| 	@viewInstance - flour view - the view to embed
+	|
+	|
+	*/
+	this.embedView = function(embedName, viewInstance)
+	{
 		if(this.embeddedViews[embedName] !== undefined)
 		{
 			this.embeddedViews[embedName].remove();
@@ -197,7 +221,6 @@ flour.view.base = function()
 
 		return viewInstance;
 	};
-
 
 
 
