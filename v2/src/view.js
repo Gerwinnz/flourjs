@@ -184,7 +184,7 @@ flour.view.base = function()
 	{
 		var viewInstance = flour.view.get(viewName, viewParams);
 		embedName = embedName === undefined ? viewName : embedName;
-		
+
 		this.views.push[name] = viewInstance;
 		
 		if(this.embeddedViews[embedName] !== undefined)
@@ -194,6 +194,8 @@ flour.view.base = function()
 
 		this.embeddedViews[embedName] = viewInstance;
 		this.trigger('embeddedViewUpdate', embedName);
+
+		return viewInstance;
 	};
 
 
