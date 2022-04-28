@@ -33,7 +33,7 @@ flour.view.add = function(name, view)
 	flour.view.defined[name] = view;
 };
 
-flour.view.get = function(name, params)
+flour.view.get = function(name, params, extraOptions)
 {
 	var viewInstance = false;
 
@@ -45,6 +45,15 @@ flour.view.get = function(name, params)
 
 	flour.view.id ++;
 	viewInstance = new flour.view.defined[name]();
+
+	if(extraOptions)
+	{
+		if(extraOptions.templateHTML)
+		{
+			viewInstance.templateHTML = extraOptions.templateHTML;
+		}
+	}
+
 	viewInstance.initialize(params, flour.view.id);
 
 	return viewInstance;

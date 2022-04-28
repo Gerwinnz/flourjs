@@ -19,6 +19,7 @@
 		<script type="text/javascript" src="src/binding.js"></script>
 		<script type="text/javascript" src="src/template.js"></script>
 		<script type="text/javascript" src="src/custom_element.js"></script>
+		<script type="text/javascript" src="src/view_init.js"></script>
 
 		<script type="text/javascript" src="src/filters/json.js"></script>
 
@@ -40,6 +41,10 @@
 	</head>
 	<body>
 		<div id="app"></div>
+
+		<div class="footer" f-init="footer" data-message="Hello world!">
+			<p>{{message}}</p>
+		</div>
 		
 		<script type="text/javascript" src="app/views/app.js"></script>
 		<script type="text/javascript" src="app/views/form.js"></script>
@@ -53,11 +58,13 @@
 		<script type="text/javascript" src="app/views/block_list.js"></script>
 		<script type="text/javascript" src="app/views/block_list_perf.js"></script>
 
+
 		<script type="text/javascript" src="app/views/binders.js"></script>
 		<script type="text/javascript" src="app/views/binder_types.js"></script>
 		<script type="text/javascript" src="app/views/f-view.js"></script>
 
 		<script type="text/javascript" src="app/views/components.js"></script>
+		<script type="text/javascript" src="app/views/footer.js"></script>
 
 		<script type="text/javascript" src="app/components/card.js"></script>
 		<script type="text/javascript" src="app/components/alert.js"></script>
