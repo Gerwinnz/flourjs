@@ -129,41 +129,46 @@ flour.template.parse = function(html, state, view)
 	// Find custom elements/components and update attributes mapped to a state value
 	//
 	var stateVariablePattern = /\{([\w.]+)}/;
-	var customElements = templateFragment.content.querySelectorAll(flour.customElement.defined.join(','));
+	var customElementsSelector = flour.customElement.defined.join(',');
 
-	for(var i = 0, n = customElements.length; i < n; i ++)
+	if(customElementsSelector)
 	{
-		(function(customElement){
-			var attributes = customElement.attributes;
+		var customElements = templateFragment.content.querySelectorAll(customElementsSelector);
+		for(var i = 0, n = customElements.length; i < n; i ++)
+		{
+			(function(customElement){
+				var attributes = customElement.attributes;
 
-			for(var i = 0, n = attributes.length; i < n; i ++)
-			{
-				(function(attribute){
-					var attributeName = attribute.nodeName;
-					var attributeValue = customElement.getAttribute(attributeName);
-					var match = false;
+				for(var i = 0, n = attributes.length; i < n; i ++)
+				{
+					(function(attribute){
+						var attributeName = attribute.nodeName;
+						var attributeValue = customElement.getAttribute(attributeName);
+						var match = false;
 
-					if(!flour.binding.defined[attributeName])
-					{
-						if(match = attributeValue.match(stateVariablePattern))
+						if(!flour.binding.defined[attributeName])
 						{
-							var key = match[1];
-							var value = state.get(key);
-							customElement.setAttribute(attributeName, value);
-
-							var listener = state.onChange(key, function(event)
+							if(match = attributeValue.match(stateVariablePattern))
 							{
-								customElement.setAttribute(attributeName, event.value);
-							});
+								var key = match[1];
+								var value = state.get(key);
+								customElement.setAttribute(attributeName, value);
 
-							cleanupCallbacks.push(listener.remove);
+								var listener = state.onChange(key, function(event)
+								{
+									customElement.setAttribute(attributeName, event.value);
+								});
+
+								cleanupCallbacks.push(listener.remove);
+							}
 						}
-					}
-				}(attributes[i]));
-			}
+					}(attributes[i]));
+				}
 
-		}(customElements[i]));
+			}(customElements[i]));
+		}
 	}
+	
 
 
 
