@@ -45,43 +45,40 @@ flour.template.parse = function(html, state, view)
 	//
 	// parse block tags {{#block}}{{/block}}
 	//
-	for(var blockType in flour.block.defined)
+	var regEx = new RegExp('{{#([a-z]+) ([^}}]*)}}', 'g');
+	var result;
+
+	while((result = regEx.exec(html)) !== null)
 	{
-		(function(){
-			var regEx = new RegExp('{{#' + blockType + ' ([^}}]*)}}', 'g');
-			var result;
+		var blockType = result[1];
+		var key = result[2];
+		var found = result[0];
 
-			while((result = regEx.exec(html)) !== null)
-			{
-				var key = result[1];
-				var found = result[0];
-				var closeTag = '{{/' + blockType + '}}';
-				var nextOpenIndex = result.index;
-				var nextCloseIndex = result.index;
+		var closeTag = '{{/' + blockType + '}}';
+		var nextOpenIndex = result.index;
+		var nextCloseIndex = result.index;
 
-				do
-				{
-					nextOpenIndex = html.indexOf('{{#', nextOpenIndex + 1);
-					nextCloseIndex = html.indexOf('{{/', nextCloseIndex + 1);
-				} 
-				while(nextOpenIndex !== -1 && nextCloseIndex !== -1 && nextCloseIndex > nextOpenIndex);
+		do
+		{
+			nextOpenIndex = html.indexOf('{{#', nextOpenIndex + 1);
+			nextCloseIndex = html.indexOf('{{/', nextCloseIndex + 1);
+		} 
+		while(nextOpenIndex !== -1 && nextCloseIndex !== -1 && nextCloseIndex > nextOpenIndex);
 
-				var start = result.index;
-				var end = nextCloseIndex + closeTag.length;
-				var replaceString = html.substr(start, end - start);
-				var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
+		var start = result.index;
+		var end = nextCloseIndex + closeTag.length;
+		var replaceString = html.substr(start, end - start);
+		var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
 
-				var slotId = flour.util.generateId();
+		var slotId = flour.util.generateId();
 
-				html = html.replace(replaceString, '<!-- flour-slot-' + slotId + ' -->');
-				blocks.push({
-					slotId: slotId,
-					type: blockType,
-					key: key.trim(),
-					html: innerHTML
-				});
-			}
-		}());
+		html = html.replace(replaceString, '<!-- flour-slot-' + slotId + ' -->');
+		blocks.push({
+			slotId: slotId,
+			type: blockType,
+			key: key.trim(),
+			html: innerHTML
+		});
 	}
 
 
