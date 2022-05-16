@@ -42,16 +42,23 @@ flour.binding.add('f-class',
 
 				var parts = classString.split(' ');
 				var stateKey = parts[0];
+
+				if(parts.length > 1)
+				{
+				  stateKey = parts.slice(0, parts.length - 1).join(' ')
+				}
+
 				var info = {
-					className: parts[1] === undefined ? false : parts[1]
+					className: (parts.length > 1 ? parts.pop() : false)
 				};
 
-				var listener = state.onChange(stateKey, function(event)
+				var listener = state.onExpressionChange(stateKey, function(value)
 				{
 					element.classList.remove(info.className ? info.className : info.value);
-					info.value = event.value;
+					info.value = value;
 					applyClassNames();
 				});
+				
 
 				info.value = listener.value;
 
