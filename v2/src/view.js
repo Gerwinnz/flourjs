@@ -12,8 +12,6 @@ var flour = flour || {};
 */
 flour.view = 
 {
-	id: 0,
-	elementUniqueId: 0,
 	defined: {}
 };
 
@@ -43,7 +41,6 @@ flour.view.get = function(name, params, extraOptions)
 		return;
 	}
 
-	flour.view.id ++;
 	viewInstance = new flour.view.defined[name]();
 
 	if(extraOptions)
@@ -54,7 +51,7 @@ flour.view.get = function(name, params, extraOptions)
 		}
 	}
 
-	viewInstance.initialize(params, flour.view.id);
+	viewInstance.initialize(params, extraOptions);
 
 	return viewInstance;
 };
@@ -89,7 +86,7 @@ flour.view.base = function()
 	|
 	|
 	*/
-	this.initialize = function(params, id)
+	this.initialize = function(params, extraOptions)
 	{
 		if(!this.state){ this.state = flour.state(); }
 		if(!this.tag){ this.tag = 'div'; }
@@ -98,9 +95,9 @@ flour.view.base = function()
 		if(!this.views){ this.views = []; }
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
 
-		this.id = id;
+		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);
-		
+
 		if(this.templateHTML)
 		{
 			templateHTML = this.templateHTML;
@@ -120,7 +117,7 @@ flour.view.base = function()
 
 		if(this.init)
 		{
-			this.init(params);
+			this.init(params, extraOptions);
 		}
 
 		if(this.renderCount === 0)

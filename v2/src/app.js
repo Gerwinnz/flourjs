@@ -153,7 +153,7 @@ class flour_app
 
 			if(!nextView)
 			{
-				nextView = flour.view.get(route.view, route.params);
+				nextView = flour.view.get(route.view, route.params, {route: route});
 				this.mViews.push(nextView);
 			}
 
