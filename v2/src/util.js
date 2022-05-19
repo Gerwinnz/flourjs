@@ -40,6 +40,37 @@ flour.util.warn = function(error)
 
 
 
+/* 
+|
+|	Event delegation method
+|
+*/
+flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture)
+{
+    if(typeof useCapture === 'undefined') 
+    {
+        useCapture = false;
+    }
+
+    el.addEventListener(eventType, function(event) 
+    {
+    	event.preventDefault();
+
+        var t = event.target;
+        while (t && t !== this) 
+        {
+            if (t.matches(selector)) 
+            {
+                handler(t, event);
+                break;
+            }
+
+            t = t.parentNode;
+        }
+    }, useCapture);
+};
+
+
 
 /*
 |

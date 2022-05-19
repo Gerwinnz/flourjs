@@ -291,32 +291,25 @@ class flour_app
 	*/
 	attachLinkClicks()
 	{
-		this.mElement.onclick = (e) => 
-		{				
-			if(e.target.nodeName === 'A')
+		flour.util.delegateEvent(this.mElement, 'click', 'a', (el, e) => 
+		{
+			var href = el.getAttribute('href');
+			var handledURL = false;
+			
+			if(href[0] === '/')
 			{
-				e.preventDefault();
-				e.stopPropagation();
-
-				var el = e.target;
-				var href = el.getAttribute('href');
-				var handledURL = false;
-				
-				if(href[0] === '/')
-				{
-					handledURL = this.mBaseURL + href;
-				}
-				else if(this.mBaseURL !== '' && href.indexOf(this.mBaseURL) === 0)
-				{
-					handledURL = href;
-				}
-
-				if(handledURL)
-				{
-					this.mRouter.push({}, null, handledURL);
-				}
+				handledURL = this.mBaseURL + href;
 			}
-		}
+			else if(this.mBaseURL !== '' && href.indexOf(this.mBaseURL) === 0)
+			{
+				handledURL = href;
+			}
+
+			if(handledURL)
+			{
+				this.mRouter.push({}, null, handledURL);
+			}
+		});
 	}
 
 }
