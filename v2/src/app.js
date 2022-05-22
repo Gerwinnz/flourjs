@@ -293,6 +293,8 @@ class flour_app
 	{
 		flour.util.delegateEvent(this.mElement, 'click', 'a', (el, e) => 
 		{
+			e.preventDefault();
+			
 			var href = el.getAttribute('href');
 			var handledURL = false;
 			

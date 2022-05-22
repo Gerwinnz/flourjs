@@ -54,8 +54,6 @@ flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture
 
     el.addEventListener(eventType, function(event) 
     {
-    	event.preventDefault();
-
         var t = event.target;
         while (t && t !== this) 
         {
