@@ -150,7 +150,11 @@
 
 
 	// Create version directory with change log entry - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-	mkdir($flour_version_path);
+	if(!is_dir($flour_version_path))
+	{
+		mkdir();	
+	}
+	
 	file_put_contents($flour_version_path . '/changelog.md', $change_log_entry);
 	copy($flour_output_file, $flour_version_path . '/flour.js');
 
