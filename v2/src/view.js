@@ -94,6 +94,7 @@ flour.view.base = function()
 		if(!this.renderCount){ this.renderCount = 0; }
 		if(!this.views){ this.views = []; }
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
+		if(!this.subscriptions){ this.subscriptions = []; }
 
 		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);
@@ -168,10 +169,17 @@ flour.view.base = function()
 			this.templateInstance.cleanup();
 		}
 
+		// Remove all children views
 		for(var i = 0, n = this.views.length; i < n; i ++)
 		{
 			this.views[i].destroy();
 		}
+
+		// Remove all subscriptions
+	    for(var i = 0, n = self.subscriptions.length; i < n; i ++)
+	    {
+	      flour.unsubscribe(self.subscriptions[i].eventName, self.subscriptions[i].callback);
+	    }
 	};
 
 
@@ -297,5 +305,27 @@ flour.view.base = function()
 	    }
 	};
 
+
+	/*
+	|
+	|
+	|	Add a subscription to the global flourjs pub/sub service that is automatically removed when 
+	|	the view is destroyed
+	|
+	|	@eventName - string - event name
+	| 	@callback - function - to be called when the subscription is triggered
+	|
+	|
+	*/
+	this.subscribe = function(eventName, callback)
+	{
+	    var subscription = flour.subscribe(eventName, callback);
+	    
+	    this.subscriptions.push(
+	    {
+	      eventName: eventName,
+	      callback: callback
+	    });
+	}
 
 };
