@@ -176,9 +176,9 @@ flour.view.base = function()
 		}
 
 		// Remove all subscriptions
-	    for(var i = 0, n = self.subscriptions.length; i < n; i ++)
+	    for(var i = 0, n = this.subscriptions.length; i < n; i ++)
 	    {
-	      flour.unsubscribe(self.subscriptions[i].eventName, self.subscriptions[i].callback);
+	      flour.unsubscribe(this.subscriptions[i].eventName, this.subscriptions[i].callback);
 	    }
 	};
 
