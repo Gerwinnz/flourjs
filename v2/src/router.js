@@ -35,7 +35,7 @@ flour.router = function(routes, baseURL)
 
 		history.pushState(state, null, url);
 		flour.publish('history:state_change', state);
-	}
+	};
 
 
 	

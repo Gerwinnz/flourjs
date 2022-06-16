@@ -4,7 +4,7 @@ var flour = flour || {};
 
 
 flour.util = {
-	id: 0,
+    id: 0,
 };
 
 
@@ -16,33 +16,51 @@ flour.util = {
 */
 flour.util.generateId = function()
 {
-	flour.util.id ++;
-	return flour.util.id;
+    flour.util.id ++;
+    return flour.util.id;
 };
 
 
 
 /*
 |
-|	Throws a flour console error
+|   Throws a flour console error
 |
 */
 flour.util.throw = function(error)
 {
-	console.error.apply(this, arguments);
+    console.error.apply(this, arguments);
 };
 
 flour.util.warn = function(error)
 {
-	console.warn.apply(this, arguments);
+    console.warn.apply(this, arguments);
 };
+
+
+
+/*
+|
+|   Push location/history state
+|
+*/
+flour.util.pushLocation = function(url)
+{
+    var state = {};
+
+    state.id = flour.util.generateId();
+    state.url = url;
+
+    history.pushState(state, null, url);
+    flour.publish('history:state_change', state);
+}
 
 
 
 
 /* 
 |
-|	Event delegation method
+|   Event delegation method
 |
 */
 flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture)
@@ -54,6 +72,8 @@ flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture
 
     el.addEventListener(eventType, function(event) 
     {
+        event.preventDefault();
+
         var t = event.target;
         while (t && t !== this) 
         {
@@ -72,15 +92,15 @@ flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture
 
 /*
 |
-|	Defer
+|   Defer
 |
 */
 flour.util.defer = function(callback)
 {
-	setTimeout(function()
-	{
-		callback();
-	}, 0);
+    setTimeout(function()
+    {
+        callback();
+    }, 0);
 };
 
 
@@ -89,24 +109,24 @@ flour.util.defer = function(callback)
 
 /*
 |
-|	Returns true if passed param is an object, else false
+|   Returns true if passed param is an object, else false
 |
 */
 flour.util.isObject = function(obj)
 {
-	return (typeof obj == "object") && (obj !== null);
+    return (typeof obj == "object") && (obj !== null);
 };
 
 
 
 /*
 |
-|	Returns true if passed param is an array, else false
+|   Returns true if passed param is an array, else false
 |
 */
 flour.util.isArray = function(arr)
 {
-	return Array.isArray(arr);
+    return Array.isArray(arr);
 };
 
 
@@ -114,24 +134,24 @@ flour.util.isArray = function(arr)
 
 /*
 |
-|	Returns true if passed param is an object, else false
+|   Returns true if passed param is an object, else false
 |
 */
 flour.util.isFunction = function(func) 
 {
- 	return typeof func === 'function';
+    return typeof func === 'function';
 };
 
 
 
 /*
 |
-|	Returns true is passed param is a string, else false
+|   Returns true is passed param is a string, else false
 |
 */
 flour.util.isString = function(str)
 {
-	return (typeof str == 'string' || str instanceof String);
+    return (typeof str == 'string' || str instanceof String);
 };
 
 
