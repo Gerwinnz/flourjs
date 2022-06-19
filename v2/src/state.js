@@ -1,6 +1,5 @@
 var flour = flour || {};
 
-flour.stateId = 0;
 
 
 /*
@@ -12,6 +11,7 @@ flour.stateId = 0;
 */
 flour.state = function(defaultValues)
 {
+	var mStateInstanceId = flour.util.generateId();
 	var mValues = defaultValues ? JSON.parse(JSON.stringify(defaultValues)) : {};
 	var mKeyChangeListeners = {};
 	var mAllChangeListeners = [];
@@ -381,8 +381,6 @@ flour.state = function(defaultValues)
 				flour.util.throw('Updating item failed as state value at "' + key + '" is not an array.');
 				return;
 			}
-
-			console.log('update item');
 
 			var index = mLookup[itemId];
 			var item = targetArray[index];
@@ -1039,7 +1037,7 @@ flour.state = function(defaultValues)
 	flour.stateId ++;
 
 	return {
-		id: flour.stateId,
+		id: mStateInstanceId,
 		get: get,
 		set: set,
 
