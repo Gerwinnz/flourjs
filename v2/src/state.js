@@ -660,7 +660,6 @@ flour.state = function(defaultValues)
 	    	}
 		}
 
-
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changeList.length)
 		{
