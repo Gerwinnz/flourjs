@@ -14,26 +14,11 @@ flour.view.add('form', function()
 	{
 		view.state.set('type_options', 
 		[
-			{
-				value: 0,
-				label: 'Hobbit'
-			},
-			{
-				value: 1,
-				label: 'Man'
-			},
-			{
-				value: 2,
-				label: 'Goblin'
-			},
-			{
-				value: 3,
-				label: 'Elf'
-			},
-			{
-				value: 4, 
-				label: 'Dwarf'
-			}
+			{ value: 0, label: 'Hobbit' },
+			{ value: 1, label: 'Man' },
+			{ value: 2, label: 'Goblin' },
+			{ value: 3, label: 'Elf' },
+			{ value: 4,  label: 'Dwarf' }
 		]);
 
 		view.state.set('name', 'Gerwin');

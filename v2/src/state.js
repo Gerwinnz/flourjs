@@ -96,6 +96,7 @@ flour.state = function(defaultValues)
 		{
 			var items = get(key);
 			var newLookup = {};
+			var isValid = true;
 
 			if(!flour.util.isArray(items))
 			{
@@ -104,10 +105,16 @@ flour.state = function(defaultValues)
 
 			for(var i = 0, n = items.length; i < n; i ++)
 			{
+				if(!items[i][itemKey])
+				{
+					isValid = false;
+				}
 				newLookup[items[i][itemKey]] = i;
 			}
 
 			mLookup = newLookup;
+
+			return isValid;
 		};
 
 
@@ -559,21 +566,25 @@ flour.state = function(defaultValues)
 		};
 
 
-		updateLookup();
+		if(updateLookup())
+		{
+			return {
+				items: mItems,
+				lookup: mLookup,
 
+				getItem: getItem,
+				insertItem: insertItem,
+				insertItems: insertItems,
+				removeItem: removeItem,
 
-		return {
-			items: mItems,
-			lookup: mLookup,
-
-			getItem: getItem,
-			insertItem: insertItem,
-			insertItems: insertItems,
-			removeItem: removeItem,
-
-			updateItem: updateItem,
-			updateItems: updateItems
-		};
+				updateItem: updateItem,
+				updateItems: updateItems
+			};
+		}
+		else
+		{
+			return false;
+		}
 	};
 
 
@@ -650,13 +661,18 @@ flour.state = function(defaultValues)
 		{
 			if(flour.util.isArray(get(key)))
 	    	{
-	    		if(!mManagedArrays[key])
+	    		// If not managed, try to create it
+	    		if(mManagedArrays[key] === undefined)
 				{
 					mManagedArrays[key] = managedArray(key);
 				}
 
-	    		mManagedArrays[key].updateItems(value);
-	    		return;
+				// If created and is valid, call it
+				if(mManagedArrays[key])
+				{
+					mManagedArrays[key].updateItems(value);
+	    			return;
+				}
 	    	}
 		}
 
