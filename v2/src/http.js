@@ -33,13 +33,32 @@ flour.http.prePostDataHandler = function(data, options)
 
 	
 	// Default to form data
-	var myFormData = new FormData()
-	for(var key in data)
+	return flour.http.jsonToFormData(data);
+};
+
+
+
+flour.http.jsonToFormData = function(data)
+{
+	function buildFormData(formData, data, parentKey) 
 	{
-		myFormData.append(key, data[key]);
+  		if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) 
+  		{
+		    Object.keys(data).forEach(key => 
+		    {
+		     	buildFormData(formData, data[key], parentKey ? (parentKey + '[' + key + ']') : key);
+		    });
+  		} 
+  		else 
+  		{
+	    	const value = data == null ? '' : data;
+	    	formData.append(parentKey, value);
+	  	}
 	}
 
-	return myFormData;
+	var formData = new FormData();
+  	buildFormData(formData, data);
+  	return formData;
 };
 
 
