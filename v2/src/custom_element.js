@@ -29,6 +29,7 @@ flour.customElement.add = function(tagName, details)
 			{
 				super();
 				var params = {};
+				var viewInstance = false;
 
 				if(details && details.props)
 				{
@@ -41,7 +42,20 @@ flour.customElement.add = function(tagName, details)
 					}
 				}
 
-				this.view = flour.view.get(details.view, params);
+				viewInstance = flour.view.get(details.view, params);
+				this.view = viewInstance;
+
+				if(details && details.events)
+				{
+					details.events.forEach((eventName) => 
+					{
+						viewInstance.on(eventName, (eventData) =>
+						{
+							var customEvent = new CustomEvent(eventName, eventData);
+							this.dispatchEvent(customEvent);
+						});
+					});
+				}
 			}
 
 			static get observedAttributes() 
@@ -49,6 +63,12 @@ flour.customElement.add = function(tagName, details)
 			  	return details.props;
 			}
 
+
+			//
+			//	Attribute change
+			//
+			//  Forward this to the same method on the view attached if exists
+			//
 			attributeChangedCallback(property, oldValue, newValue) 
 			{  
 				if (oldValue === newValue)
@@ -62,6 +82,10 @@ flour.customElement.add = function(tagName, details)
 				}
 			}
 
+
+			//
+			//	Append our view el
+			//
 			connectedCallback() 
 			{
 				if(details.shadow === true)
@@ -87,6 +111,18 @@ flour.customElement.add = function(tagName, details)
 				else
 				{
 					this.append(this.view.el);
+				}
+			}
+
+
+			//
+			//	Call our destroy
+			//
+			disconnectedCallback()
+			{
+				if(this.view)
+				{
+					this.view.destroy();
 				}
 			}
 		}
