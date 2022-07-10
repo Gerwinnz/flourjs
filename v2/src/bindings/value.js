@@ -17,6 +17,7 @@ flour.binding.add('f-value',
 	attach: function(element, state, view)
 	{
 		var mKey = element.getAttribute('f-value');
+		var mTag = element.tagName.toLowerCase();
 		var mType = element.type ? element.type.toLowerCase() : 'text';
 		var mValue = undefined;
 		var mElementValue = element.getAttribute('value');
@@ -114,7 +115,8 @@ flour.binding.add('f-value',
 		}
 		else
 		{
-			element.addEventListener('input', function()
+			var eventListenerType = (mTag === 'input' || mTag === 'textarea' || mTag === 'select') ? 'input' : 'change';
+			element.addEventListener(eventListenerType, function(event)
 			{
 				state.set(mKey, element.value);
 			});

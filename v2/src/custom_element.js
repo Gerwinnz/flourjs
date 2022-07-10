@@ -25,12 +25,23 @@ flour.customElement.add = function(tagName, details)
 	customElements.define(tagName, 
 		class extends HTMLElement 
 		{	
+			//
+			//	Private view instance
+			//
+			#viewInstance;
+
+
+			//
+			//	Setup
+			//
 			constructor() 
 			{
 				super();
 				var params = {};
-				var viewInstance = false;
 
+
+				// Put together the params to pass to the view based on the props
+				// that are specified and the value is pulled from the html attribute
 				if(details && details.props)
 				{
 					for(var i = 0, n = details.props.length; i < n; i ++)
@@ -42,14 +53,18 @@ flour.customElement.add = function(tagName, details)
 					}
 				}
 
-				viewInstance = flour.view.get(details.view, params);
-				this.view = viewInstance;
 
+				// Create our view instance
+				this.#viewInstance = flour.view.get(details.view, params, {hostEl: this});
+
+
+				// For events specified, listen to them on the view and dispatch them 
+				// from our element 
 				if(details && details.events)
 				{
 					details.events.forEach((eventName) => 
 					{
-						viewInstance.on(eventName, (eventData) =>
+						this.#viewInstance.on(eventName, (eventData) =>
 						{
 							var customEvent = new CustomEvent(eventName, eventData);
 							this.dispatchEvent(customEvent);
@@ -76,9 +91,9 @@ flour.customElement.add = function(tagName, details)
 					return;
 				}
 
-				if(this.view.attributeChanged)
+				if(this.#viewInstance.attributeChanged)
 				{
-					this.view.attributeChanged(property, newValue, oldValue);
+					this.#viewInstance.attributeChanged(property, newValue, oldValue);
 				}
 			}
 
@@ -90,9 +105,9 @@ flour.customElement.add = function(tagName, details)
 			{
 				if(details.shadow === true)
 				{
-					this.attachShadow({mode: 'open'}).append(this.view.el);
+					this.attachShadow({mode: 'open'}).append(this.#viewInstance.el);
 
-					var view = this.view;
+					var view = this.#viewInstance;
 					var slots = view.el.querySelectorAll('slot');
 
 					for(var i = 0, n = slots.length; i < n; i ++)
@@ -110,7 +125,7 @@ flour.customElement.add = function(tagName, details)
 				}
 				else
 				{
-					this.append(this.view.el);
+					this.append(this.#viewInstance.el);
 				}
 			}
 
@@ -120,9 +135,9 @@ flour.customElement.add = function(tagName, details)
 			//
 			disconnectedCallback()
 			{
-				if(this.view)
+				if(this.#viewInstance)
 				{
-					this.view.destroy();
+					this.#viewInstance.destroy();
 				}
 			}
 		}
