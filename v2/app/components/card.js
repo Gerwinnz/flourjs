@@ -49,7 +49,7 @@ flour.view.add('card', function()
 		<div class="card">
 			{{#if name}}
 				<div>
-					<span f-text="name" on-click="handleNameClick"></span>
+					<span f-text="name" f-on="click handleNameClick"></span>
 				</div>
 			{{/if}}
 			<div class="card__extra">
@@ -65,5 +65,5 @@ flour.view.add('card', function()
 flour.customElement.add('card-box', {
 	view: 'card',
 	shadow: true,
-	props: ['name']
+	attributes: ['name']
 });

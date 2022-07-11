@@ -104,5 +104,5 @@ flour.view.add('alert', function()
 flour.customElement.add('alert-box', {
 	view: 'alert',
 	shadow: true,
-	props: ['level', 'title']
+	attributes: ['level', 'title']
 });

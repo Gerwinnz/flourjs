@@ -108,7 +108,7 @@ flour.customElement.add = function(tagName, details)
 
 			static get observedAttributes() 
 			{
-			  	return details.props;
+			  	return details.attributes;
 			}
 
 
