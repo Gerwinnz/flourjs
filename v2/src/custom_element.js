@@ -40,15 +40,17 @@ flour.customElement.add = function(tagName, details)
 				var params = {};
 
 
+				//
 				// Put together the params to pass to the view based on the props
 				// that are specified and the value is pulled from the html attribute
-				if(details && details.props)
+				//
+				if(details && details.attributes)
 				{
-					for(var i = 0, n = details.props.length; i < n; i ++)
+					for(var i = 0, n = details.attributes.length; i < n; i ++)
 					{
-						if(this.hasAttribute(details.props[i]))
+						if(this.hasAttribute(details.attributes[i]))
 						{
-							params[details.props[i]] = this.getAttribute(details.props[i]);
+							params[details.attributes[i]] = this.getAttribute(details.attributes[i]);
 						}
 					}
 				}
@@ -58,8 +60,10 @@ flour.customElement.add = function(tagName, details)
 				this.#viewInstance = flour.view.get(details.view, params, {hostEl: this});
 
 
-				// For events specified, listen to them on the view and dispatch them 
-				// from our element 
+
+				//
+				// For events specified, listen to them on the view and dispatch them from our element 
+				// 
 				if(details && details.events)
 				{
 					details.events.forEach((eventName) => 
@@ -68,6 +72,35 @@ flour.customElement.add = function(tagName, details)
 						{
 							var customEvent = new CustomEvent(eventName, eventData);
 							this.dispatchEvent(customEvent);
+						});
+					});
+				}
+
+
+				//
+				// Create setters and getters for each property, call propertyChanged on our 
+				// view instance if the value has changed
+				//
+				if(details && details.properties)
+				{
+					details.properties.forEach((propertyName) => 
+					{
+						Object.defineProperty(this, propertyName, 
+						{
+							set: function(value)
+							{
+								var oldValue = this['m_' + propertyName];
+								this['m_' + propertyName] = value;
+
+								if(this.#viewInstance.propertyChanged && oldValue !== value)
+								{
+									this.#viewInstance.propertyChanged(propertyName, this['m_' + propertyName]);	
+								}
+							},
+							get: function()
+							{
+								return this['m_' + propertyName];
+							}
 						});
 					});
 				}
