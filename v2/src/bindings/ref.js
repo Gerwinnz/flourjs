@@ -11,9 +11,9 @@ flour.binding.add('f-ref',
 	{
 		var mFunctionName = element.getAttribute('f-ref');
 		
-		if(flour.util.isFunction(view.mFunctionName))
+		if(flour.util.isFunction(view[mFunctionName]))
 		{
-			view.mFunctionName(element);
+			view[mFunctionName](element);
 		}
 	}
 
