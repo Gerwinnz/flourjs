@@ -44,7 +44,8 @@ flour.binding.add('f-text',
 				displayText(event.value);
 			});
 
-			displayText(listener.value || '');
+			var initialValue = listener.value === undefined || listener.value === null ? '' : listener.value;
+			displayText(initialValue);
 		}
 		else
 		{
@@ -53,7 +54,8 @@ flour.binding.add('f-text',
 				displayTextWithFilter(event.value);
 			});
 
-			displayTextWithFilter(listener.value || '');
+			var initialValue = listener.value === undefined || listener.value === null ? '' : listener.value;
+			displayTextWithFilter(initialValue);
 		}
 
 
