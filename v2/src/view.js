@@ -206,8 +206,8 @@ flour.view.base = function()
 	this.getView = function(viewName, viewParams)
 	{
 		var viewInstance = flour.view.get(viewName, viewParams);
-		this.views.push[name] = viewInstance;
-		
+		this.views.push(viewInstance);
+
 		return viewInstance;
 	};
 
@@ -227,7 +227,16 @@ flour.view.base = function()
 	{
 		if(this.embeddedViews[embedName] !== undefined)
 		{
-			this.embeddedViews[embedName].remove();
+			if(viewInstance.id === this.embeddedViews[embedName].id)
+			{
+				// The current embedded view is this view, don't do anything
+				return; 
+			}
+			else
+			{
+				// Remove the previous view element in this name space
+				this.embeddedViews[embedName].el.remove();
+			}
 		}
 
 		this.embeddedViews[embedName] = viewInstance;
