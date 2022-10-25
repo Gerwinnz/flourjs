@@ -180,6 +180,12 @@ flour.view.base = function()
 	    {
 	      flour.unsubscribe(this.subscriptions[i].eventName, this.subscriptions[i].callback);
 	    }
+
+	    // Call post destroy method if there
+	    if(flour.util.isFunction(this.isDestroyed))
+	    {
+	    	this.isDestroyed();
+	    }
 	};
 
 
