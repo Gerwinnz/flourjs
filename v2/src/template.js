@@ -9,7 +9,9 @@ var flour = flour || {};
 |
 |
 */
-flour.template = {};
+flour.template = {
+	parsed: new Map()
+};
 
 
 
@@ -28,6 +30,20 @@ flour.template.parse = function(html, state, view)
 	var templateFragment = document.createElement('template');
 	var blocks = [];
 	var cleanupCallbacks = [];
+	
+	var parsed = false;
+	var templateKey = html;
+	var templateDetails = {
+		bindings: {},
+		customElements: []
+	};
+
+	if(flour.template.parsed.has(templateKey))
+	{
+		parsed = true;
+		templateDetails = flour.template.parsed.get(templateKey);
+	}
+
 
 
 	//
@@ -102,7 +118,9 @@ flour.template.parse = function(html, state, view)
 	//
 	// attach bindings
 	//
-	for(var bindingName in flour.binding.defined)
+	var bindings = parsed ? templateDetails.bindings : flour.binding.defined;
+
+	for(var bindingName in bindings)
 	{
 		var elements = templateFragment.content.querySelectorAll('[' + bindingName + ']');
 		if(elements.length > 0)
@@ -117,6 +135,8 @@ flour.template.parse = function(html, state, view)
 
 				elements[i].removeAttribute(bindingName);
 			}
+
+			templateDetails.bindings[bindingName] = true;
 		}
 	}
 
@@ -125,17 +145,23 @@ flour.template.parse = function(html, state, view)
 	//
 	// Find custom elements/components and update attributes mapped to a state value
 	//
-	var stateVariablePattern = /\{([\w.]+)}/;
-	var customElementsSelector = flour.customElement.defined.join(',');
+	var customElementsSelector = parsed ? templateDetails.customElements.join(',') : flour.customElement.defined.join(',');
 
 	if(customElementsSelector)
 	{
+		var stateVariablePattern = /\{([\w.]+)}/;
 		var customElements = templateFragment.content.querySelectorAll(customElementsSelector);
+		
 		for(var i = 0, n = customElements.length; i < n; i ++)
 		{
 			(function(customElement){
-				var attributes = customElement.attributes;
 
+				if(parsed === false)
+				{
+					templateDetails.customElements.push(customElement.tagName);
+				}
+
+				var attributes = customElement.attributes;
 				for(var i = 0, n = attributes.length; i < n; i ++)
 				{
 					(function(attribute){
@@ -228,6 +254,14 @@ flour.template.parse = function(html, state, view)
 		}(blocks[i]));
 	}
 
+
+	//
+	// if not parsed, set parsed
+	//
+	if(parsed === false)
+	{
+		flour.template.parsed.set(templateKey, templateDetails);
+	}
 
 
 	//
