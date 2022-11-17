@@ -100,7 +100,24 @@ flour.view.add('block_list_perf', function()
 		const t1 = performance.now();
 		view.state.set('task_time', Math.round(t1 - t0));
 		view.state.set('task', 'Updating name on item 2');
-	}
+	};
+
+
+	view.handleUpdateItemsClick = function()
+	{
+		var items = view.state.get('items');
+		for(item of items)
+		{
+			item.name = 'updated';
+		}
+
+		const t0 = performance.now();
+		view.state.set('items', items);
+
+		const t1 = performance.now();
+		view.state.set('task_time', Math.round(t1 - t0));
+		view.state.set('task', 'Updating ' + items.length + ' items');
+	};
 
 
 
@@ -152,6 +169,11 @@ flour.view.add('block_list_perf', function()
 				<input type="text" f-value="add_count" /> 
 				<button f-on="click handleAddItemsClick">Add</button>
 			</div>
+		</div>
+
+		<hr />
+		<div class="form__line">
+			<button f-on="click handleUpdateItemsClick">Update items</button>
 		</div>
 		
 		<hr />
