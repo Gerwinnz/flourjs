@@ -7,6 +7,7 @@ flour.block.add('list', function(block, state, view)
 	
 	var mItems = [];
 	var mLookup = {};
+	var mIsUpdating = false;
 
 
 	/*
@@ -35,29 +36,28 @@ flour.block.add('list', function(block, state, view)
 	*/
 	var listener = state.onChange(mKey, function(event)
 	{
-		if(event.type === 'insertItem')
+		if(event.type === 'updatedItems')
 		{
-			handleInsertItem(event);
-		}
+			mIsUpdating = true;
+			
+			removeItems(event.changes.remove);
+			
+			for(addChange of event.changes.add)
+			{
+				handleInsertItem(addChange);
+			}
 
-		if(event.type === 'insertItems')
-		{
-			handleInsertItems(event);
-		}
+			for(moveChange of event.changes.move)
+			{
+				handleMoveItem(moveChange, event.value);
+			}
 
-		if(event.type === 'removeItem')
-		{
-			handleRemoveItem(event);
-		}
+			for(updateChange of event.changes.update)
+			{
+				handleUpdateItem(updateChange);
+			}
 
-		if(event.type === 'updateItem')
-		{
-			handleUpdateItem(event);
-		}
-
-		if(event.type === 'moveItem')
-		{
-			handleMoveItem(event);
+			mIsUpdating = false;
 		}
 
 		if(event.type === 'update')
@@ -77,20 +77,12 @@ flour.block.add('list', function(block, state, view)
 	|	@event - changeEvent - event details containing the item and its index
 	|
 	*/
-	var handleInsertItem = function(event)
+	function handleInsertItem(event)
 	{
 		insertItem(event.item, event.index);
-	};
-
-	var handleInsertItems = function(event)
-	{
-		for(var i = 0, n = event.items.length; i < n; i++)
-		{
-			insertItem(event.items[i].item, event.items[i].index);
-		}
 	}
 
-	var insertItem = function(item, index)
+	function insertItem(item, index)
 	{
 		var itemId = item.id;
 		var itemState = flour.state(item);
@@ -103,7 +95,11 @@ flour.block.add('list', function(block, state, view)
 
 		itemState.onChange(function(event)
 		{
-			state.getItem(mKey, itemId).update(event.key, event.value);
+			if(mIsUpdating === false)
+			{
+				let item = state.getItem(mKey, itemId);
+				item.update(event.key, event.value);
+			}
 		});
 
 
@@ -141,22 +137,26 @@ flour.block.add('list', function(block, state, view)
 
 	/*
 	|
-	|	Remove item handler
+	|	Remove items handler
 	|
-	|	@event - changeEvent - event details containing the item to be removed
+	|	@removeChanges - array of remove changes that happened to this state array
 	|
 	*/
-	var handleRemoveItem = function(event)
+	function removeItems(removeChanges)
 	{
-		var item = getItem(event.item.id);
+		var indexesToRemove = [];
 
-		if(item)
+		for(var itemToRemove of removeChanges)
 		{
-			item.el.remove();
-			mItems.splice(event.index, 1);
+			var item = itemToRemove.item;
+			var currentIndex = mLookup[item.id];
+			var listItem = mItems[currentIndex];
+
+			listItem.el.remove();
+			mItems.splice(currentIndex, 1);
 			updateLookup();
 		}
-	};
+	}
 
 
 
@@ -167,10 +167,9 @@ flour.block.add('list', function(block, state, view)
 	|	@event - changeEvent - event details containing the item and the keys + values that were changed
 	|
 	*/
-	var handleUpdateItem = function(event)
+	function handleUpdateItem(event)
 	{
 		var item = getItem(event.item.id);
-
 		if(item)
 		{
 			for(var i = 0, n = event.keys.length; i < n; i ++)
@@ -178,7 +177,8 @@ flour.block.add('list', function(block, state, view)
 				item.state.set(event.keys[i], event.values[i]);
 			}
 		}
-	};
+		
+	}
 
 
 
@@ -189,17 +189,22 @@ flour.block.add('list', function(block, state, view)
 	|	@event - changeEvent - event details containing the item and its new index
 	|
 	*/
-	var handleMoveItem = function(event)
+	function handleMoveItem(event, newItems)
 	{
 		var item = getItem(event.item.id);
 		var newIndex = event.index;
-		var currentIndex = event.oldIndex;
+		var currentIndex = mLookup[item.id];
+
+		if(newIndex === currentIndex)
+		{
+			return;
+		}
 
 		if(item)
 		{
-			if(newIndex < event.value.length - 1)
+			if(newIndex < newItems.length - 1)
 			{
-				var itemAheadIndex = mLookup[event.value[newIndex + 1].id];
+				var itemAheadIndex = mLookup[newItems[newIndex + 1].id];
 				var itemAhead = mItems[itemAheadIndex].el;
 				itemAhead.parentNode.insertBefore(item.el, itemAhead);
 			}
@@ -209,11 +214,14 @@ flour.block.add('list', function(block, state, view)
 				endItem.parentNode.append(item.el);
 			}
 
-
-			mItems.splice(newIndex, 0, mItems.splice(currentIndex, 1)[0]);
+			if(mItems.length > 1)
+			{
+				mItems.splice(newIndex, 0, mItems.splice(currentIndex, 1)[0]);	
+			}
+			
 			updateLookup();
 		}
-	};
+	}
 
 
 
@@ -224,7 +232,7 @@ flour.block.add('list', function(block, state, view)
 	|	Basic render
 	|
 	*/
-	var renderListItems = function()
+	function renderListItems()
 	{
 		// clear existing
 		for(var i = 0, n = mItems.length; i < n; i ++)
@@ -239,10 +247,12 @@ flour.block.add('list', function(block, state, view)
 		var items = state.get(mKey);
 		if(items)
 		{
+			const t0 = performance.now();
 			items.forEach((item) => 
 			{
 				insertItem(item);
 			});
+			//console.log('inserting ' + items.length + ' items took ' + Math.round(performance.now() - t0) + 'ms');
 		}
 	}
 

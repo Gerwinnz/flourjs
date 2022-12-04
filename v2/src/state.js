@@ -1,7 +1,6 @@
 var flour = flour || {};
 
 
-
 /*
 |
 |
@@ -19,11 +18,7 @@ flour.state = function(defaultValues)
 
 	var mChangeTypes = {
 		'update': 'update',
-		'insertItem': 'insertItem',
-		'insertItems': 'insertItems',
-		'removeItem': 'removeItem',
-		'updateItem': 'updateItem',
-		'moveItem': 'moveItem'
+		'updatedItems': 'updatedItems'
 	};
 
 
@@ -57,30 +52,14 @@ flour.state = function(defaultValues)
 
 		/*
 		|
-		|	Update our lookup anytime an item is added, removed or moved
+		|	Update our lookup anytime an our array items are updated
 		|
 		*/
 		onChange(key, function(event)
 		{
-			mItems = event.value;
-			
-			if(event.type === mChangeTypes.insertItem)
+			if(event.type === mChangeTypes.updatedItems)
 			{
-				updateLookup();
-			}
-
-			if(event.type === mChangeTypes.insertItems)
-			{
-				updateLookup();
-			}
-
-			if(event.type === mChangeTypes.removeItem)
-			{
-				updateLookup();
-			}
-
-			if(event.type === mChangeTypes.moveItem)
-			{
+				mItems = event.value;
 				updateLookup();
 			}
 		});
@@ -92,7 +71,7 @@ flour.state = function(defaultValues)
 		|	Update lookup function
 		|
 		*/
-		var updateLookup = function()
+		function updateLookup()
 		{
 			var items = get(key);
 			var newLookup = {};
@@ -113,9 +92,8 @@ flour.state = function(defaultValues)
 			}
 
 			mLookup = newLookup;
-
 			return isValid;
-		};
+		}
 
 
 
@@ -128,13 +106,14 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var getItem = function(itemId)
+		function getItem(itemId)
 		{
 			var itemIndex = mLookup[itemId];
 			if(itemIndex === undefined)
 			{
 				return false;
 			}
+
 			var value = mItems[itemIndex];
 
 			return {
@@ -153,7 +132,7 @@ flour.state = function(defaultValues)
 					removeItem(itemId);
 				}
 			};
-		};
+		}
 
 
 
@@ -167,7 +146,7 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var insertItem = function(newItem, newItemIndex)
+		function insertItem(newItem, newItemIndex)
 		{
 			var position = 0;
 			var targetArray = get(key);
@@ -212,16 +191,23 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.insertItem,
-				item: newItem,
-				index: position
+				type: mChangeTypes.updatedItems,
+				changes: {
+					remove: [],
+					add: [{
+						item: newItem,
+						index: position
+					}],
+					move: [],
+					update: []
+				}
 			};
 
 			set(key, targetArray, eventDetails);
-		};
+		}
 
 
-		var insertItems = function(newItems, newItemsIndex)
+		function insertItems(newItems, newItemsIndex)
 		{
 			var addedItems = [];
 			var position = 0;
@@ -250,19 +236,24 @@ flour.state = function(defaultValues)
 			for(var i = 0, n = newItems.length; i < n; i ++)
 			{
 				addedItems.push({
-					index: (position + i),
-					item: newItems[i]
+					item: newItems[i],
+					index: (position + i)
 				});
 			}
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.insertItems,
-				items: addedItems
+				type: mChangeTypes.updatedItems,
+				changes: {
+					remove: [],
+					add: addedItems,
+					move: [],
+					update: []
+				}
 			};
 
 			set(key, targetArray, eventDetails);
-		};
+		}
 
 
 
@@ -277,7 +268,7 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var moveItem = function(itemId, newIndex)
+		function moveItem(itemId, newIndex)
 		{
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
@@ -313,16 +304,24 @@ flour.state = function(defaultValues)
 			// shift position in our array
 			targetArray.splice(newIndex, 0, targetArray.splice(index, 1)[0]);
 
+
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.moveItem,
-				item: item,
-				index: newIndex,
-				oldIndex: index
+				type: mChangeTypes.updatedItems,
+				changes: {
+					remove: [],
+					add: [],
+					move: [{
+						item: item,
+						index: newIndex,
+						oldIndex: index
+					}],
+					update: []
+				}
 			};
 
 			set(key, targetArray, eventDetails);
-		};
+		}
 
 
 
@@ -335,7 +334,7 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var removeItem = function(itemId)
+		function removeItem(itemId)
 		{
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
@@ -359,13 +358,20 @@ flour.state = function(defaultValues)
 
 			// create event details
 			var eventDetails = {
-				type: mChangeTypes.removeItem,
-				item: item,
-				index: index
+				type: mChangeTypes.updatedItems,
+				changes: {
+					remove: [{
+						item: item,
+						index: index
+					}],
+					add: [],
+					move: [],
+					update: []
+				}
 			};
 
 			set(key, targetArray, eventDetails);
-		};
+		}
 
 
 
@@ -380,7 +386,7 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var updateItem = function(itemId, keys, values)
+		function updateItem(itemId, keys, values)
 		{
 			var targetArray = get(key);
 			if(!flour.util.isArray(targetArray))
@@ -423,18 +429,26 @@ flour.state = function(defaultValues)
 			if(updatedKeys.length > 0)
 			{
 				var eventDetails = {
-					type: mChangeTypes.updateItem,
-					item: item,
-					index: index,
-					keys: updatedKeys,
-					values: updatedKeyValues
+					type: mChangeTypes.updatedItems,
+					changes: {
+						remove: [],
+						add: [],
+						move: [],
+						update: [{
+							item: item,
+							index: index,
+							keys: updatedKeys, 
+							values: updatedKeyValues
+						}]
+					}
 				};
 
 				set(key, targetArray, eventDetails);
+
 			}
 		}
 
-		var updateItemValue = function(item, itemKey, itemValue)
+		function updateItemValue(item, itemKey, itemValue)
 		{
 			// update item value
 			if(flour.util.isObject(item))
@@ -470,7 +484,7 @@ flour.state = function(defaultValues)
 				key: itemKey,
 				value: itemValue
 			};
-		};
+		}
 
 
 
@@ -483,87 +497,95 @@ flour.state = function(defaultValues)
 		|
 		|
 		*/
-		var updateItems = function(newItems)
+		function updateItems(newItems)
 		{
 			var newItemsLookup = {};
-			var itemsToUpdate = [];
-			var itemsToRemove = [];
-			var itemsToAdd = [];
+			var removeChanges = [];
+			var addChanges = [];
+			var moveChanges = [];
+			var updateChanges = [];
 
-			var insertCluster = [];
-			var insertClusterIndex = false;
+	
 
-
-			// create new items mLookup and check for items to add or update
+			// ADD AND UPDATE
 			for(var i = 0, n = newItems.length; i < n; i ++)
 			{
-				newItemsLookup[newItems[i].id] = i;
+				var newItem = newItems[i];
+				newItemsLookup[newItem.id] = i;
 
-				if(mLookup[newItems[i].id] === undefined)
+				if(mLookup[newItem.id] === undefined)
 				{
-					itemsToAdd.push({
-						index: i,
-						value: newItems[i]
+					// ADD
+					addChanges.push({
+						item: newItem,
+						index: i
 					});
 				}
 				else
 				{
-					if(JSON.stringify(newItems[i]) !== JSON.stringify(mItems[mLookup[newItems[i].id]]))
-					{
-						itemsToUpdate.push({
+					// UPDATE
+					var itemDiffs = flour.util.diff(mItems[mLookup[newItem.id]], newItem, {shallow: true});
+					if(itemDiffs.length)
+					{	
+						var keys = [];
+						var values = [];
+
+						for(itemDiff of itemDiffs)
+						{
+							keys.push(itemDiff.path.join('.'));
+							values.push(itemDiff.value);
+						}
+
+						updateChanges.push({
+							item: newItem,
 							index: i,
-							value: newItems[i]
+							keys: keys, 
+							values: values
+						});
+					}
+
+					// MOVE 
+					var currentIndex = mLookup[newItem[itemKey]];
+					if(currentIndex !== i)
+					{
+						moveChanges.push({
+							item: newItem,
+							index: i,
+							oldIndex: currentIndex
 						});
 					}
 				}
 			}
 
 
-			// find items to remove first
-			for(var i = 0, n = mItems.length; i < n; i ++)
+			// REMOVE
+			for(existingItem of mItems)
 			{
-				if(newItemsLookup[mItems[i].id] === undefined)
+				if(newItemsLookup[existingItem.id] === undefined)
 				{
-					itemsToRemove.push(mItems[i].id);
-				}
-			}
-
-			for(var i = 0, n = itemsToRemove.length; i < n; i ++)
-			{
-				removeItem(itemsToRemove[i]);
-			}
-
-
-			// add new items in clusters where indexes are in sequence
-			for(var i = 0, n = itemsToAdd.length; i < n; i ++)
-			{
-				if(insertClusterIndex === false)
-				{
-					insertClusterIndex = itemsToAdd[i].index;
-				}
-
-				insertCluster.push(itemsToAdd[i].value);
-
-				if(itemsToAdd[i + 1] === undefined || itemsToAdd[i + 1].index !== itemsToAdd[i].index + 1)
-				{
-					insertItems(insertCluster, insertClusterIndex);
-					insertCluster.length = 0;
-					insertClusterIndex = false;
+					removeChanges.push({
+						item: existingItem,
+						index: mLookup[existingItem[itemKey]]
+					});
 				}
 			}
 
 
-			// update and move items
-			for(var i = 0, n = itemsToUpdate.length; i < n; i ++)
+			if(removeChanges.length + addChanges.length + moveChanges.length + updateChanges.length)
 			{
-				if(mLookup[itemsToUpdate[i].value[itemKey]] !== itemsToUpdate[i].index)
-				{
-					moveItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].index);
-				}
+				var eventDetails = {
+					type: mChangeTypes.updatedItems,
+					changes: {
+						remove: removeChanges,
+						add: addChanges,
+						move: moveChanges,
+						update: updateChanges
+					}
+				};
 
-				updateItem(itemsToUpdate[i].value[itemKey], itemsToUpdate[i].value)
+				set(key, newItems, eventDetails);
 			}
-		};
+		}
 
 
 		if(updateLookup())
@@ -662,7 +684,7 @@ flour.state = function(defaultValues)
 			if(flour.util.isArray(get(key)))
 	    	{
 	    		// If not managed, try to create it
-	    		if(mManagedArrays[key] === undefined)
+	    		if(mManagedArrays[key] === undefined || mManagedArrays[key] === false)
 				{
 					mManagedArrays[key] = managedArray(key);
 				}
