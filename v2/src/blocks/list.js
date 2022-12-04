@@ -247,12 +247,10 @@ flour.block.add('list', function(block, state, view)
 		var items = state.get(mKey);
 		if(items)
 		{
-			const t0 = performance.now();
 			items.forEach((item) => 
 			{
 				insertItem(item);
 			});
-			//console.log('inserting ' + items.length + ' items took ' + Math.round(performance.now() - t0) + 'ms');
 		}
 	}
 
