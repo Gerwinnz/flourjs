@@ -9,7 +9,7 @@ flour.block.add('if', function(block, state, view)
 
 
 	// Show hide content
-	var showContent = function(newValue)
+	function showContent(newValue)
 	{
 		var show = newValue ? true : false;
 		

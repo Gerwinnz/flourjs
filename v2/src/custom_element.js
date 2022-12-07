@@ -138,22 +138,25 @@ flour.customElement.add = function(tagName, details)
 			{
 				if(details.shadow === true)
 				{
-					this.attachShadow({mode: 'open'}).append(this.#viewInstance.el);
+					if(!this.shadowRoot)
+					{
+						this.attachShadow({mode: 'open'});
+					}
+
+					this.shadowRoot.append(this.#viewInstance.el);
 
 					var view = this.#viewInstance;
 					var slots = view.el.querySelectorAll('slot');
 
-					for(var i = 0, n = slots.length; i < n; i ++)
+					for(let slot of slots)
 					{
-						(function(slot){
-							slot.addEventListener('slotchange', function()
+						slot.addEventListener('slotchange', function()
+						{
+							if(view.slotChanged)
 							{
-								if(view.slotChanged)
-								{
-									view.slotChanged(slot);
-								}
-							});
-						}(slots[i]));
+								view.slotChanged(slot);
+							}
+						});
 					}
 				}
 				else
@@ -170,7 +173,7 @@ flour.customElement.add = function(tagName, details)
 			{
 				if(this.#viewInstance)
 				{
-					this.#viewInstance.destroy();
+					this.#viewInstance.remove();
 				}
 			}
 		}
