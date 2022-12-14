@@ -40,6 +40,7 @@ flour.state = function(defaultValues)
 
 		var mItems = get(key);
 		var mLookup = false;
+		var mItemChangeListeners = {};
 
 
 		if(!flour.util.isArray(mItems))
@@ -130,8 +131,73 @@ flour.state = function(defaultValues)
 				remove: function()
 				{
 					removeItem(itemId);
+				},
+				onChange: function(callback)
+				{
+					const listenerId = addItemChangeListener(itemId, callback);
+
+					return {
+						mItemChangeListeners: mItemChangeListeners,
+						remove: function(){
+							removeItemChangeListener(itemId, listenerId)
+						}
+					};
 				}
 			};
+		}
+
+		function callItemChangeListeners(eventDetails)
+		{
+			const changes = eventDetails.changes;
+
+			for(const key in changes)
+			{
+				for(let change of changes[key])
+				{
+					const itemId = change.item[itemKey];
+					change.type = key;
+
+					if(mItemChangeListeners[itemId])
+					{
+						for(const listener of mItemChangeListeners[itemId])
+						{
+							listener.calls ++;
+							listener.callback(change);
+						}
+					}		
+				}
+			}
+		}
+
+		function addItemChangeListener(itemId, callback)
+		{
+			const id = flour.util.generateId();
+
+			if(mItemChangeListeners[itemId] === undefined)
+			{
+				mItemChangeListeners[itemId] = [];
+			}
+
+			mItemChangeListeners[itemId].push(
+			{
+				id: id,
+				calls: 0,
+				callback: callback
+			});
+
+			return id;
+		}
+
+		function removeItemChangeListener(itemId, listenerId)
+		{
+			for(var i = 0, n = mItemChangeListeners[itemId].length; i < n; i ++)
+			{
+				if(mItemChangeListeners[itemId][i].id === listenerId)
+				{
+					mItemChangeListeners[itemId].splice(i, 1);
+					break;
+				}
+			}
 		}
 
 
@@ -321,6 +387,7 @@ flour.state = function(defaultValues)
 			};
 
 			set(key, targetArray, eventDetails);
+			callItemChangeListeners(eventDetails);
 		}
 
 
@@ -371,6 +438,7 @@ flour.state = function(defaultValues)
 			};
 
 			set(key, targetArray, eventDetails);
+			callItemChangeListeners(eventDetails);
 		}
 
 
@@ -444,7 +512,7 @@ flour.state = function(defaultValues)
 				};
 
 				set(key, targetArray, eventDetails);
-
+				callItemChangeListeners(eventDetails);
 			}
 		}
 
@@ -584,6 +652,7 @@ flour.state = function(defaultValues)
 				};
 
 				set(key, newItems, eventDetails);
+				callItemChangeListeners(eventDetails);
 			}
 		}
 
