@@ -216,6 +216,9 @@ flour.state = function(defaultValues)
 		{
 			var position = 0;
 			var targetArray = get(key);
+
+
+			// Checks
 			if(!flour.util.isArray(targetArray))
 			{
 				flour.util.throw('Adding item failed as state value at "' + key + '" is not an array.');
@@ -227,6 +230,10 @@ flour.state = function(defaultValues)
 				flour.util.throw('Adding item already exists');
 				return;
 			}
+
+
+			// Clone
+			newItem = JSON.parse(JSON.stringify(newItem));
 
 
 			// insert at specified position or at end by default
@@ -285,6 +292,10 @@ flour.state = function(defaultValues)
 				flour.util.throw('Adding items failed as state value at "' + key + '" is not an array.');
 				return;
 			}
+
+
+			// Clone
+			newItems = JSON.parse(JSON.stringify(newItems));
 
 			
 			// insert at specified position or at end by default
@@ -573,6 +584,9 @@ flour.state = function(defaultValues)
 			var moveChanges = [];
 			var updateChanges = [];
 
+
+			// Clone
+			newItems = JSON.parse(JSON.stringify(newItems));
 	
 
 			// ADD AND UPDATE
