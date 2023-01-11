@@ -88,6 +88,24 @@ flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture
 
 
 
+/* 
+|
+|   Simple clone object
+|
+*/
+flour.util.cloneObject = function(obj)
+{
+    let clone = Object.assign({}, obj);
+    
+    Object.keys(clone).forEach(
+        key => (clone[key] = typeof obj[key] === 'object' ? deepClone(obj[key]) : obj[key])
+    );
+
+    return Array.isArray(obj) ? (clone.length = obj.length) && Array.from(clone) : clone;
+}
+
+
+
 /*
 |
 |   Defer
