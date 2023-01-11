@@ -109,16 +109,16 @@ flour.state = function(defaultValues)
 		*/
 		function getItem(itemId)
 		{
-			var itemIndex = mLookup[itemId];
+			const itemIndex = mLookup[itemId];
 			if(itemIndex === undefined)
 			{
 				return false;
 			}
 
-			var value = mItems[itemIndex];
+			const value = mItems[itemIndex];
 
 			return {
-				value: value,
+				value: JSON.parse(JSON.stringify(value)),
 				index: itemIndex,
 				move: function(newIndex)
 				{
