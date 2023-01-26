@@ -1074,7 +1074,7 @@ flour.state = function(defaultValues)
 		// find variable names
 		while((variableName = regEx.exec(strippedExpression)) !== null)
 		{
-			expressionVariables.push(variableName[0]);
+			expressionVariables.push(variableName[0].split('.')[0]);
 		}
 
 		// create our expression function
