@@ -231,6 +231,12 @@ flour.view.base = function()
 	*/
 	this.embedView = function(embedName, viewInstance)
 	{
+		if(!viewInstance)
+		{
+			this.embeddedViews[embedName].el.remove();
+			return;
+		}
+
 		if(this.embeddedViews[embedName] !== undefined)
 		{
 			if(viewInstance.id === this.embeddedViews[embedName].id)
