@@ -31,7 +31,7 @@ class flour_app
 	mCurrentRoute = {};
 
 	mTransitionHandler = false;
-	mRouteChangeHandler = false;
+	mOnRouteChange = false;
 
 	mBaseURL = '';
 
