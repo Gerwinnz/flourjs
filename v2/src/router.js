@@ -23,7 +23,7 @@ flour.router = function(routes, baseURL)
 	|
 	|
 	*/
-	var push = function(state, title, url)
+	function push(state, title, url)
 	{
 		if(!state)
 		{
@@ -35,7 +35,7 @@ flour.router = function(routes, baseURL)
 
 		history.pushState(state, null, url);
 		flour.publish('history:state_change', state);
-	};
+	}
 
 
 	
@@ -46,7 +46,7 @@ flour.router = function(routes, baseURL)
 	|	@request - object - {url: string}
 	|
 	*/
-	var match = function(request)
+	function match(request)
 	{
 		request = request === undefined ? {} : request;
 
@@ -127,9 +127,9 @@ flour.router = function(routes, baseURL)
 	    }
 
 	    return matchedRoute;
-	};
+	}
 
-	var matchRoute = function(requestURL)
+	function matchRoute(requestURL)
 	{
 		for(var i = 0, n = mRoutes.length; i < n; i ++)
 		{
@@ -141,9 +141,9 @@ flour.router = function(routes, baseURL)
 		}
 
 		return false;
-	};
+	}
 
-	var extractRouteDetails = function(route, requestURL)
+	function extractRouteDetails(route, requestURL)
 	{
 		var params = {};
 		var options = route.options;
@@ -162,7 +162,7 @@ flour.router = function(routes, baseURL)
         options.params = params;
 
         return options;
-	};
+	}
 
 
 
@@ -172,7 +172,7 @@ flour.router = function(routes, baseURL)
 	|	Create regular expression for each of our routes
 	|
 	*/
-	var transformRoutes = function(routes)
+	function transformRoutes(routes)
 	{
 		for(var route in routes)
 		{
@@ -185,7 +185,7 @@ flour.router = function(routes, baseURL)
 				options: options
 			});
 		}
-	};
+	}
 
 
 
