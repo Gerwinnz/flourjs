@@ -29,7 +29,9 @@ class flour_app
 	mCacheViewsCount = 5;
 	mCurrentViewIndex = 0;
 	mCurrentRoute = {};
+
 	mTransitionHandler = false;
+	mRouteChangeHandler = false;
 
 	mBaseURL = '';
 
@@ -47,6 +49,12 @@ class flour_app
 			this.mTransitionHandler = params.transitionHandler;
 		}
 		
+		
+		if(flour.util.isFunction(params.onRouteChange))
+		{
+			this.mOnRouteChange = params.onRouteChange;
+		}
+
 
 		if(params.view && flour.view.defined[params.view] !== undefined)
 		{
@@ -68,6 +76,7 @@ class flour_app
 		{
 			this.matchRoute(data);
 		});
+
 
 		window.addEventListener('popstate', (event) => 
 		{
@@ -179,6 +188,17 @@ class flour_app
 		//	Store our route for comparisons
 		//
 		this.mCurrentRoute = route;
+
+
+		//
+		//	Call our on route change listener if present
+		//
+		if(this.mOnRouteChange)
+		{
+			this.mOnRouteChange(this.mCurrentRoute);
+		}
+
+		return route;
 	}
 
 
