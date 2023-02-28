@@ -44,6 +44,7 @@ class flour_app
 		this.mRouter = flour.router(params.routes, params.base_url);
 		this.mBaseURL = params.base_url || document.location.origin;
 
+
 		if(flour.util.isFunction(params.transitionHandler))
 		{
 			this.mTransitionHandler = params.transitionHandler;
