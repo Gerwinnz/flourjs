@@ -137,7 +137,7 @@ class flour_app
 			//			
 			if(!isDifferentView && flour.util.isFunction(currentView.routeUpdate))
 			{
-				var handled = currentView.routeUpdate(route);
+				var handled = currentView.routeUpdate(route, this.mCurrentRoute);
 
 				if(handled !== false){
 					this.mCurrentRoute = route;
