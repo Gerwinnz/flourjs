@@ -141,6 +141,10 @@ class flour_app
 
 				if(handled !== false){
 					this.mCurrentRoute = route;
+					if(this.mOnRouteChange)
+					{
+						this.mOnRouteChange(this.mCurrentRoute);
+					}
 					return;
 				}
 			}
