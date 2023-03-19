@@ -8,7 +8,7 @@ var flour = flour || {};
 |
 |
 */
-flour.state = function(defaultValues)
+flour.state = function(defaultValues, options)
 {
 	var mStateInstanceId = flour.util.generateId();
 	var mValues = defaultValues ? JSON.parse(JSON.stringify(defaultValues)) : {};
@@ -41,6 +41,9 @@ flour.state = function(defaultValues)
 		var mItems = get(key);
 		var mLookup = false;
 		var mItemChangeListeners = {};
+		var listenerOptions = {
+			priority: true
+		};
 
 
 		if(!flour.util.isArray(mItems))
@@ -63,7 +66,7 @@ flour.state = function(defaultValues)
 				mItems = event.value;
 				updateLookup();
 			}
-		});
+		}, listenerOptions);
 		
 
 
@@ -959,9 +962,10 @@ flour.state = function(defaultValues)
 	|	
 	|
 	*/
-	var onChange = function(key, callback)
+	var onChange = function(key, callback, options)
 	{
 		var id = flour.util.generateId();
+		options = options || {};
 
 
 		// Add listener for all changes
@@ -1000,6 +1004,12 @@ flour.state = function(defaultValues)
 			cleanups.push((function(key)
 			{
 				var keyValue = undefined;
+				var listenerDetails = {
+					id: id,
+					calls: 0,
+					callback: callback
+				};
+
 				key = key.trim();
 				keyValue = get(key);
 
@@ -1015,20 +1025,28 @@ flour.state = function(defaultValues)
 					mKeyChangeListeners[key] = [];
 				}
 
-				var length = mKeyChangeListeners[key].push(
-				{
-					id: id,
-					calls: 0,
-					callback: callback
-				});
 
+				// Sometimes such as for internal use, we may want to make sure a callback
+				// is always called first, in this case we move the listener to the front
+				// of the array
+				if(options.priority === true)
+				{
+					mKeyChangeListeners[key].unshift(listenerDetails);
+				}
+				else
+				{
+					mKeyChangeListeners[key].push(listenerDetails);
+				}
+
+
+				// Return a cleanup
 				return function()
 				{
 					for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
 					{
 						if(mKeyChangeListeners[key][i].id === id)
 						{
-							mKeyChangeListeners[key].splice(i,1);
+							mKeyChangeListeners[key].splice(i, 1);
 							i --;
 							n --;
 						}
