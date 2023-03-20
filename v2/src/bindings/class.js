@@ -38,19 +38,19 @@ flour.binding.add('f-class',
 		// initial setup
 		for(let classString of mClasses)
 		{
-			var parts = classString.split(' ');
-			var stateKey = parts[0];
+			let parts = classString.split(' ');
+			let stateKey = parts[0];
 
 			if(parts.length > 1)
 			{
 			  stateKey = parts.slice(0, parts.length - 1).join(' ')
 			}
 
-			var info = {
+			let info = {
 				className: (parts.length > 1 ? parts.pop() : false)
 			};
 
-			var listener = state.onExpressionChange(stateKey, function(value)
+			let listener = state.onExpressionChange(stateKey, function(value)
 			{
 				element.classList.remove(info.className ? info.className : info.value);
 				info.value = value;
