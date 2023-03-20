@@ -16,7 +16,7 @@ flour.binding.add('f-class',
 	
 
 		// apply classNames
-		var applyClassNames = function()
+		function applyClassNames()
 		{
 			for(var i = 0, n = mClassNames.length; i < n; i ++)
 			{
@@ -36,38 +36,36 @@ flour.binding.add('f-class',
 
 
 		// initial setup
-		for(var i = 0, n = mClasses.length; i < n; i ++)
+		for(let classString of mClasses)
 		{
-			(function(classString){
+			var parts = classString.split(' ');
+			var stateKey = parts[0];
 
-				var parts = classString.split(' ');
-				var stateKey = parts[0];
+			if(parts.length > 1)
+			{
+			  stateKey = parts.slice(0, parts.length - 1).join(' ')
+			}
 
-				if(parts.length > 1)
-				{
-				  stateKey = parts.slice(0, parts.length - 1).join(' ')
-				}
+			var info = {
+				className: (parts.length > 1 ? parts.pop() : false)
+			};
 
-				var info = {
-					className: (parts.length > 1 ? parts.pop() : false)
-				};
+			var listener = state.onExpressionChange(stateKey, function(value)
+			{
+				element.classList.remove(info.className ? info.className : info.value);
+				info.value = value;
+				applyClassNames();
+			});
+			
 
-				var listener = state.onExpressionChange(stateKey, function(value)
-				{
-					element.classList.remove(info.className ? info.className : info.value);
-					info.value = value;
-					applyClassNames();
-				});
-				
+			info.value = listener.value;
 
-				info.value = listener.value;
-
-				mClassNames.push(info);
-				mCleanups.push(listener.remove);
-
-			}(mClasses[i]));
+			mClassNames.push(info);
+			mCleanups.push(listener.remove);
 		};
 
+
+		// init
 		applyClassNames();
 		
 
