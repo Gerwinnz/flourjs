@@ -95,6 +95,8 @@ flour.state = function(defaultValues, options)
 				newLookup[items[i][itemKey]] = i;
 			}
 
+			// console.log('updating lookup::' + key, items);
+
 			mLookup = newLookup;
 			return isValid;
 		}
@@ -1036,6 +1038,11 @@ flour.state = function(defaultValues, options)
 				else
 				{
 					mKeyChangeListeners[key].push(listenerDetails);
+				}
+
+				if(options.immediate === true)
+				{
+					callback(keyValue);
 				}
 
 
