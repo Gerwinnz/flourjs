@@ -1042,7 +1042,7 @@ flour.state = function(defaultValues, options)
 
 				if(options.immediate === true)
 				{
-					callback({type: 'update', value: keyValue});
+					callback({type: 'update', key: key, value: keyValue});
 				}
 
 
