@@ -711,15 +711,10 @@ flour.state = function(defaultValues, options)
 	*/
 	var get = function(key)
 	{
-		// console.log('state::get', key);
-
+		//console.log('state::get', key);
 		var value = getValue(mValues, key);
 
-		if(flour.util.isArray(value))
-		{
-			value = JSON.parse(JSON.stringify(value));
-		}
-		else if(flour.util.isObject(value))
+		if(flour.util.isArray(value) || flour.util.isObject(value))
 		{
 			value = JSON.parse(JSON.stringify(value));
 		}
@@ -730,6 +725,11 @@ flour.state = function(defaultValues, options)
 	function getValue(obj, key)
 	{
 	    key = (typeof key === "string") ? key.split(".") : key;
+
+	    if(!obj)
+	    {
+	    	return undefined
+	    }
 
 	    const currentKey = key.shift();
 	    if (obj.hasOwnProperty(currentKey) && key.length === 0)
