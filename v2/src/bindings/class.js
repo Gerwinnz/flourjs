@@ -20,16 +20,11 @@ flour.binding.add('f-class',
 		{
 			for(var i = 0, n = mClassNames.length; i < n; i ++)
 			{
-				if(mClassNames[i].className)
+				const classNameToAdd = mClassNames[i].className ? mClassNames[i].className : mClassNames[i].value;
+				
+				if(mClassNames[i].value)
 				{
-					if(mClassNames[i].value)
-					{
-						element.classList.add(mClassNames[i].className);
-					}
-				}
-				else
-				{
-					element.classList.add(mClassNames[i].value);
+					element.classList.add(classNameToAdd);
 				}
 			}
 		};
