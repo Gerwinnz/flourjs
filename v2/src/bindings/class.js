@@ -47,7 +47,13 @@ flour.binding.add('f-class',
 
 			let listener = state.onExpressionChange(stateKey, function(value)
 			{
-				element.classList.remove(info.className ? info.className : info.value);
+				const classNameToRemove = info.className ? info.className : info.value;
+
+				if(classNameToRemove)
+				{
+					element.classList.remove(classNameToRemove);
+				}
+				
 				info.value = value;
 				applyClassNames();
 			});
