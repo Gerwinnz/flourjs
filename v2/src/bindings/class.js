@@ -35,15 +35,15 @@ flour.binding.add('f-class',
 		{
 			let parts = classString.split(' ');
 			let stateKey = parts[0];
+			let info = {}
+
 
 			if(parts.length > 1)
 			{
 			  stateKey = parts.slice(0, parts.length - 1).join(' ')
+			  info.className = parts.pop();
 			}
 
-			let info = {
-				className: (parts.length > 1 ? parts.pop() : false)
-			};
 
 			let listener = state.onExpressionChange(stateKey, function(value)
 			{
