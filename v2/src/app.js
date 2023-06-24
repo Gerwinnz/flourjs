@@ -43,6 +43,7 @@ class flour_app
 		this.mElement = params.element || document.createElement('div');
 		this.mRouter = flour.router(params.routes, params.base_url);
 		this.mBaseURL = params.base_url || document.location.origin;
+		this.mCacheViewsCount = params.cache_views_count || this.mCacheViewsCount;
 
 
 		if(flour.util.isFunction(params.transitionHandler))
