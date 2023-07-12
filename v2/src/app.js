@@ -323,6 +323,11 @@ class flour_app
 			
 			var href = el.getAttribute('href');
 			var handledURL = false;
+
+			if(!href)
+			{
+				return;
+			}
 			
 			if(href[0] === '/')
 			{
