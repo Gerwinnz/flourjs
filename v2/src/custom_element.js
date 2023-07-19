@@ -32,38 +32,69 @@ flour.customElement.add = function(tagName, details)
 
 
 			//
-			//	Setup
+			//	Basic setup
 			//
 			constructor() 
 			{
 				super();
+			}
+
+			static get observedAttributes() 
+			{
+			  	return details.attributes;
+			}
+
+
+
+			//
+			//	Attribute change
+			//
+			//  Forward this to the same method on the view attached if exists
+			//
+			attributeChangedCallback(property, oldValue, newValue) 
+			{  
+				if (oldValue === newValue)
+				{
+					return;
+				}
+
+				if(this.#viewInstance && this.#viewInstance.attributeChanged)
+				{
+					this.#viewInstance.attributeChanged(property, newValue, oldValue);
+				}
+			}
+
+
+
+			//
+			//	Create view
+			//
+			connectedCallback() 
+			{
 				var params = {};
 
 
-				//
-				// Put together the params to pass to the view based on the props
-				// that are specified and the value is pulled from the html attribute
-				//
+				// Extract attributes from the html to pass to the view
 				if(details && details.attributes)
 				{
-					for(var i = 0, n = details.attributes.length; i < n; i ++)
+					for(const attributeName of details.attributes)
 					{
-						if(this.hasAttribute(details.attributes[i]))
+						if(this.hasAttribute(attributeName))
 						{
-							params[details.attributes[i]] = this.getAttribute(details.attributes[i]);
+							params[attributeName] = this.getAttribute(attributeName);
 						}
 					}
 				}
 
 
 				// Create our view instance
-				this.#viewInstance = flour.view.get(details.view, params, {hostEl: this});
+				if(!this.#viewInstance)
+				{
+					this.#viewInstance = flour.view.get(details.view, params, {hostEl: this});	
+				}
+				
 
-
-
-				//
 				// For events specified, listen to them on the view and dispatch them from our element 
-				// 
 				if(details && details.events)
 				{
 					details.events.forEach((eventName) => 
@@ -104,38 +135,9 @@ flour.customElement.add = function(tagName, details)
 						});
 					});
 				}
-			}
-
-			static get observedAttributes() 
-			{
-			  	return details.attributes;
-			}
 
 
-			//
-			//	Attribute change
-			//
-			//  Forward this to the same method on the view attached if exists
-			//
-			attributeChangedCallback(property, oldValue, newValue) 
-			{  
-				if (oldValue === newValue)
-				{
-					return;
-				}
-
-				if(this.#viewInstance.attributeChanged)
-				{
-					this.#viewInstance.attributeChanged(property, newValue, oldValue);
-				}
-			}
-
-
-			//
-			//	Append our view el
-			//
-			connectedCallback() 
-			{
+				// Append our view - shadow dom or regular
 				if(details.shadow === true)
 				{
 					if(!this.shadowRoot)

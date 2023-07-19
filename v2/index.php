@@ -35,7 +35,6 @@
 		<script type="text/javascript" src="src/bindings/class.js"></script>
 		<script type="text/javascript" src="src/bindings/value.js"></script>
 		<script type="text/javascript" src="src/bindings/style.js"></script>
-		<script type="text/javascript" src="src/bindings/options.js"></script>
 
 		<!-- <script type="text/javascript" src="dist/flour-0.0.1.min.js"></script> -->
 	</head>

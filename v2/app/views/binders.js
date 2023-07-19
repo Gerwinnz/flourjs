@@ -25,7 +25,6 @@ flour.view.add('binders', function()
 			<div class="sub-nav sub-nav--code">
 				<ul>
 					<li><a href="/binders/on">f-on</a></li>
-					<li><a href="/binders/options">f-options</a></li>
 					<li><a href="/binders/ref">f-ref</a></li>
 					<li><a href="/binders/text">f-text</a></li>
 					<li><a href="/binders/view">f-view</a></li>

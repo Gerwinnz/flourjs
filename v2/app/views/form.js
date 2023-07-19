@@ -74,8 +74,6 @@ flour.view.add('form', function()
 
 				<div class="form__line">
 					<label>Type</label>
-					<select f-value="type" f-options="type_options"></select>
-
 					<select f-value="type">
 						<option>My first option</option>
 						{{#list type_options}}
