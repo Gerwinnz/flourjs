@@ -57,7 +57,6 @@ flour.util.pushLocation = function(url)
 
 
 
-
 /* 
 |
 |   Event delegation method
@@ -73,7 +72,7 @@ flour.util.delegateEvent = function(el, eventType, selector, handler, useCapture
     el.addEventListener(eventType, function(event) 
     {
         var t = event.target;
-        while (t && t !== this) 
+        while (t && t.matches && t !== this) 
         {
             if (t.matches(selector)) 
             {
