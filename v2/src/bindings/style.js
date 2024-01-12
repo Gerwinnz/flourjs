@@ -27,13 +27,13 @@ flour.binding.add('f-style',
 				{
 					if(event.value)
 					{
-						element.style[property] = event.value;
+						element.style.setProperty(property, event.value);
 					}
 				});
 
 				if(listener.value)
 				{
-					element.style[property] = listener.value;
+					element.style.setProperty(property, listener.value);
 				}
 
 				mCleanups.push(listener.remove);
