@@ -168,7 +168,7 @@ class flour_app
 
 			if(!nextView)
 			{
-				nextView = flour.view.get(route.view, route.params, {route: route});
+				nextView = flour.view.get(route.view, route.params, { route: route });
 				this.mViews.push(nextView);
 			}
 
@@ -232,9 +232,9 @@ class flour_app
 
 		if(nextView.ready === false)
 		{
-			var onReady = function()
+			const onReady = () =>
 			{
-				self.transitionViews(nextView, currentView);
+				this.transitionViews(nextView, currentView);
 				nextView.ready = true;
 				nextView.off('ready', onReady);
 			};
@@ -262,6 +262,13 @@ class flour_app
 		{
 			var details = {
 				hostElement: this.mHostElement,
+				mountView: (view) => {
+					this.mHostElement.append(view.el);
+					if(flour.util.isFunction(view.mounted))
+					{
+						view.mounted();
+					}
+				},
 				nextView: nextView,
 				currentView: currentView,
 				route: route
@@ -276,6 +283,11 @@ class flour_app
 		{
 			this.mHostElement.append(nextView.el);
 			this.cleanUp(currentView);
+
+			if(flour.util.isFunction(nextView.mounted))
+			{
+				nextView.mounted();
+			}
 		}
 	}
 
