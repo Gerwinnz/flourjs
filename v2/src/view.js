@@ -42,6 +42,7 @@ flour.view.get = function(name, params, extraOptions)
 	}
 
 	viewInstance = new flour.view.defined[name]();
+	viewInstance.name = name;
 
 	if(extraOptions)
 	{

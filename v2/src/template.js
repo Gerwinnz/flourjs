@@ -87,8 +87,15 @@ flour.template.parse = function(html, state, view)
 		var innerHTML = replaceString.substr(found.length, replaceString.length - found.length - closeTag.length);
 
 		var slotId = flour.util.generateId();
+		var replaceWithString = '<!-- flour-slot-' + slotId + ' -->';
 
 		html = html.replace(replaceString, '<!-- flour-slot-' + slotId + ' -->');
+
+		// Since we're modifying the search string, we must tell our regEx object that the new
+		// last index, has now moved back a chunk.
+		regEx.lastIndex = regEx.lastIndex - (replaceString.length + replaceWithString.length);
+
+
 		blocks.push({
 			slotId: slotId,
 			type: blockType,
