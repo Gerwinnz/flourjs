@@ -880,7 +880,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var getItem = function(key, id)
+	function getItem(key, id)
 	{
 		if(!mManagedArrays[key])
 		{
@@ -903,7 +903,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var insertItem = function(key, newItem, newItemIndex)
+	function insertItem(key, newItem, newItemIndex)
 	{
 		if(!mManagedArrays[key])
 		{
@@ -915,7 +915,7 @@ flour.state = function(defaultValues, options)
 
 
 
-	var insertItems = function(key, newItems, newItemsIndex)
+	function insertItems(key, newItems, newItemsIndex)
 	{
 		if(!mManagedArrays[key])
 		{
@@ -937,7 +937,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var removeItem = function(key, id)
+	function removeItem(key, id)
 	{
 		if(!mManagedArrays[key])
 		{
@@ -964,7 +964,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var onChange = function(key, callback, options)
+	function onChange(key, callback, options)
 	{
 		var id = flour.util.generateId();
 		options = options || {};
@@ -1084,7 +1084,7 @@ flour.state = function(defaultValues, options)
 	|
 	|
 	*/
-	var onExpressionChange = function(expression, callback)
+	function onExpressionChange(expression, callback)
 	{
 		var evalFunction = false;
 		var expressionFunction = false;
@@ -1132,6 +1132,7 @@ flour.state = function(defaultValues, options)
 
 
 
+
 	/*
 	|
 	|
@@ -1171,7 +1172,6 @@ flour.state = function(defaultValues, options)
 
 
 
-
 	/*
 	|
 	|
@@ -1185,8 +1185,6 @@ flour.state = function(defaultValues, options)
 		id: mStateInstanceId,
 		get: get,
 		set: set,
-
-		getList: {},
 
 		getItem: getItem,
 		insertItem: insertItem,

@@ -96,6 +96,7 @@ flour.view.base = function()
 		if(!this.views){ this.views = []; }
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
 		if(!this.subscriptions){ this.subscriptions = []; }
+		if(!this.listeners){ this.listeners = []; }
 
 		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);
@@ -186,6 +187,12 @@ flour.view.base = function()
 	    if(flour.util.isFunction(this.isDestroyed))
 	    {
 	    	this.isDestroyed();
+	    }
+
+	    // Remove all listeners to foreign states
+	    for(const listener of this.listeners)
+	    {
+	    	listener.remove();
 	    }
 	};
 
@@ -348,6 +355,31 @@ flour.view.base = function()
 	      eventName: eventName,
 	      callback: callback
 	    });
-	}
+	};
+
+
+	/*
+	|
+	|
+	|	Helpers for interfacing with state outside of the view's internal state 
+	|	to make things easier and also allows the view to manage and cleanup
+	| 	the listeners
+	|
+	|
+	*/
+	this.listen = function(foreignState, key, callback, options)
+	{
+		const listener = foreignState.onChange(key, callback, options || {});
+		this.listeners.push(listener);
+	};
+
+	this.mirrorState = function(foreignState, key, as)
+	{
+		as = as || key;
+
+		this.listen(foreignState, key, (event) => {
+			this.state.set(as, event.value);
+		}, {immediate: true});
+	};
 
 };
