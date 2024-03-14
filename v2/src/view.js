@@ -101,23 +101,6 @@ flour.view.base = function()
 		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);
 
-		if(this.templateHTML)
-		{
-			templateHTML = this.templateHTML;
-		}
-		else if(this.template)
-		{
-			var templateEl = document.getElementById('f-template.' + this.template);
-			if(!templateEl)
-			{
-				templateHTML = '<p>No template found.</p>';
-			}
-			else
-			{
-				templateHTML = document.getElementById('f-template.' + this.template).innerHTML;
-			}
-		}
-
 		if(this.init)
 		{
 			this.init(params, extraOptions);
@@ -140,6 +123,23 @@ flour.view.base = function()
 	*/
 	this.render = function()
 	{
+		if(this.templateHTML)
+		{
+			templateHTML = this.templateHTML;
+		}
+		else if(this.template)
+		{
+			var templateEl = document.getElementById('f-template.' + this.template);
+			if(!templateEl)
+			{
+				templateHTML = '<p>No template found.</p>';
+			}
+			else
+			{
+				templateHTML = document.getElementById('f-template.' + this.template).innerHTML;
+			}
+		}
+		
 		if(this.templateInstance)
 		{
 			this.templateInstance.cleanup();
