@@ -25,7 +25,7 @@ flour.binding.add('f-style',
 
 				var listener = state.onChange(stateKey, function(event)
 				{
-					if(event.value)
+					if(event.value !== null || event.value !== undefined)
 					{
 						element.style.setProperty(property, event.value);
 					}
