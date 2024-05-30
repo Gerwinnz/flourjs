@@ -244,7 +244,10 @@ flour.template.parse = function(html, state, view)
 					{
 						for(var i = 0, n = blockContents.length; i < n; i ++)
 						{
-							blockContents[i].parentNode.removeChild(blockContents[i]);
+							if(blockContents[i].parentNode)
+							{
+								blockContents[i].parentNode.removeChild(blockContents[i]);
+							}
 						}
 
 						blockContents.length = 0;
