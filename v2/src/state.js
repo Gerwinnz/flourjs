@@ -1,5 +1,7 @@
 var flour = flour || {};
 
+flour.state_expressions = new Map();
+
 
 /*
 |
@@ -15,6 +17,7 @@ flour.state = function(defaultValues, options)
 	var mKeyChangeListeners = {};
 	var mAllChangeListeners = [];
 	var mManagedArrays = {};
+	
 
 	var mChangeTypes = {
 		'update': 'update',
@@ -1090,29 +1093,51 @@ flour.state = function(defaultValues, options)
 		var expressionFunction = false;
 		var expressionVariables = [];
 		var expressionVariablesJoined = '';
-		var regEx = new RegExp(/[a-zA-Z\._]{1,}/, 'g');
+
+		var regEx;
 		var variableName;
 
-		// remove strings
-		var strippedExpression = expression.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '');
-		
-		// find variable names
-		while((variableName = regEx.exec(strippedExpression)) !== null)
+		if(flour.state_expressions.has(expression))
 		{
-			expressionVariables.push(variableName[0].split('.')[0]);
+			const expressionDetails = flour.state_expressions.get(expression);
+			
+			expressionFunction = expressionDetails.function;
+			expressionVariables = expressionDetails.variables;
+			expressionVariablesJoined = expressionDetails.variables_joined;
 		}
+		else
+		{
+			regEx = new RegExp(/[a-zA-Z\._]{1,}/, 'g');
+			
+			// remove strings
+			var strippedExpression = expression.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '');
+			
+			// find variable names
+			while((variableName = regEx.exec(strippedExpression)) !== null)
+			{
+				expressionVariables.push(variableName[0].split('.')[0]);
+			}
 
-		// create our expression function
-		expressionVariablesJoined = expressionVariables.join(',');
-		expressionFunction = new Function(expressionVariablesJoined, 'return ' + expression + ';');
+			// create our expression function
+			expressionVariablesJoined = expressionVariables.join(',');
+			expressionFunction = new Function(expressionVariablesJoined, 'return ' + expression + ';');
+
+			flour.state_expressions.set(expression, 
+			{
+				function: expressionFunction,
+				variables: expressionVariables,
+				variables_joined: expressionVariablesJoined
+			});
+		}
+		
 
 		//
-		var getExpressionResult = function()
+		function getExpressionResult()
 		{
 			var params = [];
-			for(var i = 0, n = expressionVariables.length; i < n; i ++)
+			for(const variableName of expressionVariables)
 			{
-				params.push(get(expressionVariables[i]));
+				params.push(get(variableName));
 			}
 
 			return (expressionFunction.apply(this, params));
