@@ -1089,7 +1089,6 @@ flour.state = function(defaultValues, options)
 	*/
 	function onExpressionChange(expression, callback)
 	{
-		var evalFunction = false;
 		var expressionFunction = false;
 		var expressionVariables = [];
 		var expressionVariablesJoined = '';
