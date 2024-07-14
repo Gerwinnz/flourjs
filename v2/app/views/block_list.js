@@ -116,6 +116,8 @@ flour.view.add('block_list', function()
 		var id = el.getAttribute('data-id');
 		var item = view.state.getItem('items', id);
 
+		// const item = view.state.get('items').at(id);
+
 		item.update('count', item.value.count + 1);
 	};
 

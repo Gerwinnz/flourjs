@@ -712,7 +712,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var get = function(key)
+	function get(key)
 	{
 		//console.log('state::get', key);
 		var value = getValue(mValues, key);
@@ -723,7 +723,7 @@ flour.state = function(defaultValues, options)
 		}
 
 		return value;
-	};
+	}
 
 	function getValue(obj, key)
 	{
@@ -763,7 +763,7 @@ flour.state = function(defaultValues, options)
 	|	
 	|
 	*/
-	var set = function(key, value, changeEvent)
+	function set(key, value, changeEvent)
 	{
 		var changedKey = false;
 		var changeEvent = changeEvent ? changeEvent : {type: mChangeTypes.update};
@@ -891,7 +891,7 @@ flour.state = function(defaultValues, options)
 		}
 
 		return mManagedArrays[key].getItem(id);
-	};
+	}
 
 
 
@@ -914,7 +914,7 @@ flour.state = function(defaultValues, options)
 		}
 
 		return mManagedArrays[key].insertItem(newItem, newItemIndex);
-	};
+	}
 
 
 
@@ -926,7 +926,7 @@ flour.state = function(defaultValues, options)
 		}
 
 		return mManagedArrays[key].insertItems(newItems, newItemsIndex);
-	};
+	}
 
 
 
@@ -948,7 +948,7 @@ flour.state = function(defaultValues, options)
 		}
 
 		return mManagedArrays[key].removeItem(id);
-	};
+	}
 
 
 
@@ -1078,7 +1078,7 @@ flour.state = function(defaultValues, options)
 				}
 			}
 		}
-	};
+	}
 
 
 
@@ -1176,7 +1176,7 @@ flour.state = function(defaultValues, options)
 				mKeyChangeListeners[key][i].calls ++;
 			}
 		}
-	};
+	}
 
 	function callAllChangeListeners(event)
 	{
@@ -1188,7 +1188,7 @@ flour.state = function(defaultValues, options)
 				mAllChangeListeners[i].calls ++;
 			}
 		}
-	};
+	}
 
 
 

@@ -1,4 +1,4 @@
-import { transitionHandler } from './transition_handler';
+// import { transitionHandler } from './transition_handler';
 
 (function(){
 
@@ -6,7 +6,7 @@ import { transitionHandler } from './transition_handler';
 		view: 'app',
 		base_url: 'http://localhost/flourjs/v2',
 		element: document.getElementById('app'),
-		transitionHandler: transitionHandler,
+		//transitionHandler: transitionHandler,
 		routes: {
 			'/binders': { view: 'binders' },
 			'/binders/:binder': { view: 'binders' },
