@@ -97,6 +97,7 @@ flour.view.base = function()
 		if(!this.embeddedViews){ this.embeddedViews = {}; }
 		if(!this.subscriptions){ this.subscriptions = []; }
 		if(!this.listeners){ this.listeners = []; }
+		if(!this.elements){ this.elements = {}; }
 
 		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);

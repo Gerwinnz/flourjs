@@ -11,11 +11,6 @@ flour.binding.add('f-name',
 	{
 		var mElementName = element.getAttribute('f-name');
 		
-		if(view.elements === undefined)
-		{
-			view.elements = {};
-		}
-
 		view.elements[mElementName] = element;
 	}
 
