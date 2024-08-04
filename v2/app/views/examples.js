@@ -36,6 +36,7 @@ flour.view.add('examples', function()
 			<div class="sub-nav sub-nav--code">
 				<ul>
 					<li><a href="/examples/form">Form</a></li>
+					<li><a href="/examples/two_lists">Two lists</a></li>
 					<li><a href="/examples/http">HTTP</a></li>
 					<li><a href="/examples/wall_builder">Wall builder</a></li>
 				</ul>

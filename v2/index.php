@@ -62,7 +62,8 @@
 		<script type="text/javascript" src="app/views/binder_types.js"></script>
 		<script type="text/javascript" src="app/views/f-view.js"></script>
 
-		<script type="text/javascript" src="app/views/components.js"></script>
+		<script type="text/javascript" src="app/views/examples.js"></script>
+		<script type="text/javascript" src="app/views/two_lists.js"></script>
 		<script type="text/javascript" src="app/views/footer.js"></script>
 
 		<script type="text/javascript" src="app/components/card.js"></script>
