@@ -82,6 +82,8 @@ flour.view.add('vehicles_list', function()
 		{
 			return item.type === type
 		}));
+
+		console.log(type);
 	};
 
 	view.templateHTML = 
@@ -115,9 +117,12 @@ flour.view.add('vehicle_item', function()
 
 	view.init = function(params)
 	{
-		const vehicleId = params['vehicle-id'];
-		const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
-		view.state.set('name', vehicleItem.value.name);	
+		// flour.util.defer(function()
+		// {
+			const vehicleId = params['vehicle-id'];
+			const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
+			view.state.set('name', vehicleItem.value.name);
+		// });	
 	};
 
 	view.templateHTML = 
