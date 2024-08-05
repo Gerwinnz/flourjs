@@ -123,10 +123,10 @@ flour.state = function(defaultValues, options)
 				return false;
 			}
 
-			const value = mItems[itemIndex];
+			const value = structuredClone(mItems[itemIndex]);
 
 			return {
-				value: JSON.parse(JSON.stringify(value)),
+				value: value,
 				index: itemIndex,
 				move: function(newIndex)
 				{
@@ -792,8 +792,6 @@ flour.state = function(defaultValues, options)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changeList.length)
 		{
-			//console.log('state::set::' + changeEvent.type, key, value);
-
 			for(var i = 0, n = setResponse.changeList.length; i < n; i ++)
 			{
 				changedKey = setResponse.changeList[i];
@@ -802,7 +800,7 @@ flour.state = function(defaultValues, options)
 				{
 					changeEvent.key = changedKey;
 					changeEvent.value = get(changedKey);
-					callKeyChangeListeners(changedKey, changeEvent);
+					callKeyChangeListeners(changedKey, changeEvent);	
 				}
 
 				if(mAllChangeListeners.length > 0)
@@ -1172,7 +1170,7 @@ flour.state = function(defaultValues, options)
 		{
 			if(mKeyChangeListeners[key][i])
 			{
-				mKeyChangeListeners[key][i].callback(event);
+				mKeyChangeListeners[key][i].callback(structuredClone(event));
 				mKeyChangeListeners[key][i].calls ++;
 			}
 		}
@@ -1184,7 +1182,7 @@ flour.state = function(defaultValues, options)
 		{
 			if(mAllChangeListeners[i])
 			{
-				mAllChangeListeners[i].callback(event);
+				mAllChangeListeners[i].callback(structuredClone(event));
 				mAllChangeListeners[i].calls ++;
 			}
 		}

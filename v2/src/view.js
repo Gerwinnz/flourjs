@@ -89,15 +89,15 @@ flour.view.base = function()
 	*/
 	this.initialize = function(params, extraOptions)
 	{
-		if(!this.state){ this.state = flour.state(); }
-		if(!this.tag){ this.tag = 'div'; }
-		if(!this.events){ this.events = {}; }
-		if(!this.renderCount){ this.renderCount = 0; }
-		if(!this.views){ this.views = []; }
-		if(!this.embeddedViews){ this.embeddedViews = {}; }
-		if(!this.subscriptions){ this.subscriptions = []; }
-		if(!this.listeners){ this.listeners = []; }
-		if(!this.elements){ this.elements = {}; }
+		this.state = flour.state();
+		this.tag = 'div';
+		this.events = {};
+		this.renderCount = 0;
+		this.views = [];
+		this.embeddedViews = {};
+		this.subscriptions = [];
+		this.listeners = [];
+		this.elements = {};
 
 		this.id = flour.util.generateId();
 		this.el = document.createElement(this.tag);
