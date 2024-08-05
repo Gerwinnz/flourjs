@@ -45,7 +45,6 @@ flour.template.parse = function(html, state, view)
 	}
 
 
-
 	//
 	//	Create comment filter for our tree walker
 	//
@@ -94,7 +93,6 @@ flour.template.parse = function(html, state, view)
 		// Since we're modifying the search string, we must tell our regEx object that the new
 		// last index, has now moved back a chunk.
 		regEx.lastIndex = regEx.lastIndex - (replaceString.length + replaceWithString.length);
-
 
 		blocks.push({
 			slotId: slotId,
@@ -162,7 +160,7 @@ flour.template.parse = function(html, state, view)
 		for(var i = 0, n = customElements.length; i < n; i ++)
 		{
 			(function(customElement){
-
+				
 				if(parsed === false)
 				{
 					templateDetails.customElements.push(customElement.tagName);
@@ -219,7 +217,7 @@ flour.template.parse = function(html, state, view)
 				false
 			);
 
-			while(treeWalker.nextNode()) 
+			while(treeWalker.nextNode() && referenceNode === false) 
 			{
 				if(treeWalker.currentNode.nodeValue === ' flour-slot-' + block.slotId + ' ')
 				{
@@ -258,6 +256,7 @@ flour.template.parse = function(html, state, view)
 			{
 				cleanupCallbacks.push(cleanup);
 			}
+
 		}(blocks[i]));
 	}
 

@@ -32,6 +32,39 @@ window.__vehicles.set('utes',
 	}
 ]);
 
+window.__vehicles.set('vehicles', 
+[
+	{
+		id: 1,
+		name: 'WRX',
+		type: 'car'
+	},
+	{
+		id: 2,
+		name: 'Mazda 9',
+		type: 'car'
+	},
+	{
+		id: 3,
+		name: 'Lancer',
+		type: 'car'
+	},
+	{
+		id: 4,
+		name: 'Triton',
+		type: 'ute'
+	},
+	{
+		id: 5,
+		name: 'D-Max',
+		type: 'ute'
+	},
+	{
+		id: 6,
+		name: 'Hilux',
+		type: 'ute'
+	}
+]);
 
 flour.view.add('two_lists', function()
 {
@@ -42,8 +75,8 @@ flour.view.add('two_lists', function()
 		<div>
 			<h2>Welcome to our listings</h2>
 			<div>
-				<vehicles-list type="cars"></vehicles-list>
-				<vehicles-list type="utes"></vehicles-list>
+				<vehicles-list type="car"></vehicles-list>
+				<vehicles-list type="ute"></vehicles-list>
 			</div>
 		</div>
 	`;
@@ -59,16 +92,24 @@ flour.view.add('vehicles_list', function()
 	view.init = function(params)
 	{
 		view.state.set('type', params.type);
+		view.listen(__vehicles, 'vehicles', showVehicles, { immediate: true });
+	};
 
-		view.listen(__vehicles, params.type, (event) => {
-			view.state.set('items', event.value);
-		}, { immediate: true });
+	function showVehicles()
+	{
+		const type = view.state.get('type');
+		const vehicles = __vehicles.get('vehicles');
+
+		view.state.set('items', vehicles.filter((item) => 
+		{
+			return item.type === type
+		}));
 	};
 
 	view.templateHTML = 
 	`
 		<div>
-			<h4>List of <span f-text="type"></span></h4>
+			<h4>List of <span f-text="type"></span>s</h4>
 
 			<div>
 				{{#list items}}
