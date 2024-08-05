@@ -120,7 +120,6 @@ flour.state = function(defaultValues, options)
 			const itemIndex = mLookup[itemId];
 			if(itemIndex === undefined)
 			{
-				console.log('this item does not exist', itemId);
 				return false;
 			}
 
