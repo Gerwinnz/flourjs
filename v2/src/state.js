@@ -37,7 +37,7 @@ flour.state = function(defaultValues, options)
 	|
 	|
 	*/
-	var managedArray = function(key, itemKey)
+	function managedArray(key, itemKey)
 	{
 		itemKey = itemKey ? itemKey : 'id';
 
