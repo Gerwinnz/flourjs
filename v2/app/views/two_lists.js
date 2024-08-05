@@ -66,6 +66,8 @@ flour.view.add('vehicles_list', function()
 	{
 		view.state.set('type', params.type);
 		view.listen(__vehicles, 'vehicles', showVehicles, { immediate: true });
+
+		window['__' + params.type] = view;
 	};
 
 	function showVehicles()
@@ -78,12 +80,12 @@ flour.view.add('vehicles_list', function()
 			return;
 		}
 
+		console.log('show vehicles of type: ' + type);
+
 		view.state.set('vehicles', vehicles.filter((item) => 
 		{
 			return item.type === type
 		}));
-
-		console.log(type);
 	};
 
 	view.templateHTML = 
@@ -122,7 +124,7 @@ flour.view.add('vehicle_item', function()
 			const vehicleId = params['vehicle-id'];
 			const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
 			view.state.set('name', vehicleItem.value.name);
-		// });	
+		// });
 	};
 
 	view.templateHTML = 
