@@ -660,7 +660,6 @@ flour.manageArray = function(state, key, itemKey)
 
 	if(updateLookup())
 	{
-
 		return {
 			items: mItems,
 			lookup: mLookup,
