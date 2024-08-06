@@ -3,6 +3,8 @@ window.__vehicles = flour.state();
 
 setTimeout(function()
 {
+	console.log('SETTING GLOBAL');
+	//window.__vehicles.set('vehicles', []);
 	window.__vehicles.set('vehicles', 
 	[
 		{
@@ -80,9 +82,9 @@ flour.view.add('vehicles_list', function()
 			return;
 		}
 
-		console.log('show vehicles of type: ' + type);
+		console.log('list view: ' + type, vehicles);
 
-		view.state.set('vehicles', vehicles.filter((item) => 
+		view.state.set('items', vehicles.filter((item) => 
 		{
 			return item.type === type
 		}));
@@ -94,7 +96,7 @@ flour.view.add('vehicles_list', function()
 			<h4>List of <span f-text="type"></span>s</h4>
 
 			<div>
-				{{#list vehicles}}
+				{{#list items}}
 					<div>
 						<vehicle-item vehicle-id="{{id}}"></vehicle-item>
 					</div>
@@ -119,12 +121,15 @@ flour.view.add('vehicle_item', function()
 
 	view.init = function(params)
 	{
-		// flour.util.defer(function()
-		// {
-			const vehicleId = params['vehicle-id'];
-			const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
-			view.state.set('name', vehicleItem.value.name);
-		// });
+		const vehicleId = Number(params['vehicle-id']);
+		
+		console.log('getting item', vehicleId);
+		const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
+		console.log(vehicleItem.value);
+		view.state.set('name', vehicleItem.value.name);
+
+		// const vehicleItem = __vehicles.get('vehicles').find(item => item.id === vehicleId);
+		// view.state.set('name', vehicleItem.name);
 	};
 
 	view.templateHTML = 

@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="src/http.js"></script>
 		<script type="text/javascript" src="src/view.js"></script>
 		<script type="text/javascript" src="src/state.js"></script>
+		<script type="text/javascript" src="src/manage_array.js"></script>
 		<script type="text/javascript" src="src/block.js"></script>
 		<script type="text/javascript" src="src/filter.js"></script>
 		<script type="text/javascript" src="src/router.js"></script>
