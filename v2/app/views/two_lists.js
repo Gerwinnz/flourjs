@@ -82,8 +82,6 @@ flour.view.add('vehicles_list', function()
 			return;
 		}
 
-		console.log('list view: ' + type, vehicles);
-
 		view.state.set('items', vehicles.filter((item) => 
 		{
 			return item.type === type
@@ -122,11 +120,10 @@ flour.view.add('vehicle_item', function()
 	view.init = function(params)
 	{
 		const vehicleId = Number(params['vehicle-id']);
-		
-		console.log('getting item', vehicleId);
 		const vehicleItem = __vehicles.getItem('vehicles', vehicleId);
-		console.log(vehicleItem.value);
 		view.state.set('name', vehicleItem.value.name);
+
+		console.log(vehicleItem);
 
 		// const vehicleItem = __vehicles.get('vehicles').find(item => item.id === vehicleId);
 		// view.state.set('name', vehicleItem.name);

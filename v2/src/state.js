@@ -117,12 +117,6 @@ flour.state = function(defaultValues, options)
 		var setResponse = setValue(mValues, key, value);
 		if(setResponse.changeList.length)
 		{
-			if(key === 'vehicles')
-			{
-				console.log(setResponse.changeList, changeEvent);	
-			}
-			
-
 			for(var i = 0, n = setResponse.changeList.length; i < n; i ++)
 			{
 				changedKey = setResponse.changeList[i];
@@ -497,29 +491,24 @@ flour.state = function(defaultValues, options)
 	*/
 	function callKeyChangeListeners(key, event)
 	{
-		if(key === 'vehicles')
+		for(const listener of mKeyChangeListeners[key])
 		{
-			console.log('calling listeners', mKeyChangeListeners[key]);
-		}
-
-		for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
-		{
-			if(mKeyChangeListeners[key][i])
+			if(listener)
 			{
-				mKeyChangeListeners[key][i].callback(structuredClone(event));
-				mKeyChangeListeners[key][i].calls ++;
+				listener.callback(structuredClone(event));
+				listener.calls ++;
 			}
 		}
 	}
 
 	function callAllChangeListeners(event)
 	{
-		for(var i = 0, n = mAllChangeListeners.length; i < n; i ++)
+		for(const listener of mAllChangeListeners)
 		{
-			if(mAllChangeListeners[i])
+			if(listener)
 			{
-				mAllChangeListeners[i].callback(structuredClone(event));
-				mAllChangeListeners[i].calls ++;
+				listener.callback(structuredClone(event));
+				listener.calls ++;
 			}
 		}
 	}

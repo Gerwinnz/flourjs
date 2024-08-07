@@ -36,8 +36,6 @@ flour.manageArray = function(state, key, itemKey)
 	}
 
 
-	console.log('MANAGE ARRAY', key, mItems);
-
 
 	/*
 	|
