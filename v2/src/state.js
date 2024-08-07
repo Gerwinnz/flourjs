@@ -497,6 +497,11 @@ flour.state = function(defaultValues, options)
 	*/
 	function callKeyChangeListeners(key, event)
 	{
+		if(key === 'vehicles')
+		{
+			console.log('calling listeners', mKeyChangeListeners[key]);
+		}
+
 		for(var i = 0, n = mKeyChangeListeners[key].length; i < n; i ++)
 		{
 			if(mKeyChangeListeners[key][i])
