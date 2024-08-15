@@ -71,7 +71,7 @@ flour.manageArray = function(state, key, itemKey)
 
 		for(var i = 0, n = items.length; i < n; i ++)
 		{
-			if(!items[i][itemKey])
+			if(items[i][itemKey] === undefined)
 			{
 				isValid = false;
 			}
