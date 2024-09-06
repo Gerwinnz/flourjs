@@ -27,12 +27,12 @@ flour.binding.add('f-text',
 		// display methods
 		var displayText = function(value)
 		{
-			element.innerText = value;
+			element.textContent = value;
 		};
 
 		var displayTextWithFilter = function(value)
 		{
-			element.innerText = mFilter(value);
+			element.textContent = mFilter(value);
 		};
 
 
