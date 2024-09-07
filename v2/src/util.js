@@ -219,7 +219,7 @@ flour.util.diff = function(obj, newObj, options, _stack)
             }
             else
             {
-                const nestedDiffs = diff(
+                const nestedDiffs = flour.util.diff(
                     objKey,
                     newObjKey,
                     options,
