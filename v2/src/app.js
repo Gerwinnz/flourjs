@@ -133,6 +133,15 @@ class flour_app
         	var currentView = this.mViews[this.mCurrentViewIndex];
 
 
+        	//
+			//	Call our on route change listener if present
+			//
+			if(this.mOnRouteChange)
+			{
+				this.mOnRouteChange(route);
+			}
+
+
 			//
 			//	If same view with handler call it and stop there unless it explicitly returns false
 			//			
@@ -142,10 +151,6 @@ class flour_app
 
 				if(handled !== false){
 					this.mCurrentRoute = route;
-					if(this.mOnRouteChange)
-					{
-						this.mOnRouteChange(this.mCurrentRoute);
-					}
 					return;
 				}
 			}
@@ -194,15 +199,6 @@ class flour_app
 		//	Store our route for comparisons
 		//
 		this.mCurrentRoute = route;
-
-
-		//
-		//	Call our on route change listener if present
-		//
-		if(this.mOnRouteChange)
-		{
-			this.mOnRouteChange(this.mCurrentRoute);
-		}
 
 		return route;
 	}
