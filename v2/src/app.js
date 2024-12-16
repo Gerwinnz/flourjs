@@ -327,6 +327,11 @@ class flour_app
 	{
 		flour.util.delegateEvent(this.mElement, 'click', 'a', (el, e) => 
 		{
+			if(el.classList.contains('flour-ignore'))
+			{
+				return;
+			}
+			
 			e.preventDefault();
 			
 			var href = el.getAttribute('href');

@@ -31,7 +31,7 @@ flour.binding.add('f-style',
 					}
 				});
 
-				if(listener.value)
+				if(listener.value !== null || event.value !== undefined)
 				{
 					element.style.setProperty(property, listener.value);
 				}

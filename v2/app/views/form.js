@@ -73,6 +73,11 @@ flour.view.add('form', function()
 				</div>
 
 				<div class="form__line">
+					<label>Time</label>
+					<input type="time" f-value="time" />
+				</div>
+
+				<div class="form__line">
 					<label>Type</label>
 					<select f-value="type">
 						<option>My first option</option>
