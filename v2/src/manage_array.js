@@ -13,6 +13,11 @@ var flour = flour || {};
 */
 flour.manageArray = function(state, key, itemKey)
 {
+	function copy(v)
+	{
+		return structuredClone(v);
+	}
+	
 	itemKey = itemKey ? itemKey : 'id';
 
 	var mItems = state.get(key);
@@ -103,7 +108,7 @@ flour.manageArray = function(state, key, itemKey)
 			return false;
 		}
 
-		const value = structuredClone(mItems[itemIndex]);
+		const value = copy(mItems[itemIndex]);
 
 		return {
 			value: value,
@@ -221,7 +226,7 @@ flour.manageArray = function(state, key, itemKey)
 
 
 		// Clone
-		newItem = structuredClone(newItem);
+		newItem = copy(newItem);
 
 
 		// insert at specified position or at end by default
@@ -282,7 +287,7 @@ flour.manageArray = function(state, key, itemKey)
 
 
 		// Clone
-		newItems = structuredClone(newItems);
+		newItems = copy(newItems);
 
 		
 		// insert at specified position or at end by default
@@ -572,7 +577,7 @@ flour.manageArray = function(state, key, itemKey)
 		var updateChanges = [];
 
 		// Clone
-		newItems = structuredClone(newItems);
+		newItems = copy(newItems);
 
 
 		// ADD AND UPDATE

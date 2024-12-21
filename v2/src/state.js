@@ -12,8 +12,13 @@ flour.state_expressions = new Map();
 */
 flour.state = function(defaultValues, options)
 {
+	function copy(v)
+	{
+		return structuredClone(v);
+	}
+
 	var mStateInstanceId = flour.util.generateId();
-	var mValues = defaultValues ? structuredClone(defaultValues) : {};
+	var mValues = defaultValues ? copy(defaultValues) : {};
 	var mKeyChangeListeners = {};
 	var mAllChangeListeners = [];
 	var mManagedArrays = {};
@@ -23,6 +28,7 @@ flour.state = function(defaultValues, options)
 		'update': 'update',
 		'updatedItems': 'updatedItems'
 	};
+
 
 
 
@@ -43,7 +49,7 @@ flour.state = function(defaultValues, options)
 
 		if(flour.util.isArray(value) || flour.util.isObject(value))
 		{
-			value = structuredClone(value);
+			value = copy(value);
 		}
 
 		return value;
@@ -495,7 +501,7 @@ flour.state = function(defaultValues, options)
 		{
 			if(listener)
 			{
-				listener.callback(structuredClone(event));
+				listener.callback(copy(event));
 				listener.calls ++;
 			}
 		}
@@ -507,7 +513,7 @@ flour.state = function(defaultValues, options)
 		{
 			if(listener)
 			{
-				listener.callback(structuredClone(event));
+				listener.callback(copy(event));
 				listener.calls ++;
 			}
 		}
