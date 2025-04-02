@@ -88,7 +88,7 @@
 				continue;
 			}
 
-			$item_contents = file_get_contents($item_path);
+			$item_contents = file_get_contents($item_path) . PHP_EOL . PHP_EOL;
 			file_put_contents($dest, $item_contents, FILE_APPEND);
 		}
 

@@ -46,7 +46,7 @@ flour.subscribe = function(eventName, callback)
   }
 
   flour.subscriptions[eventName].push(callback);
-}
+};
 
 
 
@@ -69,4 +69,4 @@ flour.unsubscribe = function(eventName, callback)
       }
     }
   }
-}
+};
